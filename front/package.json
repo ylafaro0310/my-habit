@@ -20,7 +20,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "build:production": "yarn build && mv build/* ../public"
+    "build:production": "yarn build && cp -r build/* ../public"
   },
   "eslintConfig": {
     "extends": "react-app"
