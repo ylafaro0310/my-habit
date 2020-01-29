@@ -1,7 +1,7 @@
 import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
-import Record from './components/Record';
+import Record from './pages/Record';
 
 export const Path = {
   root: '/',
