@@ -1,6 +1,6 @@
 import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios';
 
-import { AxiosResponse } from 'types/responses/axios';
+import { AxiosResponse } from '../../types/responses/axios';
 
 export class ApiClient {
   axiosInstance: AxiosInstance;
