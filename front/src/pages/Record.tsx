@@ -3,6 +3,7 @@ import './App.css';
 import Habits from '../models/Habits';
 import HabitRecords from '../models/HabitRecords';
 import HabitList from '../components/HabitList';
+import dayjs from 'dayjs';
 
 const response = {
   habits: [
@@ -11,8 +12,8 @@ const response = {
     { id: 3, habit_name: "新しいCDを1枚聴く" },
   ],
   habit_records: [
-    { habit_id: 2, completed_at: "2020-01-08" },
-    { habit_id: 1, completed_at: "2020-01-08" },
+    { habit_id: 2, completed_at: dayjs("2020-01-08") },
+    { habit_id: 1, completed_at: dayjs("2020-01-08") },
   ]
 }
 const habits = Habits.fromResponse(response)

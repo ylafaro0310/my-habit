@@ -26,11 +26,11 @@ export class Habit extends Record<{
 }) {
   static fromResponse(response: JSObject) {
     const params = { ...response };
-    return new Habits(params);
+    return new Habit(params);
   }
-  isCompleted = (date: Dayjs,habit_records: HabitRecords) => (
-    habit_records.filterById(this.id).filterByCompletedAt(date = dayjs('2020-01-08')).getList().size > 0
-  )
+  isCompleted(date: Dayjs,habit_records: HabitRecords): boolean {
+    return habit_records.filterById(this.id).filterByCompletedAt(date = dayjs('2020-01-08')).getList().size > 0
+  }
 }
 
 export default class Habits extends Record<{
