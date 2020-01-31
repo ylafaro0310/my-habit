@@ -3,20 +3,23 @@ import { applyMiddleware, combineReducers, createStore } from 'redux';
 import { RouterState, connectRouter, routerMiddleware } from 'connected-react-router';
 import { createLogger } from 'redux-logger';
 
-import { HabitsState, habitsReducer } from './modules/Habits';
-import { HabitRecordsState, habitRecordsReducer } from './modules/HabitRecords';
+import Habits from '../models/Habits';
+import HabitRecords from '../models/HabitRecords';
+
+import { habitsReducer } from './modules/Habits';
+import { habitRecordsReducer } from './modules/HabitRecords';
 
 export interface State {
   router: RouterState;
-  habits: HabitsState;
-  habitRecords: HabitRecordsState;
+  habits: Habits;
+  habitRecords: HabitRecords;
 }
 
 export const rootReducer = (history: History) =>
   combineReducers({
     router: connectRouter(history),
     habits: habitsReducer,
-    habitsRecords: habitRecordsReducer,
+    habitRecords: habitRecordsReducer,
   });
 
 const logger = createLogger();

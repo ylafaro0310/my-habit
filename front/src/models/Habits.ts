@@ -31,12 +31,12 @@ export class Habit extends Record<{
     return new Habit(params);
   }
   isCompleted(date: Dayjs, habitRecords: HabitRecords): boolean {
-    return (
-      habitRecords
-        .filterById(this.id)
-        .filterByCompletedAt(date)
-        .getList().size > 0
-    );
+    return habitRecords
+      ? habitRecords
+          .filterById(this.id)
+          .filterByCompletedAt(date)
+          .getList().size > 0
+      : false;
   }
 }
 

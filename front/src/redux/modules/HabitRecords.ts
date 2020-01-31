@@ -1,28 +1,24 @@
 import actionCreatorFactory from 'typescript-fsa';
 import { reducerWithInitialState } from 'typescript-fsa-reducers';
-import { Record } from 'immutable';
 
 import HabitRecords from '../../models/HabitRecords';
 
-// State
-export class HabitRecordsState extends Record<{
-  habitRecords: HabitRecords;
-}>({
-  habitRecords: new HabitRecords(),
-}) {}
-
 // Action Creator
-const actionCreator = actionCreatorFactory('Habit');
-export const HabitsActions = {
+const actionCreator = actionCreatorFactory('HabitRecord');
+export const HabitRecordsActions = {
+  getHabitRecords: actionCreator<HabitRecords>('getHabitRecords'),
   addHabitRecord: actionCreator<HabitRecords>('addHabitRecord'),
   removeHabitRecord: actionCreator<HabitRecords>('removeHabitRecord'),
 };
 
 // Reducers
-export const habitRecordsReducer = reducerWithInitialState(new HabitRecordsState())
-  .case(HabitsActions.addHabitRecord, (state, payload) => {
-    return state.set('habitRecords', payload);
+export const habitRecordsReducer = reducerWithInitialState(new HabitRecords())
+  .case(HabitRecordsActions.getHabitRecords, (state, payload) => {
+    return state.set('items', payload.getList());
   })
-  .case(HabitsActions.removeHabitRecord, (state, payload) => {
-    return state.set('habitRecords', payload);
+  .case(HabitRecordsActions.addHabitRecord, (state, payload) => {
+    return state.set('items', payload.getList());
+  })
+  .case(HabitRecordsActions.removeHabitRecord, (state, payload) => {
+    return state.set('items', payload.getList());
   });

@@ -40,7 +40,7 @@ export default class HabitRecords extends Record<{
   filterByCompletedAt(date: Dayjs): HabitRecords {
     return this.set(
       'items',
-      this.get('items').filter(habitRecord => habitRecord.completedAt.isSame(date)),
+      this.get('items').filter(habitRecord => habitRecord.completedAt.isSame(date, 'd')),
     );
   }
 }

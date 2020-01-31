@@ -8,9 +8,10 @@ import HabitRecords from '../models/HabitRecords';
 type HabitListProps = {
   habits: Habits;
   habitRecords: HabitRecords;
+  selectedDate: string;
 };
 
-const HabitList: React.FC<HabitListProps> = ({ habits, habitRecords }: HabitListProps) => {
+const HabitList: React.FC<HabitListProps> = ({ habits, habitRecords, selectedDate }: HabitListProps) => {
   return (
     <div className='habits'>
       <form>
@@ -19,7 +20,7 @@ const HabitList: React.FC<HabitListProps> = ({ habits, habitRecords }: HabitList
             <Checkbox
               id={'habit_' + habit.id}
               type='checkbox'
-              checked={habit.isCompleted(dayjs('2020-01-08'), habitRecords)}
+              checked={habit.isCompleted(dayjs(selectedDate), habitRecords)}
             />
             <label htmlFor={'habit_' + habit.id}>{habit.habitName}</label>
           </ListItem>
