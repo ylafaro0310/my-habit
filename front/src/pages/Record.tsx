@@ -1,6 +1,6 @@
 import React from 'react';
 import dayjs from 'dayjs';
-import './App.css';
+import styled from 'styled-components';
 
 import Habits from '../models/Habits';
 import HabitRecords from '../models/HabitRecords';
@@ -22,10 +22,26 @@ const habits = Habits.fromResponse(response);
 const habitRecords = HabitRecords.fromResponse(response);
 
 const Record: React.FC = () => {
+  const date = [];
+  const startOfMonth = dayjs().startOf('month');
+  const endOfMonth = dayjs().endOf('month');
+  for (let i = startOfMonth; !i.isAfter(endOfMonth); i = i.add(1, 'day')) {
+    date.push(
+      <div>
+        <input type='radio' name='date' id={i.format('YYYY-MM-DD')} defaultChecked={dayjs().isSame(i, 'd')} />
+        <label htmlFor={i.format('YYYY-MM-DD')}>{i.format('MM/DD')}</label>
+      </div>,
+    );
+  }
   return (
     <div className='App'>
       <div className='date'>
-        <div>Today</div>
+        <button>習慣を追加する</button>
+        <DateList>
+          {date.map((elem, key) => (
+            <li key={key}>{elem}</li>
+          ))}
+        </DateList>
       </div>
       <HabitList habits={habits} habitRecords={habitRecords} />
     </div>
@@ -33,3 +49,9 @@ const Record: React.FC = () => {
 };
 
 export default Record;
+
+const DateList = styled.ul`
+  & li {
+    display: inline-block;
+  }
+`;
