@@ -1,17 +1,16 @@
 import { History, createBrowserHistory } from 'history';
-import { combineReducers, applyMiddleware, createStore } from 'redux';
+import { applyMiddleware, combineReducers, createStore } from 'redux';
 import { RouterState, connectRouter, routerMiddleware } from 'connected-react-router';
 import { createLogger } from 'redux-logger';
 
 export interface State {
-    router: RouterState;
-  }
-  
-export const rootReducer = (history: History) =>
-    combineReducers({
-      router: connectRouter(history),
-    });
+  router: RouterState;
+}
 
+export const rootReducer = (history: History) =>
+  combineReducers({
+    router: connectRouter(history),
+  });
 
 const logger = createLogger();
 
