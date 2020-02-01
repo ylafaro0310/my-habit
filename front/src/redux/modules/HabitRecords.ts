@@ -13,13 +13,9 @@ export const HabitRecordsActions = {
 };
 
 // Reducers
-export const habitRecordsReducer = reducerWithInitialState(new HabitRecords())
-  .case(HabitRecordsActions.setHabitRecords, (state, payload) => {
+export const habitRecordsReducer = reducerWithInitialState(new HabitRecords()).case(
+  HabitRecordsActions.setHabitRecords,
+  (state, payload) => {
     return state.set('items', payload.getList());
-  })
-  .case(HabitRecordsActions.addHabitRecord, (state, payload) => {
-    return state.set('items', payload.getList());
-  })
-  .case(HabitRecordsActions.removeHabitRecord, (state, payload) => {
-    return state.set('items', payload.getList());
-  });
+  },
+);

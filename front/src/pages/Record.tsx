@@ -26,6 +26,7 @@ class Record extends React.Component<RecordProps, RecordState> {
     };
     this.onChangeDate = this.onChangeDate.bind(this);
   }
+
   onChangeDate(event: React.ChangeEvent<HTMLInputElement>): void {
     const { value } = event.target;
     this.setState({ selectedDate: value });
