@@ -6,7 +6,6 @@ import { Dispatch } from 'redux';
 
 import HabitList from '../components/HabitList';
 import { State } from '../redux/store';
-import { HabitsActions } from '../redux/modules/Habits';
 import { HabitRecordsActions } from '../redux/modules/HabitRecords';
 import Habits from '../models/Habits';
 import HabitRecords from '../models/HabitRecords';
@@ -34,19 +33,7 @@ class Record extends React.Component<RecordProps, RecordState> {
 
   componentDidMount(): void {
     const { dispatch } = this.props;
-    const response = {
-      habits: [
-        { id: 1, habitName: '読書する' },
-        { id: 2, habitName: '筋トレ' },
-        { id: 3, habitName: '新しいCDを1枚聴く' },
-      ],
-      habitRecords: [
-        { habitId: 2, completedAt: dayjs() },
-        { habitId: 1, completedAt: dayjs('2020-01-08') },
-      ],
-    };
-    dispatch(HabitsActions.getHabits(Habits.fromResponse(response)));
-    dispatch(HabitRecordsActions.getHabitRecords(HabitRecords.fromResponse(response)));
+    dispatch(HabitRecordsActions.getHabitRecords());
   }
 
   render() {

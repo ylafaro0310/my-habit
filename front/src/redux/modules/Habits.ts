@@ -6,14 +6,15 @@ import Habits from '../../models/Habits';
 // Action Creator
 const actionCreator = actionCreatorFactory('Habit');
 export const HabitsActions = {
-  getHabits: actionCreator<Habits>('getHabits'),
+  getHabits: actionCreator<void>('getHabits'),
+  setHabits: actionCreator<Habits>('setHabits'),
   addHabit: actionCreator<Habits>('addHabit'),
   removeHabit: actionCreator<Habits>('removeHabit'),
 };
 
 // Reducers
 export const habitsReducer = reducerWithInitialState(new Habits())
-  .case(HabitsActions.getHabits, (state, payload) => {
+  .case(HabitsActions.setHabits, (state, payload) => {
     return state.set('items', payload.getList());
   })
   .case(HabitsActions.addHabit, (state, payload) => {

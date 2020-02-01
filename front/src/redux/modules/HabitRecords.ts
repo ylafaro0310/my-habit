@@ -6,14 +6,15 @@ import HabitRecords from '../../models/HabitRecords';
 // Action Creator
 const actionCreator = actionCreatorFactory('HabitRecord');
 export const HabitRecordsActions = {
-  getHabitRecords: actionCreator<HabitRecords>('getHabitRecords'),
+  getHabitRecords: actionCreator<void>('getHabitRecords'),
+  setHabitRecords: actionCreator<HabitRecords>('setHabitRecords'),
   addHabitRecord: actionCreator<HabitRecords>('addHabitRecord'),
   removeHabitRecord: actionCreator<HabitRecords>('removeHabitRecord'),
 };
 
 // Reducers
 export const habitRecordsReducer = reducerWithInitialState(new HabitRecords())
-  .case(HabitRecordsActions.getHabitRecords, (state, payload) => {
+  .case(HabitRecordsActions.setHabitRecords, (state, payload) => {
     return state.set('items', payload.getList());
   })
   .case(HabitRecordsActions.addHabitRecord, (state, payload) => {
