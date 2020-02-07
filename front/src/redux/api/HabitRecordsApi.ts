@@ -6,7 +6,7 @@ const apiClient = new ApiClient();
 
 const HABIT_RECORD_PATH = '/habits/records';
 
-export class HabitRecordApi {
+export class HabitRecordsApi {
   static get(params: JSObject): Promise<{}> {
     return apiClient.get(HABIT_RECORD_PATH, params);
   }

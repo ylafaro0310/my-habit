@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 
 import { HabitsActions } from '../modules/Habits';
 import Habits from '../../models/Habits';
-import { HabitApi } from '../api/HabitApi';
+import { HabitsApi } from '../api/HabitsApi';
 
 const data = {
   habits: [
@@ -22,27 +22,27 @@ const response = {
 };
 
 function* getHabits(action: ReturnType<typeof HabitsActions.getHabits>) {
-  const searchString = action.payload;
-  const params = { q: searchString };
-  //const response = yield HabitApi.get(params);
+  //const searchString = action.payload;
+  //const params = { q: searchString };
+  //const response = yield HabitsApi.get(params);
   if (response.isSuccess) {
     yield put(HabitsActions.setHabits(Habits.fromResponse(response.data)));
   }
 }
 
 function* addHabit(action: ReturnType<typeof HabitsActions.addHabit>) {
-  const searchString = action.payload;
-  const params = { q: searchString };
-  //const response = yield HabitApi.get(params);
+  const values = action.payload;
+  const params = values;
+  const response = yield HabitsApi.post(params);
   if (response.isSuccess) {
     yield put(HabitsActions.setHabits(Habits.fromResponse(response.data)));
   }
 }
 
 function* removeHabit(action: ReturnType<typeof HabitsActions.removeHabit>) {
-  const searchString = action.payload;
-  const params = { q: searchString };
-  //const response = yield HabitApi.get(params);
+  //const searchString = action.payload;
+  //const params = { q: searchString };
+  //const response = yield HabitsApi.get(params);
   if (response.isSuccess) {
     yield put(HabitsActions.setHabits(Habits.fromResponse(response.data)));
   }

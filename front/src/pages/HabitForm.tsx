@@ -1,7 +1,9 @@
 import React from 'react';
 import dayjs, { Dayjs } from 'dayjs';
-import { Field, InjectedFormProps, WrappedFieldProps, change, formValueSelector, reduxForm } from 'redux-form';
+import { Field, InjectedFormProps, WrappedFieldProps, formValueSelector, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
+
+import { HabitsActions } from '../redux/modules/Habits';
 
 type CustomCheckboxProps = {
   label: string;
@@ -167,6 +169,7 @@ const HabitForm: React.FC<HabitFormProps & InjectedFormProps<{}, HabitFormProps>
           <option value='always'>いつでも</option>
         </Field>
       </div>
+      <button type='submit'>追加する</button>
     </form>
   );
 };
@@ -178,5 +181,8 @@ export default connect((state, props: HabitFormProps) => ({
 }))(
   reduxForm<{}, HabitFormProps>({
     form: 'habit',
+    onSubmit: (values, dispatch) => {
+      dispatch(HabitsActions.addHabit(values));
+    },
   })(HabitForm),
 );

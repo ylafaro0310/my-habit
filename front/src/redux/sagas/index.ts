@@ -1,4 +1,4 @@
-import { all, fork } from 'redux-saga/effects';
+import { fork } from 'redux-saga/effects';
 
 import { HabitsSaga } from '../sagas/habits';
 import { HabitRecordsSaga } from '../sagas/habitRecords';

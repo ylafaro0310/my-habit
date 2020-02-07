@@ -23,8 +23,8 @@ const response = {
 };
 
 function* getHabitRecords(action: ReturnType<typeof HabitRecordsActions.getHabitRecords>) {
-  const searchString = action.payload;
-  const params = { q: searchString };
+  //const searchString = action.payload;
+  //const params = { q: searchString };
   //const response = yield HabitApi.get(params);
   if (response.isSuccess) {
     yield put(HabitsActions.setHabits(Habits.fromResponse(response.data)));
@@ -33,8 +33,8 @@ function* getHabitRecords(action: ReturnType<typeof HabitRecordsActions.getHabit
 }
 
 function* addHabitRecord(action: ReturnType<typeof HabitRecordsActions.addHabitRecord>) {
-  const searchString = action.payload;
-  const params = { q: searchString };
+  //const searchString = action.payload;
+  //const params = { q: searchString };
   //const response = yield HabitApi.get(params);
   if (response.isSuccess) {
     yield put(HabitsActions.setHabits(Habits.fromResponse(response.data)));
@@ -43,8 +43,8 @@ function* addHabitRecord(action: ReturnType<typeof HabitRecordsActions.addHabitR
 }
 
 function* removeHabitRecord(action: ReturnType<typeof HabitRecordsActions.removeHabitRecord>) {
-  const searchString = action.payload;
-  const params = { q: searchString };
+  //const searchString = action.payload;
+  //const params = { q: searchString };
   //const response = yield HabitApi.get(params);
   if (response.isSuccess) {
     yield put(HabitsActions.setHabits(Habits.fromResponse(response.data)));
