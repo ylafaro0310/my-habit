@@ -27,7 +27,7 @@ export const rootReducer = (history: History) =>
     habitRecords: habitRecordsReducer,
   });
 
-const logger = createLogger();
+//const logger = createLogger();
 
 export const sagaMiddleware = createSagaMiddleware();
 
@@ -40,7 +40,7 @@ declare global {
 }
 
 export function configureStore(preloadedState?: State) {
-  const middlewares = [routerMiddleware(history), sagaMiddleware, logger];
+  const middlewares = [routerMiddleware(history), sagaMiddleware];
   const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
   const middlewareEnhancer = composeEnhancers(applyMiddleware(...middlewares));
   const store = createStore(rootReducer(history), preloadedState, middlewareEnhancer);

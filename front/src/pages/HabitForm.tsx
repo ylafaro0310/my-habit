@@ -1,12 +1,46 @@
 import React from 'react';
 import dayjs, { Dayjs } from 'dayjs';
-import { Field, InjectedFormProps, clearFields, formValueSelector, reduxForm } from 'redux-form';
+import { Field, InjectedFormProps, WrappedFieldProps, change, formValueSelector, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
+
+type CustomCheckboxProps = {
+  label: string;
+  code: number;
+} & WrappedFieldProps;
+
+const CustomCheckbox: React.FC<CustomCheckboxProps> = ({ code, label, input }: CustomCheckboxProps) => (
+  <label>
+    <input
+      {...input}
+      type='checkbox'
+      value={code}
+      checked={Boolean(Number(input.value) & Number(code))}
+      onBlur={e => {
+        e.preventDefault();
+      }}
+      onChange={e => {
+        let values = Number(input.value) || 0;
+        const value = Number(e.target.value);
+        const checked = e.target.checked;
+        const exists = values & value;
+        if (checked && !exists) {
+          values = values | value;
+        }
+        if (!checked && exists) {
+          values = values & ~value;
+        }
+        input.onChange(values);
+      }}
+    />
+    {label}
+  </label>
+);
 
 interface HabitFormProps {
   habit: object;
   repeatTypeValue: string;
-  clearFields: any;
+  dispatch: any;
+  change: any;
 }
 interface HabitFormState {
   habitName: string;
@@ -24,14 +58,11 @@ const initialValues = {
   targetTime: 0,
   timeOfDay: 'always',
 };
-
 const HabitForm: React.FC<HabitFormProps & InjectedFormProps<{}, HabitFormProps>> = ({
   repeatTypeValue,
   handleSubmit,
-  clearFields,
-  pristine,
-  reset,
-  submitting,
+  dispatch,
+  change,
 }: HabitFormProps & InjectedFormProps<{}, HabitFormProps>) => {
   return (
     <form onSubmit={handleSubmit}>
@@ -44,7 +75,7 @@ const HabitForm: React.FC<HabitFormProps & InjectedFormProps<{}, HabitFormProps>
           name='repeatType'
           component='select'
           onChange={() => {
-            clearFields();
+            dispatch(change('repeatValue', null));
           }}
         >
           <option value={'dayOfWeek'}>日単位</option>
@@ -109,34 +140,13 @@ const HabitForm: React.FC<HabitFormProps & InjectedFormProps<{}, HabitFormProps>
 
       {repeatTypeValue === 'dayOfWeek' && (
         <div>
-          <label>
-            <Field name='repeatValue' component='input' type='checkbox' value='6' />
-            日曜日
-          </label>
-          <label>
-            <Field name='repeatValue' component='input' type='checkbox' value='2' />
-            月曜日
-          </label>
-          <label>
-            <Field name='repeatValue' component='input' type='checkbox' value='3' />
-            火曜日
-          </label>
-          <label>
-            <Field name='repeatValue' component='input' type='checkbox' value='4' />
-            水曜日
-          </label>
-          <label>
-            <Field name='repeatValue' component='input' type='checkbox' value='5' />
-            木曜日
-          </label>
-          <label>
-            <Field name='repeatValue' component='input' type='checkbox' value='6' />
-            金曜日
-          </label>
-          <label>
-            <Field name='repeatValue' component='input' type='checkbox' value='6' />
-            土曜日
-          </label>
+          <Field name='repeatValue' component={CustomCheckbox} code={0b1000000} label='日曜日' />
+          <Field name='repeatValue' component={CustomCheckbox} code={0b0100000} label='月曜日' />
+          <Field name='repeatValue' component={CustomCheckbox} code={0b0010000} label='火曜日' />
+          <Field name='repeatValue' component={CustomCheckbox} code={0b0001000} label='水曜日' />
+          <Field name='repeatValue' component={CustomCheckbox} code={0b0000100} label='木曜日' />
+          <Field name='repeatValue' component={CustomCheckbox} code={0b0000010} label='金曜日' />
+          <Field name='repeatValue' component={CustomCheckbox} code={0b0000001} label='土曜日' />
         </div>
       )}
 
@@ -162,17 +172,10 @@ const HabitForm: React.FC<HabitFormProps & InjectedFormProps<{}, HabitFormProps>
 };
 
 const selector = formValueSelector('habit');
-export default connect(
-  (state, props: HabitFormProps) => ({
-    initialValues: props.habit || initialValues,
-    repeatTypeValue: selector(state, 'repeatType'),
-  }),
-  dispatch => ({
-    clearFields: () => {
-      dispatch(clearFields('habit', false, false, 'repeatValue'));
-    },
-  }),
-)(
+export default connect((state, props: HabitFormProps) => ({
+  initialValues: props.habit || initialValues,
+  repeatTypeValue: selector(state, 'repeatType'),
+}))(
   reduxForm<{}, HabitFormProps>({
     form: 'habit',
   })(HabitForm),
