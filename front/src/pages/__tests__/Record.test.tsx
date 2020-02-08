@@ -11,9 +11,9 @@ MockDate.set('2020-02-08');
 
 const data = {
   habits: [
-    { id: 1, habitName: '読書する', startedDate: dayjs() },
-    { id: 2, habitName: '筋トレ', startedDate: dayjs() },
-    { id: 3, habitName: '新しいCDを1枚聴く', startedDate: dayjs() },
+    { id: 1, habitName: '読書する', startedAt: dayjs() },
+    { id: 2, habitName: '筋トレ', startedAt: dayjs() },
+    { id: 3, habitName: '新しいCDを1枚聴く', startedAt: dayjs() },
   ],
   habitRecords: [
     { habitId: 2, completedAt: dayjs() },

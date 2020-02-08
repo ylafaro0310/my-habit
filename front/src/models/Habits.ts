@@ -10,7 +10,7 @@ export class Habit extends Record<{
   habitName: string;
   repeatType: string;
   repeatValue: number;
-  startedDate: Dayjs;
+  startedAt: Dayjs;
   targetTime: number; // 単位は「分」
   timeOfDay: string;
   consecutiveDays: number;
@@ -20,7 +20,7 @@ export class Habit extends Record<{
   habitName: '',
   repeatType: 'day_of_week',
   repeatValue: 127,
-  startedDate: dayjs(),
+  startedAt: dayjs(),
   targetTime: 0,
   timeOfDay: '',
   consecutiveDays: 0,
