@@ -18,7 +18,7 @@ interface RecordProps {
 interface RecordState {
   selectedDate: string;
 }
-class Record extends React.Component<RecordProps, RecordState> {
+export class Record extends React.Component<RecordProps, RecordState> {
   constructor(props: RecordProps) {
     super(props);
     this.state = {
