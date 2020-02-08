@@ -1,5 +1,4 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
-import dayjs from 'dayjs';
 
 import { HabitsActions } from '../modules/Habits';
 import Habits from '../../models/Habits';

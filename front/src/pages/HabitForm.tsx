@@ -39,6 +39,7 @@ const CustomCheckbox: React.FC<CustomCheckboxProps> = ({ code, label, input }: C
 );
 
 interface HabitFormProps {
+  habit: object;
   repeatTypeValue: string;
   resetRepeatValue: VoidFunction;
 }

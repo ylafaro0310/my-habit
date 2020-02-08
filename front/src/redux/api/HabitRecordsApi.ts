@@ -4,7 +4,7 @@ import { ApiClient } from './apiClient';
 
 const apiClient = new ApiClient();
 
-const HABIT_RECORD_PATH = '/habits/records/';
+const HABIT_RECORD_PATH = '/api/habits/records/';
 
 export class HabitRecordsApi {
   static get(params?: JSObject): Promise<{}> {

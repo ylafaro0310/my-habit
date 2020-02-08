@@ -34,7 +34,7 @@ export class Record extends React.Component<RecordProps, RecordState> {
 
   componentDidMount(): void {
     const { dispatch } = this.props;
-    dispatch(HabitRecordsActions.getHabitRecords());
+    dispatch(HabitRecordsActions.getHabitRecords({}));
   }
 
   render() {
