@@ -1,40 +1,43 @@
 import React from 'react';
-import styled from 'styled-components';
 import dayjs from 'dayjs';
-import { useDispatch } from 'react-redux';
+import { connect } from 'react-redux';
 
 import Habits from '../models/Habits';
 import HabitRecords from '../models/HabitRecords';
-import { HabitsActions } from '../redux/modules/Habits';
+import { HabitRecordsActions } from '../redux/modules/HabitRecords';
 
 type HabitListProps = {
   habits: Habits;
   habitRecords: HabitRecords;
   selectedDate: string;
+  addHabitRecord: (params: object) => void;
+  removeHabitRecord: (habitId: number) => void;
 };
 
-const HabitList: React.FC<HabitListProps> = ({ habits, habitRecords, selectedDate }: HabitListProps) => {
-  const dispatch = useDispatch();
+export const HabitList: React.FC<HabitListProps> = ({
+  habits,
+  habitRecords,
+  selectedDate,
+  addHabitRecord,
+  removeHabitRecord,
+}: HabitListProps) => {
   const onChangeHabitRecord = (event: React.ChangeEvent<HTMLInputElement>, habitId: number): void => {
     if (event.target.checked) {
       const params = {
         habitId,
         isSkipped: false,
       };
-      dispatch(HabitsActions.addHabit(params));
+      addHabitRecord(params);
     } else {
-      const params = {
-        habitId,
-      };
-      dispatch(HabitsActions.removeHabit(params));
+      removeHabitRecord(habitId);
     }
   };
   return (
     <div className='habits'>
       <form>
         {habits.getList().map((habit, key) => (
-          <ListItem key={key}>
-            <Checkbox
+          <div key={key}>
+            <input
               id={'habit_' + habit.id}
               type='checkbox'
               checked={habit.isCompleted(dayjs(selectedDate), habitRecords)}
@@ -43,15 +46,18 @@ const HabitList: React.FC<HabitListProps> = ({ habits, habitRecords, selectedDat
               }}
             />
             <label htmlFor={'habit_' + habit.id}>{habit.habitName}</label>
-          </ListItem>
+          </div>
         ))}
       </form>
     </div>
   );
 };
 
-const ListItem = styled.div``;
-
-const Checkbox = styled.input``;
-
-export default HabitList;
+export default connect(null, dispatch => ({
+  addHabitRecord: (params: object): void => {
+    dispatch(HabitRecordsActions.addHabitRecord(params));
+  },
+  removeHabitRecord: (habitId: number): void => {
+    dispatch(HabitRecordsActions.removeHabitRecord(habitId));
+  },
+}))(HabitList);
