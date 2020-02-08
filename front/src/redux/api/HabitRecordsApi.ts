@@ -4,7 +4,7 @@ import { ApiClient } from './apiClient';
 
 const apiClient = new ApiClient();
 
-const HABIT_RECORD_PATH = '/api/habits/records/';
+const HABIT_RECORD_PATH = '/api/habits/records';
 
 export class HabitRecordsApi {
   static get(params?: JSObject): Promise<{}> {
@@ -14,6 +14,6 @@ export class HabitRecordsApi {
     return apiClient.post(HABIT_RECORD_PATH, params);
   }
   static delete(habitRecordId: number): Promise<{}> {
-    return apiClient.delete(HABIT_RECORD_PATH + habitRecordId);
+    return apiClient.delete(HABIT_RECORD_PATH + '/' + habitRecordId);
   }
 }

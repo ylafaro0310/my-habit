@@ -4,7 +4,7 @@ import { ApiClient } from './apiClient';
 
 const apiClient = new ApiClient();
 
-const HABIT_PATH = '/api/habits/';
+const HABIT_PATH = '/api/habits';
 
 export class HabitsApi {
   static get(params?: JSObject): Promise<{}> {
@@ -14,9 +14,9 @@ export class HabitsApi {
     return apiClient.post(HABIT_PATH, params);
   }
   static patch(habitId: number, params: JSObject): Promise<{}> {
-    return apiClient.patch(HABIT_PATH + habitId, params);
+    return apiClient.patch(HABIT_PATH + '/' + habitId, params);
   }
   static delete(habitId: number): Promise<{}> {
-    return apiClient.delete(HABIT_PATH + habitId);
+    return apiClient.delete(HABIT_PATH + '/' + habitId);
   }
 }
