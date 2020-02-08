@@ -1,0 +1,39 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class CreateHabitsTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('habits', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('habit_name');
+            $table->string('repeat_type');
+            $table->integer('repeat_value');
+            $table->datetime('started_at');
+            $table->integer('target_time');
+            $table->string('time_of_day');
+            $table->integer('consecutive_days');
+            $table->integer('consecutive_weeks');
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('habits');
+    }
+}
