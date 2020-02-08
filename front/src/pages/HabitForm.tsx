@@ -1,6 +1,6 @@
 import React from 'react';
 import dayjs, { Dayjs } from 'dayjs';
-import { Field, InjectedFormProps, WrappedFieldProps, formValueSelector, reduxForm } from 'redux-form';
+import { Field, InjectedFormProps, WrappedFieldProps, change, formValueSelector, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 
 import { HabitsActions } from '../redux/modules/Habits';
@@ -39,10 +39,8 @@ const CustomCheckbox: React.FC<CustomCheckboxProps> = ({ code, label, input }: C
 );
 
 interface HabitFormProps {
-  habit: object;
   repeatTypeValue: string;
-  dispatch: any;
-  change: any;
+  resetRepeatValue: VoidFunction;
 }
 interface HabitFormState {
   habitName: string;
@@ -60,11 +58,10 @@ const initialValues = {
   targetTime: 0,
   timeOfDay: 'always',
 };
-const HabitForm: React.FC<HabitFormProps & InjectedFormProps<{}, HabitFormProps>> = ({
+export const HabitForm: React.FC<HabitFormProps & InjectedFormProps<{}, HabitFormProps>> = ({
   repeatTypeValue,
   handleSubmit,
-  dispatch,
-  change,
+  resetRepeatValue,
 }: HabitFormProps & InjectedFormProps<{}, HabitFormProps>) => {
   return (
     <form onSubmit={handleSubmit}>
@@ -77,7 +74,7 @@ const HabitForm: React.FC<HabitFormProps & InjectedFormProps<{}, HabitFormProps>
           name='repeatType'
           component='select'
           onChange={() => {
-            dispatch(change('repeatValue', null));
+            resetRepeatValue();
           }}
         >
           <option value={'dayOfWeek'}>日単位</option>
@@ -175,10 +172,17 @@ const HabitForm: React.FC<HabitFormProps & InjectedFormProps<{}, HabitFormProps>
 };
 
 const selector = formValueSelector('habit');
-export default connect((state, props: HabitFormProps) => ({
-  initialValues: props.habit || initialValues,
-  repeatTypeValue: selector(state, 'repeatType'),
-}))(
+export default connect(
+  (state, props: HabitFormProps) => ({
+    initialValues: props.habit || initialValues,
+    repeatTypeValue: selector(state, 'repeatType'),
+  }),
+  dispatch => ({
+    resetRepeatValue: () => {
+      dispatch(change('habit', 'repeatValue', null));
+    },
+  }),
+)(
   reduxForm<{}, HabitFormProps>({
     form: 'habit',
     onSubmit: (values, dispatch) => {
