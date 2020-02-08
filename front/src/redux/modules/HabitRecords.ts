@@ -6,10 +6,10 @@ import HabitRecords from '../../models/HabitRecords';
 // Action Creator
 const actionCreator = actionCreatorFactory('HabitRecord');
 export const HabitRecordsActions = {
-  getHabitRecords: actionCreator<void>('getHabitRecords'),
+  getHabitRecords: actionCreator<object>('getHabitRecords'),
   setHabitRecords: actionCreator<HabitRecords>('setHabitRecords'),
-  addHabitRecord: actionCreator<HabitRecords>('addHabitRecord'),
-  removeHabitRecord: actionCreator<HabitRecords>('removeHabitRecord'),
+  addHabitRecord: actionCreator<object>('addHabitRecord'),
+  removeHabitRecord: actionCreator<number>('removeHabitRecord'),
 };
 
 // Reducers
