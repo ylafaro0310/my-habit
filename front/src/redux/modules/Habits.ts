@@ -9,7 +9,7 @@ export const HabitsActions = {
   getHabits: actionCreator<void>('getHabits'),
   setHabits: actionCreator<Habits>('setHabits'),
   addHabit: actionCreator<object>('addHabit'),
-  removeHabit: actionCreator<object>('removeHabit'),
+  removeHabit: actionCreator<number>('removeHabit'),
 };
 
 // Reducers
