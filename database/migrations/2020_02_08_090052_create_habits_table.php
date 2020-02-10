@@ -19,10 +19,10 @@ class CreateHabitsTable extends Migration
             $table->string('repeat_type');
             $table->integer('repeat_value');
             $table->datetime('started_at');
-            $table->integer('target_time');
+            $table->integer('target_time')->nullable();
             $table->string('time_of_day');
             $table->integer('consecutive_days');
-            $table->integer('consecutive_weeks');
+            $table->integer('consecutive_weeks')->nullable();
             $table->timestamps();
         });
     }
