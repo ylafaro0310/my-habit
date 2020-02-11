@@ -14,6 +14,7 @@ class CreateHabitRecordsTable extends Migration
     public function up()
     {
         Schema::create('habit_records', function (Blueprint $table) {
+            $table->bigIncrements('id');
             $table->integer('habit_id');
             $table->datetime('completed_at');
             $table->boolean('is_skipped');

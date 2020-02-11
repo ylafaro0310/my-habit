@@ -4,6 +4,7 @@ namespace Tests\Unit;
 
 //use PHPUnit\Framework\TestCase;
 use Tests\TestCase;
+use Illuminate\Support\Facades\Artisan;
 use App\Models\HabitRecords;
 use App\Http\Controllers\HabitRecordsController;
 
@@ -12,8 +13,10 @@ class HabitRecordsControllerTest extends TestCase
     protected function setUp(): void{
         parent::setUp();
         $habitRecords = new HabitRecords();
-        $this->habitRecordsPath = '/habits/records';
+        $this->habitRecordsPath = '/api/habits/records';
         $this->tableName = $habitRecords->table_name;
+
+        Artisan::call('migrate:refresh --seed --env=testing');
     }
 
     /**
@@ -23,8 +26,8 @@ class HabitRecordsControllerTest extends TestCase
      */
     public function testIndex()
     {
-        $response = $this->get($this->habitRecordPath);
-        $this->assertArrayHasKey('habit_name',$response);
+        $response = $this->get($this->habitRecordsPath);
+        $response->assertJson([['habit_id'=>1]]);
     }
 
     /**
@@ -37,7 +40,7 @@ class HabitRecordsControllerTest extends TestCase
         $params = [
             'habit_id' => 3,
             'completed_at' => Date('2020-02-10'),
-            'is_skipped' => false,
+            'is_skipped' => 0,
         ];
         $this->post($this->habitRecordsPath,$params);
         $this->assertDatabaseHas($this->tableName, $params);
@@ -52,6 +55,7 @@ class HabitRecordsControllerTest extends TestCase
      */
     public function testDelete()
     {
+        $this->assertDatabaseHas($this->tableName, ['id'=>1]);
         $this->delete($this->habitRecordsPath.'/1');
         $this->assertDatabaseMissing($this->tableName, ['id'=>1]);
 

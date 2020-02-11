@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class HabitRecords {
     public $validationRules = [
@@ -16,18 +17,23 @@ class HabitRecords {
         $this->table_name = 'habit_records';
     }
 
-    public function get(){
-        $this->pdo->prepare("select * from ${$this->table_name}");
-        $this->pdo->execute();
-        return $pdo->fetchAll();
+    public function index(){
+        $sth = $this->pdo->prepare("select * from $this->table_name");
+        $sth->execute();
+        $result = $sth->fetchAll();
+        Log::debug($result);
+        return $result;
     }
 
-    public function insert($params){
-        $this->pdo->prepare("insert into ${$this->table_name}");
+    public function store($params){
+        $columns = implode(', ',array_keys($params));
+        $values = implode(', ',array_map(function($v){return "'$v'";},array_values($params)));
+        $sth = $this->pdo->prepare("insert into $this->table_name (${columns}) values (${values})");
+        return $sth->execute();
     }
 
-    public function delete($id){
-        $this->pdo->prepare("delete from ${$this->table_name} where id = ${id}");
-        $this->pdo->execute();
+    public function destroy($id){
+        $sth = $this->pdo->prepare("delete from $this->table_name where id = ${id}");
+        return $sth->execute();
     }
 }

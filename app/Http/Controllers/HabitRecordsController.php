@@ -18,7 +18,7 @@ class HabitRecordsController extends Controller
      */
     public function index()
     {
-        return $this->habitRecords->get();
+        return json_encode($this->habitRecords->index());
     }
 
     /**
@@ -39,7 +39,9 @@ class HabitRecordsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $params = $request->all();
+        logger($params);
+        return $this->habitRecords->store($params);
     }
 
     /**
@@ -84,6 +86,6 @@ class HabitRecordsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $this->habitRecords->destroy($id);
     }
 }
