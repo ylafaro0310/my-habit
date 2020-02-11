@@ -3,12 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\HabitRecords;
+use App\Models\Habits;
 
-class HabitRecordsController extends Controller
+class HabitsController extends Controller
 {
-    function __construct(HabitRecords $habitRecords){
-        $this->habitRecords = $habitRecords;
+    function __construct(Habits $habits){
+        $this->habits = $habits;
     }
 
     /**
@@ -18,7 +18,7 @@ class HabitRecordsController extends Controller
      */
     public function index()
     {
-        return json_encode($this->habitRecords->index());
+        return json_encode($this->habits->index());
     }
 
     /**
@@ -40,7 +40,7 @@ class HabitRecordsController extends Controller
     public function store(Request $request)
     {
         $params = $request->all();
-        $this->habitRecords->store($params);
+        $this->habits->store($params);
     }
 
     /**
@@ -74,7 +74,8 @@ class HabitRecordsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $params = $request->all();
+        logger($this->habits->update($id,$params));
     }
 
     /**
@@ -85,6 +86,6 @@ class HabitRecordsController extends Controller
      */
     public function destroy($id)
     {
-        $this->habitRecords->destroy($id);
+        $this->habits->destroy($id);
     }
 }

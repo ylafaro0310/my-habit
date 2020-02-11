@@ -1,8 +1,7 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Feature\Controllers;
 
-//use PHPUnit\Framework\TestCase;
 use Tests\TestCase;
 use Illuminate\Support\Facades\Artisan;
 use App\Models\HabitRecords;
@@ -12,9 +11,8 @@ class HabitRecordsControllerTest extends TestCase
 {
     protected function setUp(): void{
         parent::setUp();
-        $habitRecords = new HabitRecords();
         $this->habitRecordsPath = '/api/habits/records';
-        $this->tableName = $habitRecords->table_name;
+        $this->tableName = HabitRecords::$tableName;
 
         Artisan::call('migrate:refresh --seed --env=testing');
     }
