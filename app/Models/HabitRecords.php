@@ -18,6 +18,16 @@ class HabitRecords {
         $this->pdo = DB::connection()->getPdo();        
     }
 
+    public function exists($conditions){
+        $setConditions = array_map(function($key,$value){
+            return $value === NULL ? "$key = NULL" : "$key = '$value'";
+        },array_keys($conditions),array_values($conditions));
+        $setConditions = implode(' and ',$setConditions);
+        $sth = $this->pdo->prepare("select count(*) from ".self::$tableName." where $setConditions");
+        $sth->execute();
+        return $sth->fetchColumn();
+    }
+
     public function index(){
         $sth = $this->pdo->prepare("select * from ".self::$tableName);
         $sth->execute();

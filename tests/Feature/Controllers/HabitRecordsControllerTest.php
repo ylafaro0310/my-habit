@@ -24,8 +24,22 @@ class HabitRecordsControllerTest extends TestCase
      */
     public function testIndex()
     {
+        $expectedData = [
+            'habitRecords' => [['habit_id'=>1]],
+            'habits' => [
+                [
+                    'habit_name' => '本を読む',
+                    'repeat_type' => 'day_of_week',
+                    'repeat_value' => 127,
+                    'target_time' => 5,
+                    'time_of_day' => 'always',
+                    'consecutive_days' => 3,
+                    'consecutive_weeks' => null,
+                ]
+            ],
+        ];
         $response = $this->get($this->habitRecordsPath);
-        $response->assertJson([['habit_id'=>1]]);
+        $response->assertJson($expectedData);
     }
 
     /**
@@ -42,8 +56,6 @@ class HabitRecordsControllerTest extends TestCase
         ];
         $this->post($this->habitRecordsPath,$params);
         $this->assertDatabaseHas($this->tableName, $params);
-
-        // 存在しないhabit_idのテスト
     }
 
     /**
@@ -54,9 +66,12 @@ class HabitRecordsControllerTest extends TestCase
     public function testDelete()
     {
         $this->assertDatabaseHas($this->tableName, ['id'=>1]);
-        $this->delete($this->habitRecordsPath.'/1');
+        $response = $this->delete($this->habitRecordsPath.'/1');
+        $response->assertStatus(200);
         $this->assertDatabaseMissing($this->tableName, ['id'=>1]);
 
         // 存在しないhabit_idのテスト
+        $response = $this->delete($this->habitRecordsPath.'/999');
+        $response->assertStatus(400);
     }
 }

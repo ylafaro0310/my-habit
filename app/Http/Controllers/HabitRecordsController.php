@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Habits;
 use App\Models\HabitRecords;
 
 class HabitRecordsController extends Controller
 {
-    function __construct(HabitRecords $habitRecords){
+    function __construct(HabitRecords $habitRecords,Habits $habits){
+        $this->habits = $habits;
         $this->habitRecords = $habitRecords;
     }
 
@@ -18,7 +20,11 @@ class HabitRecordsController extends Controller
      */
     public function index()
     {
-        return json_encode($this->habitRecords->index());
+        $response = [
+            'habits' => $this->habits->index(),
+            'habitRecords' => $this->habitRecords->index(),
+        ];
+        return json_encode($response);
     }
 
     /**
@@ -85,6 +91,10 @@ class HabitRecordsController extends Controller
      */
     public function destroy($id)
     {
-        $this->habitRecords->destroy($id);
+        if($this->habitRecords->exists(['id'=>$id])){
+            $this->habitRecords->destroy($id);
+        }else{
+            abort(400,'Invalid parameter specified');
+        }
     }
 }
