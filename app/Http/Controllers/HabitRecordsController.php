@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+
 use App\Models\Habits;
 use App\Models\HabitRecords;
 
@@ -11,6 +14,7 @@ class HabitRecordsController extends Controller
     function __construct(HabitRecords $habitRecords,Habits $habits){
         $this->habits = $habits;
         $this->habitRecords = $habitRecords;
+        $this->pdo = DB::connection()->getPdo();
     }
 
     private function createResponse(){
@@ -51,7 +55,14 @@ class HabitRecordsController extends Controller
     public function store(Request $request)
     {
         $params = $request->all();
-        $this->habitRecords->store($params);
+        try{
+            $this->pdo->beginTransaction();
+            $this->habitRecords->store($params);
+            $this->pdo->commit();
+        }catch(Exception $e){
+            $this->pdo->rollback();
+            Log::error('Transaction Error: '.$e->getMessage());
+        }
 
         $response = $this->createResponse();
         return json_encode($response);
