@@ -54,8 +54,25 @@ class HabitRecordsControllerTest extends TestCase
             'completed_at' => Date('2020-02-10'),
             'is_skipped' => 0,
         ];
-        $this->post($this->habitRecordsPath,$params);
+
+        $expectedData = [
+            'habitRecords' => [['habit_id'=>1]],
+            'habits' => [
+                [
+                    'habit_name' => '本を読む',
+                    'repeat_type' => 'day_of_week',
+                    'repeat_value' => 127,
+                    'target_time' => 5,
+                    'time_of_day' => 'always',
+                    'consecutive_days' => 3,
+                    'consecutive_weeks' => null,
+                ]
+            ],
+        ];
+
+        $response = $this->post($this->habitRecordsPath,$params);
         $this->assertDatabaseHas($this->tableName, $params);
+        $response->assertJson($expectedData);
     }
 
     /**
@@ -65,9 +82,25 @@ class HabitRecordsControllerTest extends TestCase
      */
     public function testDelete()
     {
+        $expectedData = [
+            'habitRecords' => [['habit_id'=>1]],
+            'habits' => [
+                [
+                    'habit_name' => '本を読む',
+                    'repeat_type' => 'day_of_week',
+                    'repeat_value' => 127,
+                    'target_time' => 5,
+                    'time_of_day' => 'always',
+                    'consecutive_days' => 3,
+                    'consecutive_weeks' => null,
+                ]
+            ],
+        ];
+        
         $this->assertDatabaseHas($this->tableName, ['id'=>1]);
         $response = $this->delete($this->habitRecordsPath.'/1');
         $response->assertStatus(200);
+        $response->assertJson($expectedData);
         $this->assertDatabaseMissing($this->tableName, ['id'=>1]);
 
         // 存在しないhabit_idのテスト

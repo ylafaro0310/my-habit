@@ -13,6 +13,14 @@ class HabitRecordsController extends Controller
         $this->habitRecords = $habitRecords;
     }
 
+    private function createResponse(){
+        $response = [
+            'habits' => $this->habits->index(),
+            'habitRecords' => $this->habitRecords->index(),
+        ];
+        return $response;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -20,10 +28,7 @@ class HabitRecordsController extends Controller
      */
     public function index()
     {
-        $response = [
-            'habits' => $this->habits->index(),
-            'habitRecords' => $this->habitRecords->index(),
-        ];
+        $response = $this->createResponse();
         return json_encode($response);
     }
 
@@ -47,6 +52,9 @@ class HabitRecordsController extends Controller
     {
         $params = $request->all();
         $this->habitRecords->store($params);
+
+        $response = $this->createResponse();
+        return json_encode($response);
     }
 
     /**
@@ -93,6 +101,8 @@ class HabitRecordsController extends Controller
     {
         if($this->habitRecords->exists(['id'=>$id])){
             $this->habitRecords->destroy($id);
+            $response = $this->createResponse();
+            return json_encode($response);
         }else{
             abort(400,'Invalid parameter specified');
         }
