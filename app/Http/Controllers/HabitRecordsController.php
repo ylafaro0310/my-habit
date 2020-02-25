@@ -111,7 +111,14 @@ class HabitRecordsController extends Controller
     public function destroy($id)
     {
         if($this->habitRecords->exists(['id'=>$id])){
-            $this->habitRecords->destroy($id);
+            try{
+                $this->pdo->beginTransaction();
+                $this->habitRecords->destroy($id);                
+                $this->pdo->commit();
+            }catch(Exception $e){
+                $this->pdo->rollback();
+                Log::error('Transaction Error: '.$e->getMessage());
+            }
             $response = $this->createResponse();
             return json_encode($response);
         }else{
