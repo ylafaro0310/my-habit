@@ -11,8 +11,9 @@ class HabitsControllerTest extends TestCase
 {
     protected function setUp(): void{
         parent::setUp();
+        $habits = new Habits;
         $this->habitsPath = '/api/habits';
-        $this->tableName = Habits::$tableName;
+        $this->tableName = $habits->tableName;
 
         Artisan::call('migrate:refresh --seed --env=testing');
     }
