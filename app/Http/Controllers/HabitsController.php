@@ -3,12 +3,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+
 use App\Models\Habits;
 
 class HabitsController extends Controller
 {
     function __construct(Habits $habits){
         $this->habits = $habits;
+        $this->pdo = DB::connection()->getPdo();
     }
 
     /**
@@ -40,7 +44,14 @@ class HabitsController extends Controller
     public function store(Request $request)
     {
         $params = $request->all();
-        $this->habits->store($params);
+        try{
+            $this->pdo->beginTransaction();
+            $this->habits->store($params);
+            $this->pdo->commit();
+        }catch(Exception $e){
+            $this->pdo->rollback();
+            Log::error('Transaction Error: '.$e->getMessage());
+        }
     }
 
     /**
@@ -75,7 +86,15 @@ class HabitsController extends Controller
     public function update(Request $request, $id)
     {
         $params = $request->all();
-        logger($this->habits->update($id,$params));
+        try{
+            $this->pdo->beginTransaction();
+            $this->habits->update($id,$params);
+            $this->pdo->commit();
+        }catch(Exception $e){
+            $this->pdo->rollback();
+            Log::error('Transaction Error: '.$e->getMessage());
+        }
+
     }
 
     /**
@@ -86,6 +105,14 @@ class HabitsController extends Controller
      */
     public function destroy($id)
     {
-        $this->habits->destroy($id);
+        try{
+            $this->pdo->beginTransaction();
+            $this->habits->destroy($id);
+            $this->pdo->commit();
+        }catch(Exception $e){
+            $this->pdo->rollback();
+            Log::error('Transaction Error: '.$e->getMessage());
+        }
+
     }
 }
