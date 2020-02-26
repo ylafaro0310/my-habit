@@ -24,8 +24,20 @@ class BaseModel {
         return $sth->fetchColumn();
     }
 
-    public function index(){
-        $sth = $this->pdo->prepare("select * from ".$this->tableName);
+    public function index($params=[],$orderBy=null){
+        if(empty($params)){
+            $query = "select * from ".$this->tableName;
+        }else{
+            $setConditions = array_map(function($key,$value){
+                return $value === NULL ? "$key = NULL" : "$key = '$value'";
+            },array_keys($params),array_values($params));
+            $setConditions = implode(' and ',$setConditions);
+            $query = "select * from ".$this->tableName." where ".$setConditions;
+        }
+        if(!empty($orderBy)){
+            $query = $query . " order by " . $orderBy . " desc";
+        }
+        $sth = $this->pdo->prepare($query);
         Log::debug('SQL: '.$sth->queryString);
         $sth->execute();
         $result = $sth->fetchAll();

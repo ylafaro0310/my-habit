@@ -16,6 +16,10 @@ class HabitRecordsControllerTest extends TestCase
         $this->tableName = $habitRecords->tableName;
 
         Artisan::call('migrate:refresh --seed --env=testing');
+
+        $mock = \Mockery::mock('App\SystemClock')->makePartial();
+        $mock->shouldReceive('now')->andReturn(new \DateTimeImmutable('2020-02-11'));
+        $this->app->instance('App\SystemClock', $mock);
     }
 
     /**
@@ -51,8 +55,8 @@ class HabitRecordsControllerTest extends TestCase
     public function testStore()
     {
         $params = [
-            'habit_id' => 3,
-            'completed_at' => Date('2020-02-10'),
+            'habit_id' => 1,
+            'completed_at' => Date('2020-02-11'),
             'is_skipped' => 0,
         ];
 
@@ -65,7 +69,7 @@ class HabitRecordsControllerTest extends TestCase
                     'repeat_value' => 127,
                     'target_time' => 5,
                     'time_of_day' => 'always',
-                    'consecutive_days' => 3,
+                    'consecutive_days' => 4,
                     'consecutive_weeks' => null,
                 ]
             ],
@@ -92,7 +96,7 @@ class HabitRecordsControllerTest extends TestCase
                     'repeat_value' => 127,
                     'target_time' => 5,
                     'time_of_day' => 'always',
-                    'consecutive_days' => 3,
+                    'consecutive_days' => 2,
                     'consecutive_weeks' => null,
                 ]
             ],

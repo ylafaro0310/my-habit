@@ -8,12 +8,14 @@ use Illuminate\Support\Facades\Log;
 
 use App\Models\Habits;
 use App\Models\HabitRecords;
+use App\SystemClock;
 
 class HabitRecordsController extends Controller
 {
-    function __construct(HabitRecords $habitRecords,Habits $habits){
+    function __construct(HabitRecords $habitRecords,Habits $habits,SystemClock $systemClock){
         $this->habits = $habits;
         $this->habitRecords = $habitRecords;
+        $this->systemClock = $systemClock;
         $this->pdo = DB::connection()->getPdo();
     }
 
@@ -23,6 +25,47 @@ class HabitRecordsController extends Controller
             'habitRecords' => $this->habitRecords->index(),
         ];
         return $response;
+    }
+
+    private function calcConsecutiveDays($id){
+        $habitRecords = $this->habitRecords->index(['habit_id'=>$id],'completed_at');
+        $count = 0;
+
+        // 今日があるか
+        $today = $this->systemClock->now();
+        $yesterday = $today->sub(new \DateInterval('P1D'));
+        $recordsBeforeYesterday = [];
+        foreach($habitRecords as $key => $value){
+            $completed_at = new \DateTime($value['completed_at']);
+            // 今日があるか
+            $interval = $completed_at->diff($today);
+            if($interval->days == 0){
+                $count = 1;
+                continue;
+            }
+
+            // 昨日があるか
+            $interval = $completed_at->diff($yesterday);
+            if($interval->days == 0){
+                $recordsBeforeYesterday = array_slice($habitRecords,$key);
+                $prev = $completed_at->sub(new \DateInterval('P1D'));
+                break;
+            }            
+        }
+
+        if($recordsBeforeYesterday != []){
+            foreach($recordsBeforeYesterday as $value){
+                $next = new \DateTime($value['completed_at']);
+                $interval = $next->diff($prev);
+                if($interval->days == 1){
+                    $count++;
+                }else{
+                    break;
+                }
+                $prev = $next;
+            }
+        }
+        $this->habits->update($id,['consecutive_days'=>$count]);
     }
 
     /**
@@ -58,6 +101,7 @@ class HabitRecordsController extends Controller
         try{
             $this->pdo->beginTransaction();
             $this->habitRecords->store($params);
+            $this->calcConsecutiveDays($params['habit_id']);
             $this->pdo->commit();
         }catch(Exception $e){
             $this->pdo->rollback();
@@ -113,7 +157,9 @@ class HabitRecordsController extends Controller
         if($this->habitRecords->exists(['id'=>$id])){
             try{
                 $this->pdo->beginTransaction();
+                $habit_id = $this->habitRecords->index(['id'=>$id])[0]['habit_id'];
                 $this->habitRecords->destroy($id);                
+                $this->calcConsecutiveDays($habit_id);
                 $this->pdo->commit();
             }catch(Exception $e){
                 $this->pdo->rollback();
