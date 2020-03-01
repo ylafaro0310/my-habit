@@ -22,7 +22,7 @@ class HabitsController extends Controller
      */
     public function index()
     {
-        return json_encode($this->habits->index());
+        return json_encode($this->habits->select());
     }
 
     /**
@@ -88,7 +88,7 @@ class HabitsController extends Controller
         $params = $request->all();
         try{
             $this->pdo->beginTransaction();
-            $this->habits->update($id,$params);
+            $this->habits->where(['id'=>$id])->update($params);
             $this->pdo->commit();
         }catch(Exception $e){
             $this->pdo->rollback();
@@ -107,7 +107,7 @@ class HabitsController extends Controller
     {
         try{
             $this->pdo->beginTransaction();
-            $this->habits->destroy($id);
+            $this->habits->where(['id'=>$id])->delete();
             $this->pdo->commit();
         }catch(Exception $e){
             $this->pdo->rollback();

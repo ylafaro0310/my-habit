@@ -21,14 +21,14 @@ class HabitRecordsController extends Controller
 
     private function createResponse(){
         $response = [
-            'habits' => $this->habits->index(),
-            'habitRecords' => $this->habitRecords->index(),
+            'habits' => $this->habits->select(),
+            'habitRecords' => $this->habitRecords->select(),
         ];
         return $response;
     }
 
     private function calcConsecutiveDays($id){
-        $habitRecords = $this->habitRecords->index(['habit_id'=>$id],'completed_at');
+        $habitRecords = $this->habitRecords->where(['habit_id'=>$id])->order('completed_at','desc')->select();
         $count = 0;
 
         // 今日があるか
@@ -65,7 +65,7 @@ class HabitRecordsController extends Controller
                 $prev = $next;
             }
         }
-        $this->habits->update($id,['consecutive_days'=>$count]);
+        $this->habits->where(['id'=>$id])->update(['consecutive_days'=>$count]);
     }
 
     /**
@@ -154,11 +154,11 @@ class HabitRecordsController extends Controller
      */
     public function destroy($id)
     {
-        if($this->habitRecords->exists(['id'=>$id])){
+        if($this->habitRecords->where(['id'=>$id])->exists()){
             try{
                 $this->pdo->beginTransaction();
-                $habit_id = $this->habitRecords->index(['id'=>$id])[0]['habit_id'];
-                $this->habitRecords->destroy($id);                
+                $habit_id = $this->habitRecords->where(['id'=>$id])->first(['habit_id'])['habit_id'];
+                $this->habitRecords->where(['id'=>$id])->delete();                
                 $this->calcConsecutiveDays($habit_id);
                 $this->pdo->commit();
             }catch(Exception $e){
