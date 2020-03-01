@@ -1,7 +1,8 @@
 import { Record } from 'immutable';
-import dayjs, { Dayjs } from 'dayjs';
+import { Dayjs } from 'dayjs';
 
 import { JSObject } from '../types/Common';
+import dayjs from '../lib/dayjs-ja';
 
 export default class HabitSessions extends Record<{
   habitId: number;

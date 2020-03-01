@@ -1,7 +1,7 @@
 import React from 'react';
-import dayjs from 'dayjs';
 import { connect } from 'react-redux';
 
+import dayjs from '../lib/dayjs-ja';
 import Habits from '../models/Habits';
 import HabitRecords from '../models/HabitRecords';
 import { HabitRecordsActions } from '../redux/modules/HabitRecords';

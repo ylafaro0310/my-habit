@@ -1,7 +1,7 @@
 import { call } from 'redux-saga/effects';
 import { expectSaga } from 'redux-saga-test-plan';
-import dayjs from 'dayjs';
 
+import dayjs from '../../../lib/dayjs-ja';
 import { HabitRecordsSaga } from '../habitRecords';
 import { HabitRecordsActions } from '../../modules/HabitRecords';
 import HabitRecords from '../../../models/HabitRecords';

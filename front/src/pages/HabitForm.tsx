@@ -1,8 +1,9 @@
 import React from 'react';
-import dayjs, { Dayjs } from 'dayjs';
+import { Dayjs } from 'dayjs';
 import { Field, InjectedFormProps, WrappedFieldProps, change, formValueSelector, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 
+import dayjs from '../lib/dayjs-ja';
 import { HabitsActions } from '../redux/modules/Habits';
 
 type CustomCheckboxProps = {

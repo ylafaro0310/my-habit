@@ -1,5 +1,4 @@
-import dayjs from 'dayjs';
-
+import dayjs from '../../lib/dayjs-ja';
 import { Habit } from '../Habits';
 import HabitRecords from '../HabitRecords';
 

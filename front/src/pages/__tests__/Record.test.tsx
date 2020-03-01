@@ -1,8 +1,8 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import MockDate from 'mockdate';
-import dayjs from 'dayjs';
 
+import dayjs from '../../lib/dayjs-ja';
 import { Record } from '../Record';
 import Habits from '../../models/Habits';
 import HabitRecords from '../../models/HabitRecords';

@@ -1,6 +1,7 @@
 import { List, Record } from 'immutable';
-import dayjs, { Dayjs } from 'dayjs';
+import { Dayjs } from 'dayjs';
 
+import dayjs from '../lib/dayjs-ja';
 import { JSObject } from '../types/Common';
 
 export class HabitRecord extends Record<{
@@ -14,6 +15,7 @@ export class HabitRecord extends Record<{
 }) {
   static fromResponse(response: JSObject): HabitRecord {
     const params = { ...response };
+    params['completedAt'] = dayjs(response['completedAt'], 'YYYY-MM-DD HH:mm:ss');
     return new HabitRecord(params);
   }
 }

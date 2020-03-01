@@ -1,7 +1,8 @@
 import { List, Record } from 'immutable';
-import dayjs, { Dayjs } from 'dayjs';
+import { Dayjs } from 'dayjs';
 
 import { JSObject } from '../types/Common';
+import dayjs from '../lib/dayjs-ja';
 
 import HabitRecords from './HabitRecords';
 

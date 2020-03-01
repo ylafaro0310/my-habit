@@ -1,9 +1,9 @@
 import React from 'react';
-import dayjs from 'dayjs';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
+import dayjs from '../lib/dayjs-ja';
 import HabitList from '../components/HabitList';
 import { State } from '../redux/store';
 import { HabitRecordsActions } from '../redux/modules/HabitRecords';
