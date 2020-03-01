@@ -14,7 +14,7 @@ ReactDOM.render(
   <Provider store={store}>
     <ConnectedRouter history={history}>{routes}</ConnectedRouter>
   </Provider>,
-  document.getElementById('root'),
+  document.getElementsByClassName('root')[0],
 );
 
 // If you want your app to work offline and load faster, you can change

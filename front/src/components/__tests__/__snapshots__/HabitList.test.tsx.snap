@@ -1,11 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Component: HabitList Snapshot test 1`] = `
-<div
-  className="habits"
->
+<StyledCard>
   <form>
-    <div
+    <styled.div
       key="0"
     >
       <input
@@ -19,8 +17,8 @@ exports[`Component: HabitList Snapshot test 1`] = `
       >
         読書する
       </label>
-    </div>
-    <div
+    </styled.div>
+    <styled.div
       key="1"
     >
       <input
@@ -34,8 +32,8 @@ exports[`Component: HabitList Snapshot test 1`] = `
       >
         筋トレ
       </label>
-    </div>
-    <div
+    </styled.div>
+    <styled.div
       key="2"
     >
       <input
@@ -49,7 +47,7 @@ exports[`Component: HabitList Snapshot test 1`] = `
       >
         新しいCDを1枚聴く
       </label>
-    </div>
+    </styled.div>
   </form>
-</div>
+</StyledCard>
 `;

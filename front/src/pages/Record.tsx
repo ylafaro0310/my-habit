@@ -9,6 +9,7 @@ import { State } from '../redux/store';
 import { HabitRecordsActions } from '../redux/modules/HabitRecords';
 import Habits from '../models/Habits';
 import HabitRecords from '../models/HabitRecords';
+import Card from '../components/Card';
 
 interface RecordProps {
   habits: Habits;
@@ -35,17 +36,23 @@ export class Record extends React.Component<RecordProps, RecordState> {
   componentDidMount(): void {
     const { dispatch } = this.props;
     dispatch(HabitRecordsActions.getHabitRecords({}));
+    const element = document.getElementById('datelist');
+    if (element) {
+      element.scrollLeft = element.scrollWidth;
+    }
   }
 
   render() {
     const { selectedDate } = this.state;
     const { habits, habitRecords } = this.props;
     const date = [];
-    const startOfMonth = dayjs().startOf('month');
-    const endOfMonth = dayjs().endOf('month');
+    const startOfMonth = dayjs()
+      .subtract(1, 'month')
+      .add(1, 'day');
+    const endOfMonth = dayjs().add(1, 'day');
     for (let i = startOfMonth; !i.isAfter(endOfMonth); i = i.add(1, 'day')) {
       date.push(
-        <div>
+        <Date>
           <input
             type='radio'
             name='date'
@@ -54,20 +61,30 @@ export class Record extends React.Component<RecordProps, RecordState> {
             checked={dayjs(selectedDate).isSame(i, 'd')}
             onChange={this.onChangeDate}
           />
-          <label htmlFor={i.format('YYYY-MM-DD')}>{i.format('MM/DD')}</label>
-        </div>,
+          <label htmlFor={i.format('YYYY-MM-DD')}>
+            <div>
+              <div>{i.format('ddd')}</div>
+              <div>{i.format('D')}</div>
+            </div>
+          </label>
+        </Date>,
       );
     }
     return (
       <div className='App'>
-        <div className='date'>
-          <button>習慣を追加する</button>
-          <DateList>
-            {date.map((elem, key) => (
-              <li key={key}>{elem}</li>
-            ))}
-          </DateList>
-        </div>
+        <Card>
+          <div className='date'>
+            <Header>
+              <div>{dayjs(selectedDate).format('M月D日')}</div>
+              <FAButton />
+            </Header>
+            <DateList id='datelist'>
+              {date.map((elem, key) => (
+                <li key={key}>{elem}</li>
+              ))}
+            </DateList>
+          </div>
+        </Card>
         <HabitList habits={habits} habitRecords={habitRecords} selectedDate={selectedDate} />
       </div>
     );
@@ -79,8 +96,62 @@ export default connect((state: State) => ({
   habitRecords: state.habitRecords,
 }))(Record);
 
+const Header = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin: 0.7em;
+`;
+
+const FAButton = styled.a`
+  display: block;
+  width: 30px; /*幅*/
+  height: 30px; /*高さ*/
+  background: #03a9f4; /*背景色*/
+  text-align: center; /*中央寄せ*/
+  border-radius: 50%; /*角丸く*/
+  transition: 0.3s; /*滑らかな動きに*/
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.12), 0 2px 2px 0 rgba(0, 0, 0, 0.24); /*影*/
+
+  &:before {
+    position: relative;
+    top: 20%;
+    color: #ffffff;
+    content: '+';
+  }
+`;
+
 const DateList = styled.ul`
+  display: flex;
+  overflow-x: scroll;
+  padding-left: 0.5em;
+  margin: 0.7em;
+
   & li {
     display: inline-block;
+  }
+`;
+
+const Date = styled.div`
+  margin-right: 5px;
+  width: 2.5em;
+  background-color: #f9f9f9;
+
+  & input {
+    display: none;
+  }
+
+  & label {
+    text-align: center;
+  }
+  & label > div {
+    border: 1px solid #f0f0f0;
+    border-radius: 5px 5px;
+  }
+
+  & input:checked + label {
+    color: #2196f3;
+  }
+  & input:checked + label > div {
+    border-color: #2196f3;
   }
 `;
