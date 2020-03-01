@@ -19,12 +19,24 @@ class HabitRecordsController extends Controller
         $this->pdo = DB::connection()->getPdo();
     }
 
+    private function camelizeArrayRecursive(array $array){
+        $result = [];
+        foreach($array as $key => $value){
+            if(is_array($value)){
+                $result[\Str::camel($key)] = $this->camelizeArrayRecursive($value);
+            }else{
+                $result[\Str::camel($key)] = $value;
+            }    
+        }
+        return $result;
+    }
+
     private function createResponse(){
         $response = [
             'habits' => $this->habits->select(),
             'habitRecords' => $this->habitRecords->select(),
         ];
-        return $response;
+        return $this->camelizeArrayRecursive($response);
     }
 
     private function calcConsecutiveDays($id){
