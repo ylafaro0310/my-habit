@@ -111,6 +111,8 @@ class HabitRecordsController extends Controller
     {
         $params = $request->all();
         $params = Util::snakeArray($params);
+        $date = (new SystemClock())->now();
+        $params['completed_at'] = $date->format('Y-m-d H:i:s');
         try{
             $this->pdo->beginTransaction();
             $this->habitRecords->store($params);

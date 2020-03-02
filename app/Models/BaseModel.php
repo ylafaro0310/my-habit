@@ -29,7 +29,13 @@ class BaseModel {
     }
 
     public function escapeValue($value){
-        return $value === NULL ? "NULL" : "'$value'";
+        if($value === NULL){
+            return "NULL";
+        }
+        if(is_bool($value)){
+            return $value ? "true" : "false";
+        }
+        return "'$value'";
     }
 
     public function where($conditions){

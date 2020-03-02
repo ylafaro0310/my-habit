@@ -95,7 +95,7 @@ const ListItem = styled.div`
     cursor: pointer;
   }
   & label:after{
-    display: block;
+    display: none;
     top: 0.75em;
     left: 1.4em;
     content: '';
