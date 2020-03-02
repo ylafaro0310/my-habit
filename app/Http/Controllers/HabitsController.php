@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 use App\Models\Habits;
+use App\Utils\Util;
 
 class HabitsController extends Controller
 {
@@ -22,7 +23,9 @@ class HabitsController extends Controller
      */
     public function index()
     {
-        return json_encode($this->habits->select());
+        $response = $this->habits->select();
+        $response = Util::camelArray($response);
+        return json_encode($response);
     }
 
     /**
@@ -44,6 +47,7 @@ class HabitsController extends Controller
     public function store(Request $request)
     {
         $params = $request->all();
+        $params = Util::snakeArray($params);
         try{
             $this->pdo->beginTransaction();
             $this->habits->store($params);
@@ -86,6 +90,7 @@ class HabitsController extends Controller
     public function update(Request $request, $id)
     {
         $params = $request->all();
+        $params = Util::snakeArray($params);
         try{
             $this->pdo->beginTransaction();
             $this->habits->where(['id'=>$id])->update($params);

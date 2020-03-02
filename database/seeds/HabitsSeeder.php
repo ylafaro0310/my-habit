@@ -19,8 +19,6 @@ class HabitsSeeder extends Seeder
             'started_at' => Date('2020-02-10'),
             'target_time' => 5,
             'time_of_day' => 'always',
-            'consecutive_days' => 3,
-            'consecutive_weeks' => null,
         ]);
         DB::table('habits')->insert([
             'habit_name' => '新しいCDを1枚聴く',
@@ -29,8 +27,6 @@ class HabitsSeeder extends Seeder
             'started_at' => Date('2020-02-09'),
             'target_time' => null,
             'time_of_day' => 'always',
-            'consecutive_days' => 0,
-            'consecutive_weeks' => null,
         ]);
         DB::table('habits')->insert([
             'habit_name' => '筋トレ',
@@ -39,8 +35,6 @@ class HabitsSeeder extends Seeder
             'started_at' => Date('2020-02-08'),
             'target_time' => null,
             'time_of_day' => 'always',
-            'consecutive_days' => 0,
-            'consecutive_weeks' => null,
         ]);
     }
 }

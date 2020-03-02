@@ -15,7 +15,7 @@ export class Habit extends Record<{
   targetTime: number; // 単位は「分」
   timeOfDay: string;
   consecutiveDays: number;
-  consecutiveWeeks: number | null;
+  //consecutiveWeeks: number | null;
 }>({
   id: 0,
   habitName: '',
@@ -25,7 +25,7 @@ export class Habit extends Record<{
   targetTime: 0,
   timeOfDay: '',
   consecutiveDays: 0,
-  consecutiveWeeks: null,
+  //consecutiveWeeks: null,
 }) {
   static fromResponse(response: JSObject): Habit {
     const params = { ...response };

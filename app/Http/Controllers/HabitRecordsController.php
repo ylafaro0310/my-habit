@@ -8,7 +8,8 @@ use Illuminate\Support\Facades\Log;
 
 use App\Models\Habits;
 use App\Models\HabitRecords;
-use App\SystemClock;
+use App\Utils\SystemClock;
+use App\Utils\Util;
 
 class HabitRecordsController extends Controller
 {
@@ -19,28 +20,27 @@ class HabitRecordsController extends Controller
         $this->pdo = DB::connection()->getPdo();
     }
 
-    private function camelizeArrayRecursive(array $array){
-        $result = [];
-        foreach($array as $key => $value){
-            if(is_array($value)){
-                $result[\Str::camel($key)] = $this->camelizeArrayRecursive($value);
-            }else{
-                $result[\Str::camel($key)] = $value;
-            }    
-        }
-        return $result;
-    }
-
     private function createResponse(){
+        $habits = $this->habits->select();
+        $habitRecords = $this->habitRecords->select();
+
+        foreach($habits as &$habit){
+            $filteredRecords = array_filter($habitRecords,function($v)use($habit){return $v['habit_id'] === $habit['id'];});
+            $consecutiveDays = $this->calcConsecutiveDays($filteredRecords);
+            $habit['consecutiveDays'] = $consecutiveDays;
+        }
+
         $response = [
-            'habits' => $this->habits->select(),
-            'habitRecords' => $this->habitRecords->select(),
+            'habits' => $habits,
+            'habitRecords' => $habitRecords,
         ];
-        return $this->camelizeArrayRecursive($response);
+
+        return Util::camelArray($response);
     }
 
-    private function calcConsecutiveDays($id){
-        $habitRecords = $this->habitRecords->where(['habit_id'=>$id])->order('completed_at','desc')->select();
+    private function calcConsecutiveDays($habitRecords){
+        $completedAt = array_column($habitRecords,'completed_at');
+        array_multisort($completedAt,SORT_DESC,$habitRecords);
         $count = 0;
 
         // 今日があるか
@@ -77,7 +77,7 @@ class HabitRecordsController extends Controller
                 $prev = $next;
             }
         }
-        $this->habits->where(['id'=>$id])->update(['consecutive_days'=>$count]);
+        return $count;
     }
 
     /**
@@ -110,10 +110,10 @@ class HabitRecordsController extends Controller
     public function store(Request $request)
     {
         $params = $request->all();
+        $params = Util::snakeArray($params);
         try{
             $this->pdo->beginTransaction();
             $this->habitRecords->store($params);
-            $this->calcConsecutiveDays($params['habit_id']);
             $this->pdo->commit();
         }catch(Exception $e){
             $this->pdo->rollback();
@@ -169,9 +169,7 @@ class HabitRecordsController extends Controller
         if($this->habitRecords->where(['id'=>$id])->exists()){
             try{
                 $this->pdo->beginTransaction();
-                $habit_id = $this->habitRecords->where(['id'=>$id])->first(['habit_id'])['habit_id'];
                 $this->habitRecords->where(['id'=>$id])->delete();                
-                $this->calcConsecutiveDays($habit_id);
                 $this->pdo->commit();
             }catch(Exception $e){
                 $this->pdo->rollback();

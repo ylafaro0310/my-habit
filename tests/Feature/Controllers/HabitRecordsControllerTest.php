@@ -4,8 +4,9 @@ namespace Tests\Feature\Controllers;
 
 use Tests\TestCase;
 use Illuminate\Support\Facades\Artisan;
-use App\Models\HabitRecords;
 use App\Http\Controllers\HabitRecordsController;
+use App\Models\HabitRecords;
+use App\Utils\Util;
 
 class HabitRecordsControllerTest extends TestCase
 {
@@ -17,9 +18,9 @@ class HabitRecordsControllerTest extends TestCase
 
         Artisan::call('migrate:refresh --seed --env=testing');
 
-        $mock = \Mockery::mock('App\SystemClock')->makePartial();
+        $mock = \Mockery::mock('App\Utils\SystemClock')->makePartial();
         $mock->shouldReceive('now')->andReturn(new \DateTimeImmutable('2020-02-11'));
-        $this->app->instance('App\SystemClock', $mock);
+        $this->app->instance('App\Utils\SystemClock', $mock);
     }
 
     /**
@@ -30,16 +31,16 @@ class HabitRecordsControllerTest extends TestCase
     public function testIndex()
     {
         $expectedData = [
-            'habitRecords' => [['habit_id'=>1]],
+            'habitRecords' => [['habitId'=>1]],
             'habits' => [
                 [
-                    'habit_name' => '本を読む',
-                    'repeat_type' => 'day_of_week',
-                    'repeat_value' => 127,
-                    'target_time' => 5,
-                    'time_of_day' => 'always',
-                    'consecutive_days' => 3,
-                    'consecutive_weeks' => null,
+                    'habitName' => '本を読む',
+                    'repeatType' => 'day_of_week',
+                    'repeatValue' => 127,
+                    'targetTime' => 5,
+                    'timeOfDay' => 'always',
+                    'consecutiveDays' => 3,
+                    //'consecutiveWeeks' => null,
                 ]
             ],
         ];
@@ -55,28 +56,28 @@ class HabitRecordsControllerTest extends TestCase
     public function testStore()
     {
         $params = [
-            'habit_id' => 1,
-            'completed_at' => Date('2020-02-11'),
-            'is_skipped' => 0,
+            'habitId' => 1,
+            'completedAt' => Date('2020-02-11'),
+            'isSkipped' => 0,
         ];
 
         $expectedData = [
-            'habitRecords' => [['habit_id'=>1]],
+            'habitRecords' => [['habitId'=>1]],
             'habits' => [
                 [
-                    'habit_name' => '本を読む',
-                    'repeat_type' => 'day_of_week',
-                    'repeat_value' => 127,
-                    'target_time' => 5,
-                    'time_of_day' => 'always',
-                    'consecutive_days' => 4,
-                    'consecutive_weeks' => null,
+                    'habitName' => '本を読む',
+                    'repeatType' => 'day_of_week',
+                    'repeatValue' => 127,
+                    'targetTime' => 5,
+                    'timeOfDay' => 'always',
+                    'consecutiveDays' => 4,
+                    //'consecutiveWeeks' => null,
                 ]
             ],
         ];
 
         $response = $this->post($this->habitRecordsPath,$params);
-        $this->assertDatabaseHas($this->tableName, $params);
+        $this->assertDatabaseHas($this->tableName, Util::snakeArray($params));
         $response->assertJson($expectedData);
     }
 
@@ -88,16 +89,16 @@ class HabitRecordsControllerTest extends TestCase
     public function testDelete()
     {
         $expectedData = [
-            'habitRecords' => [['habit_id'=>1]],
+            'habitRecords' => [['habitId'=>1]],
             'habits' => [
                 [
-                    'habit_name' => '本を読む',
-                    'repeat_type' => 'day_of_week',
-                    'repeat_value' => 127,
-                    'target_time' => 5,
-                    'time_of_day' => 'always',
-                    'consecutive_days' => 2,
-                    'consecutive_weeks' => null,
+                    'habitName' => '本を読む',
+                    'repeatType' => 'day_of_week',
+                    'repeatValue' => 127,
+                    'targetTime' => 5,
+                    'timeOfDay' => 'always',
+                    'consecutiveDays' => 2,
+                    //'consecutiveWeeks' => null,
                 ]
             ],
         ];

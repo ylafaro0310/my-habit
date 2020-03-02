@@ -21,8 +21,6 @@ class CreateHabitsTable extends Migration
             $table->datetime('started_at');
             $table->integer('target_time')->nullable();
             $table->string('time_of_day');
-            $table->integer('consecutive_days');
-            $table->integer('consecutive_weeks')->nullable();
             $table->timestamps();
         });
     }

@@ -48,7 +48,10 @@ export const HabitList: React.FC<HabitListProps> = ({
                 onChangeHabitRecord(e, habit.id);
               }}
             />
-            <label htmlFor={'habit_' + habit.id}>{habit.habitName}</label>
+            <label htmlFor={'habit_' + habit.id}>
+              <div>{habit.habitName}</div>
+              <div>{habit.consecutiveDays}日連続</div>
+            </label>
           </ListItem>
         ))}
       </form>

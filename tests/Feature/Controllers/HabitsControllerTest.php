@@ -4,8 +4,9 @@ namespace Tests\Feature\Controllers;
 
 use Tests\TestCase;
 use Illuminate\Support\Facades\Artisan;
-use App\Models\Habits;
 use App\Http\Controllers\HabitsController;
+use App\Models\Habits;
+use App\Utils\Util;
 
 class HabitsControllerTest extends TestCase
 {
@@ -27,13 +28,11 @@ class HabitsControllerTest extends TestCase
     {
         $expectedData = [
             [
-                'habit_name' => '本を読む',
-                'repeat_type' => 'day_of_week',
-                'repeat_value' => 127,
-                'target_time' => 5,
-                'time_of_day' => 'always',
-                'consecutive_days' => 3,
-                'consecutive_weeks' => null,
+                'habitName' => '本を読む',
+                'repeatType' => 'day_of_week',
+                'repeatValue' => 127,
+                'targetTime' => 5,
+                'timeOfDay' => 'always',
             ]
         ];
         $response = $this->get($this->habitsPath);
@@ -48,18 +47,16 @@ class HabitsControllerTest extends TestCase
     public function testStore()
     {
         $params = [
-            'habit_name' => 'プログラムを書く',
-            'repeat_type' => 'day_of_week',
-            'repeat_value' => 127,
-            'started_at' => Date('2020-02-09'),
-            'target_time' => null,
-            'time_of_day' => 'always',
-            'consecutive_days' => 0,
-            'consecutive_weeks' => null,
+            'habitName' => 'プログラムを書く',
+            'repeatType' => 'day_of_week',
+            'repeatValue' => 127,
+            'startedAt' => Date('2020-02-09'),
+            'targetTime' => null,
+            'timeOfDay' => 'always',
         ];
-        $this->assertDatabaseMissing($this->tableName, $params);
+        $this->assertDatabaseMissing($this->tableName, Util::snakeArray($params));
         $this->post($this->habitsPath,$params);
-        $this->assertDatabaseHas($this->tableName, $params);
+        $this->assertDatabaseHas($this->tableName, Util::snakeArray($params));
     }
 
 /**
@@ -70,18 +67,16 @@ class HabitsControllerTest extends TestCase
     public function testUpdate()
     {
         $params = [
-            'habit_name' => '本を5分読む',
-            'repeat_type' => 'day_of_week',
-            'repeat_value' => 127,
-            'target_time' => 5,
-            'time_of_day' => 'always',
-            'consecutive_days' => 0,
-            'consecutive_weeks' => null,
+            'habitName' => '本を5分読む',
+            'repeatType' => 'day_of_week',
+            'repeatValue' => 127,
+            'targetTime' => 5,
+            'timeOfDay' => 'always',
         ];
         $expectedData = $params;
-        $this->assertDatabaseMissing($this->tableName, $expectedData);
+        $this->assertDatabaseMissing($this->tableName, Util::snakeArray($expectedData));
         $this->patch($this->habitsPath.'/1',$params);
-        $this->assertDatabaseHas($this->tableName, $expectedData);
+        $this->assertDatabaseHas($this->tableName, Util::snakeArray($expectedData));
     }
 
     /**

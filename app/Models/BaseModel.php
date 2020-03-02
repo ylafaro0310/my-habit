@@ -17,6 +17,11 @@ class BaseModel {
         $this->pdo = DB::connection()->getPdo();        
     }
 
+    public function resetConditions(){
+        $this->where = '';
+        $this->order = '';
+    }
+
     public function value($columns){
         return array_map(function($key,$value){
             return "$key = ".$this->escapeValue($value);
@@ -25,12 +30,6 @@ class BaseModel {
 
     public function escapeValue($value){
         return $value === NULL ? "NULL" : "'$value'";
-    }
-
-    public function exists(){       
-        $sth = $this->pdo->prepare("select count(*) from ".$this->tableName." ".$this->where);
-        $sth->execute();
-        return $sth->fetchColumn();
     }
 
     public function where($conditions){
@@ -45,6 +44,13 @@ class BaseModel {
         return $this;
     }
 
+    public function exists(){       
+        $sth = $this->pdo->prepare("select count(*) from ".$this->tableName." ".$this->where);
+        $sth->execute();
+        $this->resetConditions();
+        return $sth->fetchColumn();
+    }
+    
     public function select($columns=['*']){
         $query = "select ".implode(', ',$columns)." from ".$this->tableName.$this->where.$this->order;        
         
@@ -52,6 +58,7 @@ class BaseModel {
         Log::debug('SQL: '.$sth->queryString);
         $sth->execute();
         $result = $sth->fetchAll();
+        $this->resetConditions();
         return $result;
     }
     
@@ -62,6 +69,7 @@ class BaseModel {
         Log::debug('SQL: '.$sth->queryString);
         $sth->execute();
         $result = $sth->fetchAll();
+        $this->resetConditions();
         return $result[0];
     }
 
@@ -71,6 +79,7 @@ class BaseModel {
         $query = "insert into ".$this->tableName." (${columns}) values (${values})";
         $sth = $this->pdo->prepare($query);
         Log::debug('SQL: '.$sth->queryString);
+        $this->resetConditions();
         return $sth->execute();
     }
 
@@ -80,6 +89,7 @@ class BaseModel {
         $query = "update ".$this->tableName." set $setValues". $this->where;
         $sth = $this->pdo->prepare($query);
         Log::debug('SQL: '.$sth->queryString);
+        $this->resetConditions();
         return $sth->execute();
     }
 
@@ -87,6 +97,7 @@ class BaseModel {
         $query = "delete from ".$this->tableName.$this->where;
         $sth = $this->pdo->prepare($query);
         Log::debug('SQL: '.$sth->queryString);
+        $this->resetConditions();
         return $sth->execute();
     }
 }

@@ -1,6 +1,6 @@
 <?php 
 
-namespace App;
+namespace App\Utils;
 
 class SystemClock {
     public function now(){
