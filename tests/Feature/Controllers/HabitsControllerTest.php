@@ -109,6 +109,7 @@ class HabitsControllerTest extends TestCase
         $expectedResponse = [
             'habits' => [
                 [
+                    'id' => 1,
                     'habitName' => '本を5分読む',
                     'repeatType' => 'dayOfWeek',
                     'repeatValue' => 127,
