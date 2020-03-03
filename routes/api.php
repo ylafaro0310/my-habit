@@ -16,3 +16,17 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::prefix('habits')->group(function () {
+    Route::get('/', 'HabitsController@index');
+    Route::get('/{id}', 'HabitsController@show')->where('id', '[0-9]+');
+    Route::post('/', 'HabitsController@store');
+    Route::patch('/{id}', 'HabitsController@update')->where('id', '[0-9]+');
+    Route::delete('/{id}', 'HabitsController@destroy')->where('id', '[0-9]+');
+});
+
+Route::prefix('habits/records')->group(function () {
+    Route::get('/', 'HabitRecordsController@index');
+    Route::post('/', 'HabitRecordsController@store');
+    Route::delete('/', 'HabitRecordsController@destroy');
+});

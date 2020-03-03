@@ -1,0 +1,53 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Component: HabitList Snapshot test 1`] = `
+<StyledCard>
+  <form>
+    <styled.div
+      key="0"
+    >
+      <input
+        checked={true}
+        id="habit_1"
+        onChange={[Function]}
+        type="checkbox"
+      />
+      <label
+        htmlFor="habit_1"
+      >
+        読書する
+      </label>
+    </styled.div>
+    <styled.div
+      key="1"
+    >
+      <input
+        checked={false}
+        id="habit_2"
+        onChange={[Function]}
+        type="checkbox"
+      />
+      <label
+        htmlFor="habit_2"
+      >
+        筋トレ
+      </label>
+    </styled.div>
+    <styled.div
+      key="2"
+    >
+      <input
+        checked={false}
+        id="habit_3"
+        onChange={[Function]}
+        type="checkbox"
+      />
+      <label
+        htmlFor="habit_3"
+      >
+        新しいCDを1枚聴く
+      </label>
+    </styled.div>
+  </form>
+</StyledCard>
+`;
