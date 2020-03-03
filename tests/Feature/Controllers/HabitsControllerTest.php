@@ -145,6 +145,7 @@ class HabitsControllerTest extends TestCase
         $response = $this->delete($this->habitsPath.'/2');
         $response->assertJson($expectedData);
         $this->assertDatabaseMissing($this->tableName, ['id'=>2]);
+        $this->assertDatabaseMissing('habit_records', ['habit_id'=>2]);
 
         // 存在しないhabit_idのテスト
         $this->assertDatabaseMissing($this->tableName, ['id'=>999]);

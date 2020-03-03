@@ -7,12 +7,14 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 use App\Models\Habits;
+use App\Models\HabitRecords;
 use App\Utils\Util;
 
 class HabitsController extends Controller
 {
-    function __construct(Habits $habits){
+    function __construct(Habits $habits, HabitRecords $habitRecords){
         $this->habits = $habits;
+        $this->habitRecords = $habitRecords;
         $this->pdo = DB::connection()->getPdo();
     }
 
@@ -129,6 +131,7 @@ class HabitsController extends Controller
         try{
             $this->pdo->beginTransaction();
             $this->habits->where(['id'=>$id])->delete();
+            $this->habitRecords->where(['habit_id'=>$id])->delete();
             $this->pdo->commit();
             $response = $this->createResponse();
             return json_encode($response);
