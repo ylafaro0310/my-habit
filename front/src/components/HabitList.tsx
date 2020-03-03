@@ -7,6 +7,7 @@ import Habits from '../models/Habits';
 import HabitRecords from '../models/HabitRecords';
 import { HabitRecordsActions } from '../redux/modules/HabitRecords';
 import Card from '../components/Card';
+import { Link } from 'react-router-dom';
 
 type HabitListProps = {
   habits: Habits;
@@ -57,6 +58,7 @@ export const HabitList: React.FC<HabitListProps> = ({
               <div>{habit.habitName}</div>
               <div>{habit.consecutiveDays}日連続</div>
             </label>
+            <Link to={'habits/'+habit.id}><span className='fas fa-edit'/></Link>
           </ListItem>
         ))}
       </form>

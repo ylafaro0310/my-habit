@@ -10,6 +10,7 @@ export const HabitsActions = {
   setHabits: actionCreator<Habits>('setHabits'),
   addHabit: actionCreator<object>('addHabit'),
   removeHabit: actionCreator<number>('removeHabit'),
+  formInitialize: actionCreator<number>('formInitialize'),
 };
 
 // Reducers

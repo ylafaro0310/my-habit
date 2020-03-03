@@ -66,7 +66,9 @@ class HabitsController extends Controller
      */
     public function show($id)
     {
-        //
+        $response = $this->habits->where(['id'=>$id])->first();
+        $response = Util::camelArray($response);
+        return json_encode($response);
     }
 
     /**

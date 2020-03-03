@@ -22,7 +22,7 @@ const routes = (
     <Switch>
       <Route exact path={Path.root} render={() => <Redirect to={Path.records} />} />
       <Route exact path={Path.records} component={Record} />
-      <Route exact path={Path.habits} component={HabitForm} />
+      <Route exact path={Path.habits+"/:id(\\d*)"} component={HabitForm} />
       <Redirect to={Path.records} />
     </Switch>
   </Container>

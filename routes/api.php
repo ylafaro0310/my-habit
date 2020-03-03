@@ -19,6 +19,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::prefix('habits')->group(function () {
     Route::get('/', 'HabitsController@index');
+    Route::get('/{id}', 'HabitsController@show')->where('id', '[0-9]+');
     Route::post('/', 'HabitsController@store');
     Route::patch('/{id}', 'HabitsController@update')->where('id', '[0-9]+');
     Route::delete('/{id}', 'HabitsController@destroy')->where('id', '[0-9]+');

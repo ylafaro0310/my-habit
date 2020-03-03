@@ -10,6 +10,7 @@ import { HabitRecordsActions } from '../redux/modules/HabitRecords';
 import Habits from '../models/Habits';
 import HabitRecords from '../models/HabitRecords';
 import Card from '../components/Card';
+import { Link } from 'react-router-dom';
 
 interface RecordProps {
   habits: Habits;
@@ -36,6 +37,7 @@ export class Record extends React.Component<RecordProps, RecordState> {
   componentDidMount(): void {
     const { dispatch } = this.props;
     dispatch(HabitRecordsActions.getHabitRecords({}));
+    
     const element = document.getElementById('datelist');
     if (element) {
       element.scrollLeft = element.scrollWidth;
@@ -76,7 +78,9 @@ export class Record extends React.Component<RecordProps, RecordState> {
           <div className='date'>
             <Header>
               <div>{dayjs(selectedDate).format('M月D日')}</div>
-              <FAButton />
+              <Link to='habits' className='no-decoration'>
+                <FAButton/>
+              </Link>
             </Header>
             <DateList id='datelist'>
               {date.map((elem, key) => (
@@ -101,16 +105,15 @@ const Header = styled.div`
   justify-content: space-between;
   margin: 0.7em;
 `;
-
-const FAButton = styled.a`
+const FAButton = styled.div`
   display: block;
-  width: 30px; /*幅*/
-  height: 30px; /*高さ*/
-  background: #03a9f4; /*背景色*/
-  text-align: center; /*中央寄せ*/
-  border-radius: 50%; /*角丸く*/
-  transition: 0.3s; /*滑らかな動きに*/
-  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.12), 0 2px 2px 0 rgba(0, 0, 0, 0.24); /*影*/
+  width: 30px;
+  height: 30px;
+  background: #03a9f4;
+  text-align: center;
+  border-radius: 50%;
+  transition: 0.3s;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.12), 0 2px 2px 0 rgba(0, 0, 0, 0.24);
 
   &:before {
     position: relative;

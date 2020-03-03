@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
 
+//import 'bulma/css/bulma.css';
+import '@fortawesome/fontawesome-free/css/all.css';
 import './index.css';
 
 import { configureStore, history } from './redux/store';

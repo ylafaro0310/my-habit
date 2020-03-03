@@ -7,8 +7,11 @@ const apiClient = new ApiClient();
 const HABIT_PATH = '/api/habits';
 
 export class HabitsApi {
-  static get(params?: JSObject): Promise<{}> {
+  static getAll(params?: JSObject): Promise<{}> {
     return apiClient.get(HABIT_PATH, params);
+  }
+  static get(id: number, params?: JSObject): Promise<{}> {
+    return apiClient.get(HABIT_PATH + '/' + id, params);
   }
   static post(params: JSObject): Promise<{}> {
     return apiClient.post(HABIT_PATH, params);

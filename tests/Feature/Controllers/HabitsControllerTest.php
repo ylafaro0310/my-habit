@@ -40,6 +40,24 @@ class HabitsControllerTest extends TestCase
     }
 
     /**
+     * show() test
+     *
+     * @return void
+     */
+    public function testShow()
+    {
+        $expectedData = [
+            'habitName' => '本を読む',
+            'repeatType' => 'day_of_week',
+            'repeatValue' => 127,
+            'targetTime' => 5,
+            'timeOfDay' => 'always',
+        ];
+        $response = $this->get($this->habitsPath.'/1');
+        $response->assertJson($expectedData);
+    }
+
+    /**
      * store() test
      *
      * @return void
