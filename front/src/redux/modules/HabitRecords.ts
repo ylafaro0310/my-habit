@@ -9,7 +9,7 @@ export const HabitRecordsActions = {
   getHabitRecords: actionCreator<object>('getHabitRecords'),
   setHabitRecords: actionCreator<HabitRecords>('setHabitRecords'),
   addHabitRecord: actionCreator<object>('addHabitRecord'),
-  removeHabitRecord: actionCreator<number>('removeHabitRecord'),
+  removeHabitRecord: actionCreator<object>('removeHabitRecord'),
 };
 
 // Reducers

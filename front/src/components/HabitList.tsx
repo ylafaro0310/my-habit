@@ -13,7 +13,7 @@ type HabitListProps = {
   habitRecords: HabitRecords;
   selectedDate: string;
   addHabitRecord: (params: object) => void;
-  removeHabitRecord: (habitId: number) => void;
+  removeHabitRecord: (params: object) => void;
 };
 
 export const HabitList: React.FC<HabitListProps> = ({
@@ -23,15 +23,20 @@ export const HabitList: React.FC<HabitListProps> = ({
   addHabitRecord,
   removeHabitRecord,
 }: HabitListProps) => {
-  const onChangeHabitRecord = (event: React.ChangeEvent<HTMLInputElement>, habitId: number): void => {
+  const onChangeHabitRecord = (event: React.ChangeEvent<HTMLInputElement>, habitId: number, selectedDate: string): void => {
     if (event.target.checked) {
       const params = {
         habitId,
+        completedAt: selectedDate,
         isSkipped: false,
       };
       addHabitRecord(params);
     } else {
-      removeHabitRecord(habitId);
+      const params = {
+        habitId,
+        completedAt: selectedDate,
+      };
+      removeHabitRecord(params);
     }
   };
   return (
@@ -45,7 +50,7 @@ export const HabitList: React.FC<HabitListProps> = ({
               type='checkbox'
               checked={habit.isCompleted(dayjs(selectedDate), habitRecords)}
               onChange={e => {
-                onChangeHabitRecord(e, habit.id);
+                onChangeHabitRecord(e, habit.id, selectedDate);
               }}
             />
             <label htmlFor={'habit_' + habit.id}>
@@ -64,8 +69,8 @@ export default connect(null, dispatch => ({
   addHabitRecord: (params: object): void => {
     dispatch(HabitRecordsActions.addHabitRecord(params));
   },
-  removeHabitRecord: (habitId: number): void => {
-    dispatch(HabitRecordsActions.removeHabitRecord(habitId));
+  removeHabitRecord: (params: object): void => {
+    dispatch(HabitRecordsActions.removeHabitRecord(params));
   },
 }))(HabitList);
 

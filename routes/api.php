@@ -27,5 +27,5 @@ Route::prefix('habits')->group(function () {
 Route::prefix('habits/records')->group(function () {
     Route::get('/', 'HabitRecordsController@index');
     Route::post('/', 'HabitRecordsController@store');
-    Route::delete('/{id}', 'HabitRecordsController@destroy')->where('id', '[0-9]+');
+    Route::delete('/', 'HabitRecordsController@destroy');
 });

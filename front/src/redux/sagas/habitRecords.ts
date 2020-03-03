@@ -25,8 +25,8 @@ function* addHabitRecord(action: ReturnType<typeof HabitRecordsActions.addHabitR
 }
 
 function* removeHabitRecord(action: ReturnType<typeof HabitRecordsActions.removeHabitRecord>) {
-  const id = action.payload;
-  const response = yield call(HabitRecordsApi.delete, id);
+  const params = action.payload;
+  const response = yield call(HabitRecordsApi.delete, params);
   if (response.isSuccess) {
     yield put(HabitsActions.setHabits(Habits.fromResponse(response.data)));
     yield put(HabitRecordsActions.setHabitRecords(HabitRecords.fromResponse(response.data)));

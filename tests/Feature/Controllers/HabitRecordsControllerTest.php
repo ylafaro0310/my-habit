@@ -57,7 +57,7 @@ class HabitRecordsControllerTest extends TestCase
     {
         $params = [
             'habitId' => 1,
-            'completedAt' => Date('2020-02-11'),
+            'completedAt' => '2020-02-11',
             'isSkipped' => 0,
         ];
 
@@ -88,6 +88,11 @@ class HabitRecordsControllerTest extends TestCase
      */
     public function testDelete()
     {
+        $params = [
+            'habitId' => 1,
+            'completedAt' => '2020-02-08',
+        ];
+
         $expectedData = [
             'habitRecords' => [['habitId'=>1]],
             'habits' => [
@@ -104,13 +109,16 @@ class HabitRecordsControllerTest extends TestCase
         ];
         
         $this->assertDatabaseHas($this->tableName, ['id'=>1]);
-        $response = $this->delete($this->habitRecordsPath.'/1');
+        $response = $this->delete($this->habitRecordsPath,$params);
         $response->assertStatus(200);
         $response->assertJson($expectedData);
         $this->assertDatabaseMissing($this->tableName, ['id'=>1]);
 
-        // 存在しないhabit_idのテスト
-        $response = $this->delete($this->habitRecordsPath.'/999');
+        // 不正なパラメータのテスト
+        $response = $this->delete($this->habitRecordsPath,['habitId'=>1]);
+        $response->assertStatus(400);
+
+        $response = $this->delete($this->habitRecordsPath,['completedAt'=>'2020-02-08']);
         $response->assertStatus(400);
     }
 }

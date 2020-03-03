@@ -40,9 +40,9 @@ export class ApiClient {
       return this.createFailurePromise<T>(e);
     }
   }
-  async delete<T = object>(path: string): Promise<AxiosResponse<T>> {
+  async delete<T = object>(path: string, params: object = {}): Promise<AxiosResponse<T>> {
     try {
-      const result = await this.axiosInstance.delete(path);
+      const result = await this.axiosInstance.delete(path, { params });
       return this.createSuccessPromise<T>(result.data);
     } catch (e) {
       return this.createFailurePromise<T>(e);

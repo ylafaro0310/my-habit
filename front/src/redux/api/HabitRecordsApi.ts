@@ -13,7 +13,7 @@ export class HabitRecordsApi {
   static post(params: JSObject): Promise<{}> {
     return apiClient.post(HABIT_RECORD_PATH, params);
   }
-  static delete(habitRecordId: number): Promise<{}> {
-    return apiClient.delete(HABIT_RECORD_PATH + '/' + habitRecordId);
+  static delete(params: JSObject): Promise<{}> {
+    return apiClient.delete(HABIT_RECORD_PATH, params);
   }
 }

@@ -109,10 +109,11 @@ class HabitRecordsController extends Controller
      */
     public function store(Request $request)
     {
-        $params = $request->all();
+        $params = $request->only('habitId','completedAt','isSkipped');
         $params = Util::snakeArray($params);
-        $date = (new SystemClock())->now();
-        $params['completed_at'] = $date->format('Y-m-d H:i:s');
+        if(empty($params['habit_id']) || empty($params['completed_at'])){
+            abort(400,'Invalid parameter specified');
+        }
         try{
             $this->pdo->beginTransaction();
             $this->habitRecords->store($params);
@@ -166,21 +167,22 @@ class HabitRecordsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        if($this->habitRecords->where(['id'=>$id])->exists()){
-            try{
-                $this->pdo->beginTransaction();
-                $this->habitRecords->where(['id'=>$id])->delete();                
-                $this->pdo->commit();
-            }catch(Exception $e){
-                $this->pdo->rollback();
-                Log::error('Transaction Error: '.$e->getMessage());
-            }
-            $response = $this->createResponse();
-            return json_encode($response);
-        }else{
+        $params = $request->only('habitId','completedAt');
+        $params = Util::snakeArray($params);
+        if(empty($params['habit_id']) || empty($params['completed_at'])){
             abort(400,'Invalid parameter specified');
         }
+        try{
+            $this->pdo->beginTransaction();
+            $this->habitRecords->where($params)->delete();                
+            $this->pdo->commit();
+        }catch(Exception $e){
+            $this->pdo->rollback();
+            Log::error('Transaction Error: '.$e->getMessage());
+        }
+        $response = $this->createResponse();
+        return json_encode($response);
     }
 }
