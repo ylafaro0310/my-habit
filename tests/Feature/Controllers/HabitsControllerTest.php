@@ -99,7 +99,7 @@ class HabitsControllerTest extends TestCase
     public function testUpdate()
     {
         $params = [
-            'habitName' => '本を5分読む',
+            'habitName' => '新しいCDを2枚聴く',
             'repeatType' => 'dayOfWeek',
             'repeatValue' => 127,
             'targetTime' => 5,
@@ -110,7 +110,7 @@ class HabitsControllerTest extends TestCase
             'habits' => [
                 [
                     'id' => 1,
-                    'habitName' => '本を5分読む',
+                    'habitName' => '本を読む',
                     'repeatType' => 'dayOfWeek',
                     'repeatValue' => 127,
                     'targetTime' => 5,
@@ -119,7 +119,7 @@ class HabitsControllerTest extends TestCase
             ]
         ];
         $this->assertDatabaseMissing($this->tableName, Util::snakeArray($expectedData));
-        $response = $this->patch($this->habitsPath.'/1',$params);
+        $response = $this->patch($this->habitsPath.'/2',$params);
         $response->assertJson($expectedResponse);
         $this->assertDatabaseHas($this->tableName, Util::snakeArray($expectedData));
     }
