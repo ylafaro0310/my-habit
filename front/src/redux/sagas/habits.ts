@@ -4,6 +4,7 @@ import { HabitsActions } from '../modules/Habits';
 import Habits from '../../models/Habits';
 import { HabitsApi } from '../api/HabitsApi';
 import { initialize } from 'redux-form';
+import { push } from 'connected-react-router';
 
 function* getHabits(action: ReturnType<typeof HabitsActions.getHabits>) {
   const id = action.payload;
@@ -20,6 +21,7 @@ function* addHabit(action: ReturnType<typeof HabitsActions.addHabit>) {
   const response = yield call(HabitsApi.post, params);
   if (response.isSuccess) {
     yield put(HabitsActions.setHabits(Habits.fromResponse(response.data)));
+    yield put(push('records'));
   }
 }
 
@@ -29,6 +31,7 @@ function* updateHabit(action: ReturnType<typeof HabitsActions.updateHabit>) {
   const response = yield call(HabitsApi.patch, habitId, params);
   if (response.isSuccess) {
     yield put(HabitsActions.setHabits(Habits.fromResponse(response.data)));
+    yield put(push('records'));
   }
 }
 
@@ -37,6 +40,7 @@ function* removeHabit(action: ReturnType<typeof HabitsActions.removeHabit>) {
   const response = yield call(HabitsApi.delete, id);
   if (response.isSuccess) {
     yield put(HabitsActions.setHabits(Habits.fromResponse(response.data)));
+    yield put(push('records'));
   }
 }
 
