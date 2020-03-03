@@ -14,9 +14,6 @@ jobs:
           POSTGRES_DB: default
           POSTGRES_USER: default
           POSTGRES_PASSWORD: secret
-    branches:
-      only:
-        - master
     working_directory: ~/laravel # directory where steps will run
 
     steps:
