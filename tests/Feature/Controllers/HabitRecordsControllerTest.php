@@ -35,7 +35,7 @@ class HabitRecordsControllerTest extends TestCase
             'habits' => [
                 [
                     'habitName' => '本を読む',
-                    'repeatType' => 'day_of_week',
+                    'repeatType' => 'dayOfWeek',
                     'repeatValue' => 127,
                     'targetTime' => 5,
                     'timeOfDay' => 'always',
@@ -66,7 +66,7 @@ class HabitRecordsControllerTest extends TestCase
             'habits' => [
                 [
                     'habitName' => '本を読む',
-                    'repeatType' => 'day_of_week',
+                    'repeatType' => 'dayOfWeek',
                     'repeatValue' => 127,
                     'targetTime' => 5,
                     'timeOfDay' => 'always',
@@ -98,7 +98,7 @@ class HabitRecordsControllerTest extends TestCase
             'habits' => [
                 [
                     'habitName' => '本を読む',
-                    'repeatType' => 'day_of_week',
+                    'repeatType' => 'dayOfWeek',
                     'repeatValue' => 127,
                     'targetTime' => 5,
                     'timeOfDay' => 'always',

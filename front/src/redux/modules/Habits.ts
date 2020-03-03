@@ -9,6 +9,7 @@ export const HabitsActions = {
   getHabits: actionCreator<void>('getHabits'),
   setHabits: actionCreator<Habits>('setHabits'),
   addHabit: actionCreator<object>('addHabit'),
+  updateHabit: actionCreator<{habitId: number, values: object}>('updateHabit'),
   removeHabit: actionCreator<number>('removeHabit'),
   formInitialize: actionCreator<number>('formInitialize'),
 };

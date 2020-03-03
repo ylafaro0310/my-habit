@@ -16,6 +16,14 @@ class HabitsController extends Controller
         $this->pdo = DB::connection()->getPdo();
     }
 
+    private function createResponse(){
+        $habits = $this->habits->select();
+        $response = [
+            'habits' => $habits,
+        ];
+        return Util::camelArray($response);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -23,8 +31,7 @@ class HabitsController extends Controller
      */
     public function index()
     {
-        $response = $this->habits->select();
-        $response = Util::camelArray($response);
+        $response = $this->createResponse();
         return json_encode($response);
     }
 
@@ -52,6 +59,8 @@ class HabitsController extends Controller
             $this->pdo->beginTransaction();
             $this->habits->store($params);
             $this->pdo->commit();
+            $response = $this->createResponse();
+            return json_encode($response);
         }catch(Exception $e){
             $this->pdo->rollback();
             Log::error('Transaction Error: '.$e->getMessage());
@@ -97,6 +106,8 @@ class HabitsController extends Controller
             $this->pdo->beginTransaction();
             $this->habits->where(['id'=>$id])->update($params);
             $this->pdo->commit();
+            $response = $this->createResponse();
+            return json_encode($response);
         }catch(Exception $e){
             $this->pdo->rollback();
             Log::error('Transaction Error: '.$e->getMessage());
@@ -112,10 +123,15 @@ class HabitsController extends Controller
      */
     public function destroy($id)
     {
+        if(!$this->habits->where(['id'=>$id])->exists()){
+            abort(400,'Invalid parameter specified');
+        }
         try{
             $this->pdo->beginTransaction();
             $this->habits->where(['id'=>$id])->delete();
             $this->pdo->commit();
+            $response = $this->createResponse();
+            return json_encode($response);
         }catch(Exception $e){
             $this->pdo->rollback();
             Log::error('Transaction Error: '.$e->getMessage());

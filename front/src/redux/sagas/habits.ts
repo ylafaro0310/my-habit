@@ -23,6 +23,15 @@ function* addHabit(action: ReturnType<typeof HabitsActions.addHabit>) {
   }
 }
 
+function* updateHabit(action: ReturnType<typeof HabitsActions.updateHabit>) {
+  const { habitId, values } = action.payload;
+  const params = values;
+  const response = yield call(HabitsApi.patch, habitId, params);
+  if (response.isSuccess) {
+    yield put(HabitsActions.setHabits(Habits.fromResponse(response.data)));
+  }
+}
+
 function* removeHabit(action: ReturnType<typeof HabitsActions.removeHabit>) {
   const id = action.payload;
   const response = yield call(HabitsApi.delete, id);
@@ -43,6 +52,7 @@ function* formInitialize(action: ReturnType<typeof HabitsActions.formInitialize>
 export function* HabitsSaga() {
   yield takeLatest(HabitsActions.getHabits, getHabits);
   yield takeLatest(HabitsActions.addHabit, addHabit);
+  yield takeLatest(HabitsActions.updateHabit, updateHabit);
   yield takeLatest(HabitsActions.removeHabit, removeHabit);
   yield takeLatest(HabitsActions.formInitialize, formInitialize);
 }

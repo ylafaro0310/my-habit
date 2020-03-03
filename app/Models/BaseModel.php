@@ -63,7 +63,7 @@ class BaseModel {
         $sth = $this->pdo->prepare($query);
         Log::debug('SQL: '.$sth->queryString);
         $sth->execute();
-        $result = $sth->fetchAll();
+        $result = $sth->fetchAll(\PDO::FETCH_ASSOC);
         $this->resetConditions();
         return $result;
     }
@@ -74,7 +74,7 @@ class BaseModel {
         $sth = $this->pdo->prepare($query);
         Log::debug('SQL: '.$sth->queryString);
         $sth->execute();
-        $result = $sth->fetchAll();
+        $result = $sth->fetchAll(\PDO::FETCH_ASSOC);
         $this->resetConditions();
         return $result[0];
     }

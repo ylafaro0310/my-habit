@@ -1,6 +1,5 @@
 import React from 'react';
 import { Dispatch } from 'redux';
-import { Dayjs } from 'dayjs';
 import { Field, InjectedFormProps, WrappedFieldProps, change, formValueSelector, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 
@@ -47,20 +46,12 @@ type HabitFormProps = {
   repeatTypeValue: string;
   resetRepeatValue: VoidFunction;
 } & InjectedFormProps<{}, HabitFormProps> & RouteComponentProps<{id: string}>;
-interface HabitFormState {
-  habitName: string;
-  repeatType: string;
-  repeatValue: number;
-  startedDate: Dayjs;
-  targetTime: number;
-  timeOfDay: string;
-}
 const initialValues = {
   habitName: '',
   repeatType: 'dayOfWeek',
   repeatValue: 127,
-  startedDate: dayjs().format('YYYY-MM-DD'),
-  targetTime: 0,
+  startedAt: dayjs().format('YYYY-MM-DD'),
+  targetTime: null,
   timeOfDay: 'always',
 };
 class HabitForm extends React.Component<HabitFormProps> {
@@ -71,12 +62,23 @@ class HabitForm extends React.Component<HabitFormProps> {
       dispatch(HabitsActions.formInitialize(Number(id))); 
     }
   }
+
+  onClickRemove(event: React.MouseEvent<HTMLButtonElement, MouseEvent>,habitId: number){
+    event.preventDefault();
+    const { dispatch } = this.props;
+    const isYes = window.confirm('この習慣に関する全てのデータが削除されます。この習慣を削除しますか？');
+    if(isYes){
+      dispatch(HabitsActions.removeHabit(habitId));
+    }
+  }
+
   render(){
     const {
       repeatTypeValue,
       handleSubmit,
       resetRepeatValue,
     } = this.props;
+    const { id } = this.props.match.params;
     return (
       <form onSubmit={handleSubmit}>
         <div>
@@ -164,8 +166,8 @@ class HabitForm extends React.Component<HabitFormProps> {
         )}
 
         <div>
-          <label htmlFor='startedDate'>開始日</label>
-          <Field name='startedDate' component='input' type='text' />
+          <label htmlFor='startedAt'>開始日</label>
+          <Field name='startedAt' component='input' type='text' />
         </div>
         <div>
           <label htmlFor='targetTime'>目標時間</label>
@@ -180,7 +182,13 @@ class HabitForm extends React.Component<HabitFormProps> {
             <option value='always'>いつでも</option>
           </Field>
         </div>
-        <button type='submit'>追加する</button>
+        <button type='submit'>{id ? '更新する' : '追加する'}</button>
+        {id ? 
+          <button 
+          type='button' 
+          onClick={(e)=>{this.onClickRemove(e,Number(id));}}>
+              習慣を削除する
+          </button>: null }
       </form>
     );
   };
@@ -201,8 +209,17 @@ export default connect(
 )(
   reduxForm<{}, HabitFormProps>({
     form: 'habit',
-    onSubmit: (values, dispatch) => {
-      dispatch(HabitsActions.addHabit(values));
+    onSubmit: (values, dispatch, props) => {
+      const { id } = props.match.params;
+      if(id){
+        const params = {
+          habitId: Number(id),
+          values
+        };
+        dispatch(HabitsActions.updateHabit(params));
+      }else{
+        dispatch(HabitsActions.addHabit(values));
+      }
     },
   })(HabitForm),
 );

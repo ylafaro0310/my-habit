@@ -27,12 +27,14 @@ class HabitsControllerTest extends TestCase
     public function testIndex()
     {
         $expectedData = [
-            [
-                'habitName' => '本を読む',
-                'repeatType' => 'day_of_week',
-                'repeatValue' => 127,
-                'targetTime' => 5,
-                'timeOfDay' => 'always',
+            'habits' => [
+                [
+                    'habitName' => '本を読む',
+                    'repeatType' => 'dayOfWeek',
+                    'repeatValue' => 127,
+                    'targetTime' => 5,
+                    'timeOfDay' => 'always',
+                ]
             ]
         ];
         $response = $this->get($this->habitsPath);
@@ -48,7 +50,7 @@ class HabitsControllerTest extends TestCase
     {
         $expectedData = [
             'habitName' => '本を読む',
-            'repeatType' => 'day_of_week',
+            'repeatType' => 'dayOfWeek',
             'repeatValue' => 127,
             'targetTime' => 5,
             'timeOfDay' => 'always',
@@ -66,14 +68,26 @@ class HabitsControllerTest extends TestCase
     {
         $params = [
             'habitName' => 'プログラムを書く',
-            'repeatType' => 'day_of_week',
+            'repeatType' => 'dayOfWeek',
             'repeatValue' => 127,
             'startedAt' => Date('2020-02-09'),
             'targetTime' => null,
             'timeOfDay' => 'always',
         ];
+        $expectedData = [
+            'habits' => [
+                [
+                    'habitName' => '本を読む',
+                    'repeatType' => 'dayOfWeek',
+                    'repeatValue' => 127,
+                    'targetTime' => 5,
+                    'timeOfDay' => 'always',
+                ]   
+            ]
+        ];
         $this->assertDatabaseMissing($this->tableName, Util::snakeArray($params));
-        $this->post($this->habitsPath,$params);
+        $response = $this->post($this->habitsPath,$params);
+        $response->assertJson($expectedData);
         $this->assertDatabaseHas($this->tableName, Util::snakeArray($params));
     }
 
@@ -86,14 +100,26 @@ class HabitsControllerTest extends TestCase
     {
         $params = [
             'habitName' => '本を5分読む',
-            'repeatType' => 'day_of_week',
+            'repeatType' => 'dayOfWeek',
             'repeatValue' => 127,
             'targetTime' => 5,
             'timeOfDay' => 'always',
         ];
         $expectedData = $params;
+        $expectedResponse = [
+            'habits' => [
+                [
+                    'habitName' => '本を5分読む',
+                    'repeatType' => 'dayOfWeek',
+                    'repeatValue' => 127,
+                    'targetTime' => 5,
+                    'timeOfDay' => 'always',
+                ]
+            ]
+        ];
         $this->assertDatabaseMissing($this->tableName, Util::snakeArray($expectedData));
-        $this->patch($this->habitsPath.'/1',$params);
+        $response = $this->patch($this->habitsPath.'/1',$params);
+        $response->assertJson($expectedResponse);
         $this->assertDatabaseHas($this->tableName, Util::snakeArray($expectedData));
     }
 
@@ -104,10 +130,25 @@ class HabitsControllerTest extends TestCase
      */
     public function testDelete()
     {
-        $this->assertDatabaseHas($this->tableName, ['id'=>1]);
-        $this->delete($this->habitsPath.'/1');
-        $this->assertDatabaseMissing($this->tableName, ['id'=>1]);
+        $expectedData = [
+            'habits' => [
+                [
+                    'habitName' => '本を読む',
+                    'repeatType' => 'dayOfWeek',
+                    'repeatValue' => 127,
+                    'targetTime' => 5,
+                    'timeOfDay' => 'always',
+                ]
+            ]
+        ];
+        $this->assertDatabaseHas($this->tableName, ['id'=>2]);
+        $response = $this->delete($this->habitsPath.'/2');
+        $response->assertJson($expectedData);
+        $this->assertDatabaseMissing($this->tableName, ['id'=>2]);
 
         // 存在しないhabit_idのテスト
+        $this->assertDatabaseMissing($this->tableName, ['id'=>999]);
+        $response = $this->delete($this->habitsPath.'/999');
+        $response->assertStatus(400);
     }
 }
