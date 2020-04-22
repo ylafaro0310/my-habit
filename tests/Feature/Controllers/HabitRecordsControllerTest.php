@@ -41,6 +41,22 @@ class HabitRecordsControllerTest extends TestCase
                     'timeOfDay' => 'always',
                     'consecutiveDays' => 3,
                     //'consecutiveWeeks' => null,
+                ],[
+                    'habitName' => '新しいCDを1枚聴く',
+                    'repeatType' => 'dayOfWeek',
+                    'repeatValue' => 127,
+                    'targetTime' => null,
+                    'timeOfDay' => 'always',
+                    'consecutiveDays' => 0,
+                    //'consecutiveWeeks' => null,
+                ],[
+                    'habitName' => '筋トレ',
+                    'repeatType' => 'interval',
+                    'repeatValue' => 3,
+                    'targetTime' => null,
+                    'timeOfDay' => 'always',
+                    'consecutiveDays' => 2,
+                    //'consecutiveWeeks' => null,
                 ]
             ],
         ];

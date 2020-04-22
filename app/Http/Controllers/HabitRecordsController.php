@@ -26,7 +26,7 @@ class HabitRecordsController extends Controller
 
         foreach($habits as &$habit){
             $filteredRecords = array_filter($habitRecords,function($v)use($habit){return $v['habit_id'] === $habit['id'];});
-            $consecutiveDays = $this->calcConsecutiveDays($filteredRecords);
+            $consecutiveDays = $this->calcConsecutiveDays($filteredRecords,$habit['repeat_type'],$habit['repeat_value']);
             $habit['consecutiveDays'] = $consecutiveDays;
         }
 
@@ -38,45 +38,42 @@ class HabitRecordsController extends Controller
         return Util::camelArray($response);
     }
 
-    private function calcConsecutiveDays($habitRecords){
+    private function calcConsecutiveDays($habitRecords,$repeatType,$repeatValue){
         $completedAt = array_column($habitRecords,'completed_at');
         array_multisort($completedAt,SORT_DESC,$habitRecords);
         $count = 0;
+        $habitInterval = 0;
+        if($repeatType == 'dayOfWeek' && $repeatValue==127){
+            $habitInterval = 1;
+        }
+        if($repeatType == 'interval'){
+            $habitInterval = $repeatValue - 1;
+        }
+        
 
         // 今日があるか
         $today = $this->systemClock->now();
-        $yesterday = $today->sub(new \DateInterval('P1D'));
-        $recordsBeforeYesterday = [];
+        $prev = clone $today;
         foreach($habitRecords as $key => $value){
-            $completed_at = new \DateTime($value['completed_at']);
+            $next = new \DateTime($value['completed_at']);
+            
             // 今日があるか
-            $interval = $completed_at->diff($today);
+            $interval = $next->diff($today);
             if($interval->days == 0){
                 $count = 1;
+                $prev = $today;
                 continue;
             }
 
-            // 昨日があるか
-            $interval = $completed_at->diff($yesterday);
-            if($interval->days == 0){
-                $recordsBeforeYesterday = array_slice($habitRecords,$key);
-                $prev = $completed_at->sub(new \DateInterval('P1D'));
+            $interval = $next->diff($prev);
+            if($interval->days != 0 && $interval->days <= $habitInterval){
+                $count++;
+            }else{
                 break;
-            }            
+            }
+            $prev = $next;
         }
 
-        if($recordsBeforeYesterday != []){
-            foreach($recordsBeforeYesterday as $value){
-                $next = new \DateTime($value['completed_at']);
-                $interval = $next->diff($prev);
-                if($interval->days == 1){
-                    $count++;
-                }else{
-                    break;
-                }
-                $prev = $next;
-            }
-        }
         return $count;
     }
 
