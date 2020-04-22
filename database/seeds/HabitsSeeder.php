@@ -30,9 +30,9 @@ class HabitsSeeder extends Seeder
         ]);
         DB::table('habits')->insert([
             'habit_name' => '筋トレ',
-            'repeat_type' => 'dayOfWeek',
-            'repeat_value' => 127,
-            'started_at' => Date('2020-02-08'),
+            'repeat_type' => 'interval',
+            'repeat_value' => 3,
+            'started_at' => Date('2020-02-01'),
             'target_time' => null,
             'time_of_day' => 'always',
         ]);

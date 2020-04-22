@@ -16,7 +16,7 @@ class CreateHabitsTable extends Migration
         Schema::create('habits', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('habit_name');
-            $table->string('repeat_type');
+            $table->string('repeat_type'); // 「dayOfWeek」「interval」「week」
             $table->integer('repeat_value');
             $table->datetime('started_at');
             $table->integer('target_time')->nullable();
