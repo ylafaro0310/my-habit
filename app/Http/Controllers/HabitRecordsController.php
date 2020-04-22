@@ -47,7 +47,7 @@ class HabitRecordsController extends Controller
             $habitInterval = 1;
         }
         if($repeatType == 'interval'){
-            $habitInterval = $repeatValue - 1;
+            $habitInterval = $repeatValue;
         }
         
 
