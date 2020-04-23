@@ -20,15 +20,15 @@ type HabitListProps = {
 const shouldBeDisplayed = (habit: Habit, habitRecords: HabitRecords, selectedDate: string): boolean => {
   const repeatType = habit.repeatType;
   const repeatValue = habit.repeatValue;
-  if(repeatType == 'interval'){
+  if(repeatType === 'interval'){
     for(let i = 1; i < repeatValue; i++){
-      if(habitRecords.getList().filter(elem=>elem.habitId == habit.id).find(elem=>elem.completedAt.add(i,'day').isSame(selectedDate))){
+      if(habitRecords.getList().filter(elem=>elem.habitId === habit.id).find(elem=>elem.completedAt.add(i,'day').isSame(selectedDate))){
         return false;
       }
     }
   }
-  if(repeatType == 'dayOfWeek' && repeatValue == 127){
-    if(habitRecords.getList().filter(elem=>elem.habitId == habit.id).find(elem=>elem.completedAt.add(1,'day').isSame(selectedDate))){
+  if(repeatType === 'dayOfWeek' && Number(repeatValue) === 127){
+    if(habitRecords.getList().filter(elem=>elem.habitId === habit.id).find(elem=>elem.completedAt.add(1,'day').isSame(selectedDate))){
       return false;
     }
   }
