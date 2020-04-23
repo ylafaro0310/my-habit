@@ -4,21 +4,6 @@ exports[`Component: HabitList Snapshot test 1`] = `
 <StyledCard>
   <form>
     <styled.div
-      key="0"
-    >
-      <input
-        checked={true}
-        id="habit_1"
-        onChange={[Function]}
-        type="checkbox"
-      />
-      <label
-        htmlFor="habit_1"
-      >
-        読書する
-      </label>
-    </styled.div>
-    <styled.div
       key="1"
     >
       <input
@@ -30,8 +15,21 @@ exports[`Component: HabitList Snapshot test 1`] = `
       <label
         htmlFor="habit_2"
       >
-        筋トレ
+        <div>
+          筋トレ
+        </div>
+        <div>
+          0
+          日連続
+        </div>
       </label>
+      <Link
+        to="habits/2"
+      >
+        <span
+          className="fas fa-edit"
+        />
+      </Link>
     </styled.div>
     <styled.div
       key="2"
@@ -45,8 +43,21 @@ exports[`Component: HabitList Snapshot test 1`] = `
       <label
         htmlFor="habit_3"
       >
-        新しいCDを1枚聴く
+        <div>
+          新しいCDを1枚聴く
+        </div>
+        <div>
+          0
+          日連続
+        </div>
       </label>
+      <Link
+        to="habits/3"
+      >
+        <span
+          className="fas fa-edit"
+        />
+      </Link>
     </styled.div>
   </form>
 </StyledCard>

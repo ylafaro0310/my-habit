@@ -12,7 +12,12 @@ exports[`Page: Record Snapshot test 1`] = `
         <div>
           2月8日
         </div>
-        <styled.a />
+        <Link
+          className="no-decoration"
+          to="habits"
+        >
+          <styled.div />
+        </Link>
       </styled.div>
       <styled.ul
         id="datelist"
@@ -881,7 +886,6 @@ exports[`Page: Record Snapshot test 1`] = `
             "targetTime": 0,
             "timeOfDay": "",
             "consecutiveDays": 0,
-            "consecutiveWeeks": null,
           },
           Immutable.Record {
             "id": 2,
@@ -892,7 +896,6 @@ exports[`Page: Record Snapshot test 1`] = `
             "targetTime": 0,
             "timeOfDay": "",
             "consecutiveDays": 0,
-            "consecutiveWeeks": null,
           },
           Immutable.Record {
             "id": 3,
@@ -903,7 +906,6 @@ exports[`Page: Record Snapshot test 1`] = `
             "targetTime": 0,
             "timeOfDay": "",
             "consecutiveDays": 0,
-            "consecutiveWeeks": null,
           },
         ],
       }

@@ -8,13 +8,27 @@ import { HabitList } from '../HabitList';
 
 const data = {
   habits: [
-    { id: 1, habitName: '読書する' },
-    { id: 2, habitName: '筋トレ' },
-    { id: 3, habitName: '新しいCDを1枚聴く' },
+    { 
+      id: 1, 
+      habitName: '読書する',
+      repeatType: 'dayOfWeek',
+      repeatValue: 127,
+    },{ 
+      id: 2, 
+      habitName: '筋トレ',
+      repeatType: 'interval',
+      repeatValue: 3,
+    },{ 
+      id: 3, 
+      habitName: '新しいCDを1枚聴く',
+      repeatType: 'dayOfWeek',
+      repeatValue: 127,
+    },
   ],
   habitRecords: [
     { habitId: 2, completedAt: dayjs() },
     { habitId: 1, completedAt: dayjs('2020-01-08') },
+    { habitId: 1, completedAt: dayjs('2020-01-07') },
   ],
 };
 
@@ -51,4 +65,36 @@ describe('Component: HabitList', () => {
       .simulate('change', { target: { checked: false } });
     expect(mockFn2.mock.calls.length).toBe(1);
   });
+  it('3日ごとの習慣を2日前または1日前に達成している場合のみに、習慣が非表示になること',()=>{
+    let customData = data;
+    
+    // 1日前に達成している場合
+    customData['habitRecords'].push({ habitId: 2, completedAt: dayjs('2020-01-07')});
+    let customProps = {
+      habits: Habits.fromResponse(customData),
+      habitRecords: HabitRecords.fromResponse(customData),
+      selectedDate: dayjs('2020-01-08').format('YYYY-MM-DD'),
+      addHabitRecord: jest.fn(),
+      removeHabitRecord: jest.fn(),
+    };
+    let wrapper = shallow(<HabitList {...customProps}/>);
+    wrapper = shallow(<HabitList {...customProps}/>).childAt(0);
+    expect(wrapper.text()).not.toMatch(/筋トレ/);
+
+    // 2日前に達成している場合
+    customData['habitRecords'].pop();
+    customData['habitRecords'].push({ habitId: 2, completedAt: dayjs('2020-01-06')});
+    customProps['habitRecords'] = HabitRecords.fromResponse(customData);
+    wrapper = shallow(<HabitList {...customProps}/>);
+    wrapper = shallow(<HabitList {...customProps}/>).childAt(0);
+    expect(wrapper.text()).not.toMatch(/筋トレ/);
+
+    // 3日前に達成している場合
+    customData['habitRecords'].pop();
+    customData['habitRecords'].push({ habitId: 2, completedAt: dayjs('2020-01-05')});
+    customProps['habitRecords'] = HabitRecords.fromResponse(customData);
+    wrapper = shallow(<HabitList {...customProps}/>).childAt(0);
+    expect(wrapper.text()).toMatch(/筋トレ/);
+  });
+  it('3日ごとの習慣を2日以内に達成していない場合に、習慣が表示されること',()=>{});
 });
