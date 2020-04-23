@@ -85,13 +85,13 @@ exports[`Page: HabitForm Snapshot test 1`] = `
   </div>
   <div>
     <label
-      htmlFor="startedDate"
+      htmlFor="startedAt"
     >
       開始日
     </label>
     <Field
       component="input"
-      name="startedDate"
+      name="startedAt"
       type="text"
     />
   </div>
@@ -189,68 +189,62 @@ exports[`Page: HabitForm Snapshot test 2`] = `
   <div>
     <label>
       <Field
-        component="input"
+        code="1"
+        component={[Function]}
+        label="週に1回"
         name="repeatValue"
-        type="radio"
-        value="1"
       />
-      週に1回
     </label>
     <label>
       <Field
-        component="input"
+        code="2"
+        component={[Function]}
+        label="週に2回"
         name="repeatValue"
-        type="radio"
-        value="2"
       />
-      週に2回
     </label>
     <label>
       <Field
-        component="input"
+        code="3"
+        component={[Function]}
+        label="週に3回"
         name="repeatValue"
-        type="radio"
-        value="3"
       />
-      週に3回
     </label>
     <label>
       <Field
-        component="input"
+        code="4"
+        component={[Function]}
+        label="週に4回"
         name="repeatValue"
-        type="radio"
-        value="4"
       />
-      週に4回
     </label>
     <label>
       <Field
-        component="input"
+        code="5"
+        component={[Function]}
+        label="週に5回"
         name="repeatValue"
-        type="radio"
-        value="5"
       />
-      週に5回
     </label>
     <label>
       <Field
-        component="input"
+        code="6"
+        component={[Function]}
+        label="週に6回"
         name="repeatValue"
-        type="radio"
-        value="6"
       />
-      週に6回
     </label>
   </div>
   <div>
     <label
-      htmlFor="startedDate"
+      htmlFor="startedAt"
     >
       開始日
     </label>
     <Field
       component="input"
-      name="startedDate"
+      name="startedAt"
       type="text"
     />
   </div>
@@ -348,59 +342,54 @@ exports[`Page: HabitForm Snapshot test 3`] = `
   <div>
     <label>
       <Field
-        component="input"
+        code="2"
+        component={[Function]}
+        label="2日ごと"
         name="repeatValue"
-        type="radio"
-        value="2"
       />
-      2日ごと
     </label>
     <label>
       <Field
-        component="input"
+        code="3"
+        component={[Function]}
+        label="3日ごと"
         name="repeatValue"
-        type="radio"
-        value="3"
       />
-      3日ごと
     </label>
     <label>
       <Field
-        component="input"
+        code="4"
+        component={[Function]}
+        label="4日ごと"
         name="repeatValue"
-        type="radio"
-        value="4"
       />
-      4日ごと
     </label>
     <label>
       <Field
-        component="input"
+        code="5"
+        component={[Function]}
+        label="5日ごと"
         name="repeatValue"
-        type="radio"
-        value="5"
       />
-      5日ごと
     </label>
     <label>
       <Field
-        component="input"
+        code="6"
+        component={[Function]}
+        label="6日ごと"
         name="repeatValue"
-        type="radio"
-        value="6"
       />
-      6日ごと
     </label>
   </div>
   <div>
     <label
-      htmlFor="startedDate"
+      htmlFor="startedAt"
     >
       開始日
     </label>
     <Field
       component="input"
-      name="startedDate"
+      name="startedAt"
       type="text"
     />
   </div>

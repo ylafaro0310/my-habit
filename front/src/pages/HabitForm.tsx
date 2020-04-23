@@ -40,6 +40,21 @@ const CustomCheckbox: React.FC<CustomCheckboxProps> = ({ code, label, input }: C
   </label>
 );
 
+const CustomRadio: React.FC<CustomCheckboxProps> = ({ code, label, input }: CustomCheckboxProps) => (
+  <label>
+    <input
+      {...input}
+      type='radio'
+      value={code}
+      checked={Number(input.value)===Number(code)}
+      onBlur={e => {
+        e.preventDefault();
+      }}
+    />
+    {label}
+  </label>
+);
+
 type HabitFormProps = {
   habit: object;
   dispatch: Dispatch;
@@ -54,7 +69,7 @@ const initialValues = {
   targetTime: null,
   timeOfDay: 'always',
 };
-class HabitForm extends React.Component<HabitFormProps> {
+export class HabitForm extends React.Component<HabitFormProps> {
   componentDidMount(){
     const { id } = this.props.match.params;
     const { dispatch } = this.props;
@@ -102,28 +117,22 @@ class HabitForm extends React.Component<HabitFormProps> {
         {repeatTypeValue === 'week' && (
           <div>
             <label>
-              <Field name='repeatValue' component='input' type='radio' value='1' />
-              週に1回
+              <Field name='repeatValue' component={CustomRadio} code='1' label='週に1回'/>
             </label>
             <label>
-              <Field name='repeatValue' component='input' type='radio' value='2' />
-              週に2回
+              <Field name='repeatValue' component={CustomRadio} code='2' label='週に2回'/>
             </label>
             <label>
-              <Field name='repeatValue' component='input' type='radio' value='3' />
-              週に3回
+              <Field name='repeatValue' component={CustomRadio} code='3' label='週に3回'/>
             </label>
             <label>
-              <Field name='repeatValue' component='input' type='radio' value='4' />
-              週に4回
+              <Field name='repeatValue' component={CustomRadio} code='4' label='週に4回'/>
             </label>
             <label>
-              <Field name='repeatValue' component='input' type='radio' value='5' />
-              週に5回
+              <Field name='repeatValue' component={CustomRadio} code='5' label='週に5回'/>
             </label>
             <label>
-              <Field name='repeatValue' component='input' type='radio' value='6' />
-              週に6回
+              <Field name='repeatValue' component={CustomRadio} code='6' label='週に6回'/>
             </label>
           </div>
         )}
@@ -131,24 +140,19 @@ class HabitForm extends React.Component<HabitFormProps> {
         {repeatTypeValue === 'interval' && (
           <div>
             <label>
-              <Field name='repeatValue' component='input' type='radio' value='2' />
-              2日ごと
+              <Field name='repeatValue' component={CustomRadio} code='2' label='2日ごと'/>
             </label>
             <label>
-              <Field name='repeatValue' component='input' type='radio' value='3' />
-              3日ごと
+              <Field name='repeatValue' component={CustomRadio} code='3' label='3日ごと'/>
             </label>
             <label>
-              <Field name='repeatValue' component='input' type='radio' value='4' />
-              4日ごと
+              <Field name='repeatValue' component={CustomRadio} code='4' label='4日ごと'/>
             </label>
             <label>
-              <Field name='repeatValue' component='input' type='radio' value='5' />
-              5日ごと
+              <Field name='repeatValue' component={CustomRadio} code='5' label='5日ごと'/>
             </label>
             <label>
-              <Field name='repeatValue' component='input' type='radio' value='6' />
-              6日ごと
+              <Field name='repeatValue' component={CustomRadio} code='6' label='6日ごと'/>
             </label>
           </div>
         )}

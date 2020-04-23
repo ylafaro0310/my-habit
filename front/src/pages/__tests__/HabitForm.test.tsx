@@ -7,6 +7,12 @@ const mockfn1 = jest.fn();
 const mockfn2 = jest.fn();
 const props = {
   repeatTypeValue: 'dayOfWeek',
+  match: {
+    params: {
+      id: null,
+    }
+  },
+  dispatch: jest.fn(),
   handleSubmit: mockfn1,
   resetRepeatValue: mockfn2,
 };
