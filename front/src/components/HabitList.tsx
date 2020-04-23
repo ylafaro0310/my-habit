@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 
 import dayjs from '../lib/dayjs-ja';
-import Habits from '../models/Habits';
+import Habits, { Habit } from '../models/Habits';
 import HabitRecords from '../models/HabitRecords';
 import { HabitRecordsActions } from '../redux/modules/HabitRecords';
 import Card from '../components/Card';
@@ -16,6 +16,24 @@ type HabitListProps = {
   addHabitRecord: (params: object) => void;
   removeHabitRecord: (params: object) => void;
 };
+
+const shouldBeDisplayed = (habit: Habit, habitRecords: HabitRecords, selectedDate: string): boolean => {
+  const repeatType = habit.repeatType;
+  const repeatValue = habit.repeatValue;
+  if(repeatType == 'interval'){
+    for(let i = 1; i < repeatValue; i++){
+      if(habitRecords.getList().filter(elem=>elem.habitId == habit.id).find(elem=>elem.completedAt.add(i,'day').isSame(selectedDate))){
+        return false;
+      }
+    }
+  }
+  if(repeatType == 'dayOfWeek' && repeatValue == 127){
+    if(habitRecords.getList().filter(elem=>elem.habitId == habit.id).find(elem=>elem.completedAt.add(1,'day').isSame(selectedDate))){
+      return false;
+    }
+  }
+  return true;
+}
 
 export const HabitList: React.FC<HabitListProps> = ({
   habits,
@@ -45,6 +63,7 @@ export const HabitList: React.FC<HabitListProps> = ({
       <Card>
       <form>
         {habits.getList().map((habit, key) => (
+          shouldBeDisplayed(habit,habitRecords,selectedDate) ?
           <ListItem key={key}>
             <input
               id={'habit_' + habit.id}
@@ -60,6 +79,7 @@ export const HabitList: React.FC<HabitListProps> = ({
             </label>
             <Link to={'habits/'+habit.id}><span className='fas fa-edit'/></Link>
           </ListItem>
+          : null
         ))}
       </form>
       </Card>
