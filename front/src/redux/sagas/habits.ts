@@ -7,9 +7,9 @@ import { initialize } from 'redux-form';
 import { push } from 'connected-react-router';
 
 function* getHabits(action: ReturnType<typeof HabitsActions.getHabits>) {
-  const id = action.payload;
-  const params = { id };
-  const response = yield call(HabitsApi.getAll, params);
+  //const id = action.payload;
+  //const params = { id };
+  const response = yield call(HabitsApi.getAll);
   if (response.isSuccess) {
     yield put(HabitsActions.setHabits(Habits.fromResponse(response.data)));
   }

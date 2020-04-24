@@ -26,7 +26,7 @@ const response = {
 describe('HabitsSaga:', () => {
   it('getHabits()', () => {
     return expectSaga(HabitsSaga)
-      .provide([[call(HabitsApi.get, { id: undefined }), response]])
+      .provide([[call(HabitsApi.getAll), response]])
       .put({ type: HabitsActions.setHabits.type, payload: Habits.fromResponse(response.data) })
       .dispatch({ type: HabitsActions.getHabits.type })
       .silentRun();

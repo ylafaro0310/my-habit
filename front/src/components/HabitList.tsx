@@ -27,11 +27,6 @@ const shouldBeDisplayed = (habit: Habit, habitRecords: HabitRecords, selectedDat
       }
     }
   }
-  if(repeatType === 'dayOfWeek' && Number(repeatValue) === 127){
-    if(habitRecords.getList().filter(elem=>elem.habitId === habit.id).find(elem=>elem.completedAt.add(1,'day').isSame(selectedDate))){
-      return false;
-    }
-  }
   return true;
 }
 
