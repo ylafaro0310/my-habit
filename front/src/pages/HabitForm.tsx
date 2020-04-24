@@ -1,66 +1,20 @@
 import React from 'react';
 import { Dispatch } from 'redux';
-import { Field, InjectedFormProps, WrappedFieldProps, change, formValueSelector, reduxForm } from 'redux-form';
+import { Field, InjectedFormProps, change, formValueSelector, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 
 import dayjs from '../lib/dayjs-ja';
 import { HabitsActions } from '../redux/modules/Habits';
 import { RouteComponentProps } from 'react-router-dom';
-
-type CustomCheckboxProps = {
-  label: string;
-  code: number;
-} & WrappedFieldProps;
-
-const CustomCheckbox: React.FC<CustomCheckboxProps> = ({ code, label, input }: CustomCheckboxProps) => (
-  <label>
-    <input
-      {...input}
-      type='checkbox'
-      value={code}
-      checked={Boolean(Number(input.value) & Number(code))}
-      onBlur={e => {
-        e.preventDefault();
-      }}
-      onChange={e => {
-        let values = Number(input.value) || 0;
-        const value = Number(e.target.value);
-        const checked = e.target.checked;
-        const exists = values & value;
-        if (checked && !exists) {
-          values = values | value;
-        }
-        if (!checked && exists) {
-          values = values & ~value;
-        }
-        input.onChange(values);
-      }}
-    />
-    {label}
-  </label>
-);
-
-const CustomRadio: React.FC<CustomCheckboxProps> = ({ code, label, input }: CustomCheckboxProps) => (
-  <label>
-    <input
-      {...input}
-      type='radio'
-      value={code}
-      checked={Number(input.value)===Number(code)}
-      onBlur={e => {
-        e.preventDefault();
-      }}
-    />
-    {label}
-  </label>
-);
+import { CustomRadio, CustomCheckbox, CustomText, CustomSelect } from '../components/Form';
 
 type HabitFormProps = {
   habit: object;
   dispatch: Dispatch;
   repeatTypeValue: string;
-  resetRepeatValue: VoidFunction;
+  resetRepeatValue: (repeatType: string)=>void;
 } & InjectedFormProps<{}, HabitFormProps> & RouteComponentProps<{id: string}>;
+
 const initialValues = {
   habitName: '',
   repeatType: 'dayOfWeek',
@@ -69,6 +23,7 @@ const initialValues = {
   targetTime: null,
   timeOfDay: 'always',
 };
+
 export class HabitForm extends React.Component<HabitFormProps> {
   componentDidMount(){
     const { id } = this.props.match.params;
@@ -97,20 +52,22 @@ export class HabitForm extends React.Component<HabitFormProps> {
     return (
       <form onSubmit={handleSubmit}>
         <div>
-          <label htmlFor='habitName'>習慣名</label>
-          <Field name='habitName' component='input' type='text' />
+          <Field name='habitName' component={CustomText} label='習慣名' />
         </div>
         <div>
           <Field
             name='repeatType'
-            component='select'
-            onChange={() => {
-              resetRepeatValue();
+            component={CustomSelect}
+            label={undefined}
+            options={[
+              {value: 'dayOfWeek', displayName: '日単位'},
+              {value: 'week', displayName: '週単位'},
+              {value: 'intervale', displayName: 'インターバル'},
+            ]}
+            callback={(e: React.ChangeEvent<HTMLSelectElement>) => {
+              resetRepeatValue(e.target.value);
             }}
           >
-            <option value={'dayOfWeek'}>日単位</option>
-            <option value={'week'}>週単位</option>
-            <option value={'interval'}>インターバル</option>
           </Field>
         </div>
 
@@ -170,20 +127,21 @@ export class HabitForm extends React.Component<HabitFormProps> {
         )}
 
         <div>
-          <label htmlFor='startedAt'>開始日</label>
-          <Field name='startedAt' component='input' type='text' />
+          <Field name='startedAt' component={CustomText} label='開始日'/>
         </div>
         <div>
-          <label htmlFor='targetTime'>目標時間</label>
-          <Field name='targetTime' component='input' type='text' />
+          <Field name='targetTime' component={CustomText} label='目標時間(単位:分)'/>
         </div>
         <div>
-          <label htmlFor='timeOfDay'>時間帯</label>
-          <Field name='timeOfDay' component='select'>
-            <option value='am'>午前</option>
-            <option value='pm'>午後</option>
-            <option value='night'>夜</option>
-            <option value='always'>いつでも</option>
+          <Field name='timeOfDay' 
+            component={CustomSelect} 
+            label='時間帯'
+            options={[
+              {value: 'am', displayName:'午前'},
+              {value: 'pm', displayName:'午後'},
+              {value: 'night', displayName:'夜'},
+              {value: 'always', displayName:'いつでも'},
+            ]}>
           </Field>
         </div>
         <button type='submit'>{id ? '更新する' : '追加する'}</button>
@@ -206,8 +164,10 @@ export default connect(
     repeatTypeValue: selector(state, 'repeatType'),
   }),
   dispatch => ({
-    resetRepeatValue: () => {
-      dispatch(change('habit', 'repeatValue', null));
+    resetRepeatValue: (repeatType: string) => {
+      repeatType === 'dayOfWeek' 
+      ? dispatch(change('habit', 'repeatValue', 127))
+      : dispatch(change('habit', 'repeatValue', null));
     },
   }),
 )(
