@@ -160,7 +160,7 @@ const ButtonPrimary = styled.button`
   cursor: pointer;
 `
 const ButtonDanger = styled.button`
-  min-width: 9em;
+  min-width: 8em;
   height: 3em;
   border: 1px solid #F32121;
   border-radius: 5px 5px 5px 5px;
