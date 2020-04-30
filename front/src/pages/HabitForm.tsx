@@ -133,13 +133,13 @@ export class HabitForm extends React.Component<HabitFormProps> {
             ]}>
           </Field>
         </div>
-        <Button type='submit'>{id ? '更新する' : '追加する'}</Button>
+        <ButtonPrimary type='submit'>{id ? '更新する' : '追加する'}</ButtonPrimary>
         {id ? 
-          <Button 
+          <ButtonDanger 
           type='button' 
           onClick={(e)=>{this.onClickRemove(e,Number(id));}}>
               習慣を削除する
-          </Button>: null }
+          </ButtonDanger>: null }
       </Form>
     );
   };
@@ -149,12 +149,22 @@ const Form = styled.form`
   padding: 10px;
 `
 
-const Button = styled.button`
-  width: 8em;
+const ButtonPrimary = styled.button`
+  min-width: 8em;
   height: 3em;
   border: 1px solid #2196F3;
   border-radius: 5px 5px 5px 5px;
   background-color: #2196F3;
+  color: #fff;
+  margin: 5px;
+  cursor: pointer;
+`
+const ButtonDanger = styled.button`
+  min-width: 9em;
+  height: 3em;
+  border: 1px solid #F32121;
+  border-radius: 5px 5px 5px 5px;
+  background-color: #F32121;
   color: #fff;
   margin: 5px;
   cursor: pointer;
