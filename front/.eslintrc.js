@@ -19,13 +19,14 @@ module.exports = {
     "rules": {
       "sort-imports": ["error", { "ignoreDeclarationSort": true }],
       "import/order": ["error", { "newlines-between": "always" }],
+      "react/jsx-sort-props": [ 2 ],
       "prettier/prettier": [
         "error",
         {
           "tabWidth": 2,
           "singleQuote": true,
           "semi": true,
-          "printWidth": 120,
+          "printWidth": 80,
           "trailingComma": "all",
           "jsxSingleQuote": true
         }

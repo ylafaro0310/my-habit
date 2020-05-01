@@ -88,5 +88,10 @@ exports[`Component: HabitList Snapshot test 1`] = `
       </Link>
     </styled.div>
   </form>
+  <styled.div>
+    <styled.span>
+      達成済みを非表示にする
+    </styled.span>
+  </styled.div>
 </StyledCard>
 `;

@@ -11,6 +11,21 @@ exports[`Page: Record Snapshot test 1`] = `
       <styled.div>
         <div>
           2月8日
+          <select
+            onChange={[Function]}
+            value="today"
+          >
+            <option
+              value="today"
+            >
+              今日
+            </option>
+            <option
+              value="all"
+            >
+              すべて
+            </option>
+          </select>
         </div>
         <Link
           className="no-decoration"
@@ -858,6 +873,8 @@ exports[`Page: Record Snapshot test 1`] = `
     </div>
   </StyledCard>
   <Connect(HabitList)
+    categoriesOfHabitsDisplayed="today"
+    displayCompletedHabits={false}
     habitRecords={
       Immutable.Record {
         "items": Immutable.List [
@@ -911,6 +928,7 @@ exports[`Page: Record Snapshot test 1`] = `
       }
     }
     selectedDate="2020-02-08"
+    toggleDisplayCompletedHabit={[Function]}
   />
 </div>
 `;
