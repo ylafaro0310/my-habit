@@ -115,9 +115,11 @@ export const HabitList: React.FC<HabitListProps> = ({
               <div>{habit.habitName}</div>
               <div>{habit.consecutiveDays}日連続</div>
             </label>
-            <Link to={'habits/' + habit.id}>
-              <span className='fas fa-edit' />
-            </Link>
+            <EditButton>
+              <Link to={'habits/' + habit.id}>
+                <span className='fas fa-edit' />
+              </Link>
+            </EditButton>
           </ListItem>
         ))}
       </form>
@@ -147,6 +149,17 @@ const LinkButton = styled.div`
   left: 1.5rem;
   cursor: pointer;
   position: relative;
+`;
+
+const EditButton = styled.div`
+  & a {
+    position: relative;
+    top: 0.8rem;
+    color: #2196f3;
+  }
+  & a:visited {
+    color: #2196f3;
+  }
 `;
 
 const Upward = styled.span`
@@ -181,6 +194,8 @@ const ListItem = styled.div`
   position: relative;
   padding: 0.5rem;
   border-bottom: 1px solid #c0c0c0;
+  display: flex;
+  justify-content: space-between;
 
   & input {
     display: none;
@@ -188,10 +203,15 @@ const ListItem = styled.div`
 
   & label {
     top: 50%;
+    width: 100%;
+    padding-left: 2rem;
   }
   & label:before {
     width: 20px;
     height: 20px;
+    position: absolute;
+    top: 0.55rem;
+    left: -0.1rem;
     border: 1px solid #2196f3;
     content: ' ';
     border-radius: 10px;
@@ -201,11 +221,11 @@ const ListItem = styled.div`
   }
   & label:after {
     display: none;
-    top: 0.75em;
-    left: 1.4em;
+    position: absolute;
+    top: 0.8rem;
+    left: 0.8rem;
     content: '';
     color: #2196f3;
-    position: absolute;
     width: 14px;
     height: 14px;
     background-color: #2196f3;
