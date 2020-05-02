@@ -39,6 +39,27 @@ const isTodaysHabit = (
       }
     }
   }
+  if (repeatType === 'dayOfWeek') {
+    const selectedDateBit = 0b1 << (6 - dayjs(selectedDate).get('d'));
+    return Boolean(repeatValue & selectedDateBit);
+  }
+  if (repeatType === 'week') {
+    let count = 0;
+    for (let date = dayjs(selectedDate); ; date = date.subtract(1, 'day')) {
+      if (
+        habitRecords
+          .getList()
+          .filter(elem => elem.habitId === habit.id)
+          .find(elem => elem.completedAt.isSame(date))
+      ) {
+        count++;
+      }
+      if (date.get('d') === 0) {
+        break;
+      }
+    }
+    return count < repeatValue;
+  }
   return true;
 };
 
@@ -123,7 +144,10 @@ export const HabitList: React.FC<HabitListProps> = ({
           </ListItem>
         ))}
       </form>
-      <LinkButton onClick={toggleDisplayCompletedHabit}>
+      <LinkButton
+        id='toggleDisplayCompletedHabit'
+        onClick={toggleDisplayCompletedHabit}
+      >
         {displayCompletedHabits ? (
           <Upward>{'達成済みを非表示にする'}</Upward>
         ) : (

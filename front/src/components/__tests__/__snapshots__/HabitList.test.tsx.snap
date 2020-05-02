@@ -23,13 +23,15 @@ exports[`Component: HabitList Snapshot test 1`] = `
           日連続
         </div>
       </label>
-      <Link
-        to="habits/1"
-      >
-        <span
-          className="fas fa-edit"
-        />
-      </Link>
+      <styled.div>
+        <Link
+          to="habits/1"
+        >
+          <span
+            className="fas fa-edit"
+          />
+        </Link>
+      </styled.div>
     </styled.div>
     <styled.div
       key="1"
@@ -51,44 +53,51 @@ exports[`Component: HabitList Snapshot test 1`] = `
           日連続
         </div>
       </label>
-      <Link
-        to="habits/2"
-      >
-        <span
-          className="fas fa-edit"
-        />
-      </Link>
+      <styled.div>
+        <Link
+          to="habits/2"
+        >
+          <span
+            className="fas fa-edit"
+          />
+        </Link>
+      </styled.div>
     </styled.div>
     <styled.div
       key="2"
     >
       <input
         checked={false}
-        id="habit_3"
+        id="habit_4"
         onChange={[Function]}
         type="checkbox"
       />
       <label
-        htmlFor="habit_3"
+        htmlFor="habit_4"
       >
         <div>
-          新しいCDを1枚聴く
+          ゲーム
         </div>
         <div>
           0
           日連続
         </div>
       </label>
-      <Link
-        to="habits/3"
-      >
-        <span
-          className="fas fa-edit"
-        />
-      </Link>
+      <styled.div>
+        <Link
+          to="habits/4"
+        >
+          <span
+            className="fas fa-edit"
+          />
+        </Link>
+      </styled.div>
     </styled.div>
   </form>
-  <styled.div>
+  <styled.div
+    id="toggleDisplayCompletedHabit"
+    onClick={[MockFunction]}
+  >
     <styled.span>
       達成済みを非表示にする
     </styled.span>

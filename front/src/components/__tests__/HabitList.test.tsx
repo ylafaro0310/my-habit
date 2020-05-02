@@ -24,7 +24,13 @@ const data = {
       id: 3,
       habitName: '新しいCDを1枚聴く',
       repeatType: 'dayOfWeek',
-      repeatValue: 127,
+      repeatValue: 0b1000001,
+    },
+    {
+      id: 4,
+      habitName: 'ゲーム',
+      repeatType: 'week',
+      repeatValue: 2,
     },
   ],
   habitRecords: [
@@ -40,53 +46,52 @@ const props = {
   selectedDate: dayjs('2020-01-08').format('YYYY-MM-DD'),
   categoriesOfHabitsDisplayed: 'today',
   displayCompletedHabits: true,
+  addHabitRecord: jest.fn(),
+  removeHabitRecord: jest.fn(),
+  toggleDisplayCompletedHabit: jest.fn(),
 };
 
 describe('Component: HabitList', () => {
   it('Snapshot test', () => {
-    const mockFn1 = jest.fn();
-    const mockFn2 = jest.fn();
-    const wrapper = shallow(
-      <HabitList
-        {...props}
-        addHabitRecord={mockFn1}
-        removeHabitRecord={mockFn2}
-      />,
-    );
+    const wrapper = shallow(<HabitList {...props} />);
     expect(wrapper).toMatchSnapshot();
   });
+
+  // ハンドラテスト
   it('習慣をチェックしたときaddHabitRecordが発行されること', () => {
-    const mockFn1 = jest.fn();
-    const mockFn2 = jest.fn();
-    const wrapper = shallow(
-      <HabitList
-        {...props}
-        addHabitRecord={mockFn1}
-        removeHabitRecord={mockFn2}
-      />,
-    );
+    const mockFn = jest.fn();
+    const wrapper = shallow(<HabitList {...props} addHabitRecord={mockFn} />);
     wrapper
       .find('input[type="checkbox"]')
       .at(0)
       .simulate('change', { target: { checked: true } });
-    expect(mockFn1.mock.calls.length).toBe(1);
+    expect(mockFn.mock.calls.length).toBe(1);
   });
   it('習慣のチェックを外したときremoveHabitRecordが発行されること', () => {
-    const mockFn1 = jest.fn();
-    const mockFn2 = jest.fn();
+    const mockFn = jest.fn();
     const wrapper = shallow(
-      <HabitList
-        {...props}
-        addHabitRecord={mockFn1}
-        removeHabitRecord={mockFn2}
-      />,
+      <HabitList {...props} removeHabitRecord={mockFn} />,
     );
     wrapper
       .find('input[type="checkbox"]')
       .at(0)
       .simulate('change', { target: { checked: false } });
-    expect(mockFn2.mock.calls.length).toBe(1);
+    expect(mockFn.mock.calls.length).toBe(1);
   });
+  it('達成済み表示/非表示ボタンをクリックしたときtoggleDisplayCompletedHabitが発行されること', () => {
+    const mockFn = jest.fn();
+    const wrapper = shallow(
+      <HabitList {...props} toggleDisplayCompletedHabit={mockFn} />,
+    );
+    wrapper
+      .find('#toggleDisplayCompletedHabit')
+      .at(0)
+      .simulate('click');
+    expect(mockFn.mock.calls.length).toBe(1);
+  });
+
+  // repeatTypeごとの表示/非表示テスト
+  // intervalまたは毎日(weekOfDay=127)の場合
   it('3日ごとの習慣を2日前または1日前に達成している場合のみに、習慣が非表示になること', () => {
     const customData = data;
 
@@ -95,15 +100,10 @@ describe('Component: HabitList', () => {
       habitId: 2,
       completedAt: dayjs('2020-01-07'),
     });
-    const customProps = {
-      habits: Habits.fromResponse(customData),
-      habitRecords: HabitRecords.fromResponse(customData),
-      selectedDate: dayjs('2020-01-08').format('YYYY-MM-DD'),
-      categoriesOfHabitsDisplayed: 'today',
-      displayCompletedHabits: false,
-      addHabitRecord: jest.fn(),
-      removeHabitRecord: jest.fn(),
-    };
+    const customProps = Object.assign({}, props);
+    customProps['habits'] = Habits.fromResponse(customData);
+    customProps['habitRecords'] = HabitRecords.fromResponse(customData);
+
     let wrapper = shallow(<HabitList {...customProps} />).childAt(0);
     expect(wrapper.text()).not.toMatch(/筋トレ/);
 
@@ -127,6 +127,59 @@ describe('Component: HabitList', () => {
     wrapper = shallow(<HabitList {...customProps} />).childAt(0);
     expect(wrapper.text()).toMatch(/筋トレ/);
   });
+  // weekOfDayの場合
+  it('曜日指定の習慣の場合、指定曜日の日のときのみ習慣が表示されること', () => {
+    const customProps = Object.assign({}, props);
+    // 水曜=非表示
+    customProps['selectedDate'] = dayjs('2020-01-08').format('YYYY-MM-DD');
+    let wrapper = shallow(<HabitList {...customProps} />).childAt(0);
+    expect(wrapper.text()).not.toMatch(/新しいCDを1枚聴く/);
+
+    // 土曜=表示
+    customProps['selectedDate'] = dayjs('2020-01-04').format('YYYY-MM-DD');
+    wrapper = shallow(<HabitList {...customProps} />).childAt(0);
+    expect(wrapper.text()).toMatch(/新しいCDを1枚聴く/);
+
+    // 日曜=表示
+    customProps['selectedDate'] = dayjs('2020-01-05').format('YYYY-MM-DD');
+    wrapper = shallow(<HabitList {...customProps} />).childAt(0);
+    expect(wrapper.text()).toMatch(/新しいCDを1枚聴く/);
+  });
+  // weekの場合
+  it('週に2回の習慣が既に達成済みのときに表示されないこと', () => {
+    const customData = data;
+    const customProps = Object.assign({}, props);
+
+    // 2回達成済みの場合
+    customData['habitRecords'].push({
+      habitId: 4,
+      completedAt: dayjs('2020-01-05'),
+    });
+    customData['habitRecords'].push({
+      habitId: 4,
+      completedAt: dayjs('2020-01-07'),
+    });
+    customProps['habits'] = Habits.fromResponse(customData);
+    customProps['habitRecords'] = HabitRecords.fromResponse(customData);
+    let wrapper = shallow(<HabitList {...customProps} />).childAt(0);
+    expect(wrapper.text()).not.toMatch(/ゲーム/);
+
+    // 1回達成済みの場合
+    customData['habitRecords'].pop();
+    customProps['habits'] = Habits.fromResponse(customData);
+    customProps['habitRecords'] = HabitRecords.fromResponse(customData);
+    wrapper = shallow(<HabitList {...customProps} />).childAt(0);
+    expect(wrapper.text()).toMatch(/ゲーム/);
+
+    // 未達成の場合
+    customData['habitRecords'].pop();
+    customProps['habits'] = Habits.fromResponse(customData);
+    customProps['habitRecords'] = HabitRecords.fromResponse(customData);
+    wrapper = shallow(<HabitList {...customProps} />).childAt(0);
+    expect(wrapper.text()).toMatch(/ゲーム/);
+  });
+
+  // 達成済み表示/非表示のテスト
   it('displayCompletedHabit=falseのとき、達成済みの習慣が表示されないこと', () => {
     const customData = data;
 
@@ -135,15 +188,11 @@ describe('Component: HabitList', () => {
       habitId: 2,
       completedAt: dayjs('2020-01-08'),
     });
-    const customProps = {
-      habits: Habits.fromResponse(customData),
-      habitRecords: HabitRecords.fromResponse(customData),
-      selectedDate: dayjs('2020-01-08').format('YYYY-MM-DD'),
-      categoriesOfHabitsDisplayed: 'today',
-      displayCompletedHabits: false,
-      addHabitRecord: jest.fn(),
-      removeHabitRecord: jest.fn(),
-    };
+    const customProps = Object.assign({}, props);
+    customProps['habits'] = Habits.fromResponse(customData);
+    customProps['habitRecords'] = HabitRecords.fromResponse(customData);
+    customProps['displayCompletedHabits'] = false;
+
     let wrapper = shallow(<HabitList {...customProps} />).childAt(0);
     expect(wrapper.text()).not.toMatch(/筋トレ/);
 
@@ -161,18 +210,16 @@ describe('Component: HabitList', () => {
       habitId: 2,
       completedAt: dayjs('2020-01-07'),
     });
-    const customProps = {
-      habits: Habits.fromResponse(customData),
-      habitRecords: HabitRecords.fromResponse(customData),
-      selectedDate: dayjs('2020-01-08').format('YYYY-MM-DD'),
-      categoriesOfHabitsDisplayed: 'today',
-      displayCompletedHabits: false,
-      addHabitRecord: jest.fn(),
-      removeHabitRecord: jest.fn(),
-    };
+    const customProps = Object.assign({}, props);
+    customProps['habits'] = Habits.fromResponse(customData);
+    customProps['habitRecords'] = HabitRecords.fromResponse(customData);
+    customProps['categoriesOfHabitsDisplayed'] = 'today';
+
     const wrapper = shallow(<HabitList {...customProps} />).childAt(0);
     expect(wrapper.text()).not.toMatch(/筋トレ/);
   });
+
+  // カテゴリ選択の表示/非表示テスト
   it('categoriesOfHabitCompleted=allのとき、すべて習慣が表示されること', () => {
     const customData = data;
 
@@ -181,15 +228,11 @@ describe('Component: HabitList', () => {
       habitId: 2,
       completedAt: dayjs('2020-01-07'),
     });
-    const customProps = {
-      habits: Habits.fromResponse(customData),
-      habitRecords: HabitRecords.fromResponse(customData),
-      selectedDate: dayjs('2020-01-08').format('YYYY-MM-DD'),
-      categoriesOfHabitsDisplayed: 'all',
-      displayCompletedHabits: false,
-      addHabitRecord: jest.fn(),
-      removeHabitRecord: jest.fn(),
-    };
+    const customProps = Object.assign({}, props);
+    customProps['habits'] = Habits.fromResponse(customData);
+    customProps['habitRecords'] = HabitRecords.fromResponse(customData);
+    customProps['categoriesOfHabitsDisplayed'] = 'all';
+
     const wrapper = shallow(<HabitList {...customProps} />).childAt(0);
     expect(wrapper.text()).toMatch(/筋トレ/);
   });
