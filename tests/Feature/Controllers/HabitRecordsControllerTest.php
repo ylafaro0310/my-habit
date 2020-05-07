@@ -20,6 +20,7 @@ class HabitRecordsControllerTest extends TestCase
 
         $mock = \Mockery::mock('App\Utils\SystemClock')->makePartial();
         $mock->shouldReceive('now')->andReturn(new \DateTimeImmutable('2020-02-11'));
+        $mock->shouldReceive('getLastSunday')->andReturn(new \DateTimeImmutable('2020-02-09'));
         $this->app->instance('App\Utils\SystemClock', $mock);
     }
 
@@ -40,15 +41,15 @@ class HabitRecordsControllerTest extends TestCase
                     'targetTime' => 5,
                     'timeOfDay' => 'always',
                     'consecutiveDays' => 3,
-                    //'consecutiveWeeks' => null,
+                    'consecutiveWeeks' => null,
                 ],[
                     'habitName' => '新しいCDを1枚聴く',
                     'repeatType' => 'dayOfWeek',
-                    'repeatValue' => 127,
+                    'repeatValue' => 0b1000001,
                     'targetTime' => null,
                     'timeOfDay' => 'always',
-                    'consecutiveDays' => 0,
-                    //'consecutiveWeeks' => null,
+                    'consecutiveDays' => 3,
+                    'consecutiveWeeks' => 1,
                 ],[
                     'habitName' => '筋トレ',
                     'repeatType' => 'interval',
@@ -56,7 +57,15 @@ class HabitRecordsControllerTest extends TestCase
                     'targetTime' => null,
                     'timeOfDay' => 'always',
                     'consecutiveDays' => 2,
-                    //'consecutiveWeeks' => null,
+                    'consecutiveWeeks' => null,
+                ],[
+                    'habitName' => 'ゲーム',
+                    'repeatType' => 'week',
+                    'repeatValue' => 3,
+                    'targetTime' => null,
+                    'timeOfDay' => 'always',
+                    'consecutiveDays' => 4,
+                    'consecutiveWeeks' => 1,
                 ]
             ],
         ];

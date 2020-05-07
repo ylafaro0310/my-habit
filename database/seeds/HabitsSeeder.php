@@ -23,7 +23,7 @@ class HabitsSeeder extends Seeder
         DB::table('habits')->insert([
             'habit_name' => '新しいCDを1枚聴く',
             'repeat_type' => 'dayOfWeek',
-            'repeat_value' => 127,
+            'repeat_value' => 0b1000001,
             'started_at' => Date('2020-02-09'),
             'target_time' => null,
             'time_of_day' => 'always',
@@ -31,6 +31,14 @@ class HabitsSeeder extends Seeder
         DB::table('habits')->insert([
             'habit_name' => '筋トレ',
             'repeat_type' => 'interval',
+            'repeat_value' => 3,
+            'started_at' => Date('2020-02-01'),
+            'target_time' => null,
+            'time_of_day' => 'always',
+        ]);
+        DB::table('habits')->insert([
+            'habit_name' => 'ゲーム',
+            'repeat_type' => 'week',
             'repeat_value' => 3,
             'started_at' => Date('2020-02-01'),
             'target_time' => null,

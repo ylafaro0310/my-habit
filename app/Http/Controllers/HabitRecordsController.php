@@ -27,7 +27,8 @@ class HabitRecordsController extends Controller
         foreach($habits as &$habit){
             $filteredRecords = array_filter($habitRecords,function($v)use($habit){return $v['habit_id'] === $habit['id'];});
             $consecutiveDays = $this->calcConsecutiveDays($filteredRecords,$habit['repeat_type'],$habit['repeat_value']);
-            $habit['consecutiveDays'] = $consecutiveDays;
+            $habit['consecutiveDays'] = $consecutiveDays[0];
+            $habit['consecutiveWeeks'] = $consecutiveDays[1];
         }
 
         $response = [
@@ -41,20 +42,95 @@ class HabitRecordsController extends Controller
     private function calcConsecutiveDays($habitRecords,$repeatType,$repeatValue){
         $completedAt = array_column($habitRecords,'completed_at');
         array_multisort($completedAt,SORT_DESC,$habitRecords);
-        $count = 0;
-        $habitInterval = 0;
-        if($repeatType == 'dayOfWeek' && $repeatValue==127){
-            $habitInterval = 1;
+
+        $definedRepeatType = [
+            'dayOfWeek',
+            'interval',
+            'week'
+        ];
+        if(!in_array($repeatType,$definedRepeatType)){
+            throw new Exception('未定義の$repeatTypeが入力されました。');
+        }
+
+        if($repeatType == 'dayOfWeek'){
+            if($repeatValue==127){
+                return [$this->calcInterval($habitRecords,1),null];
+            }else{
+                return $this->calcDayOfWeek($habitRecords,$repeatValue);
+            }
         }
         if($repeatType == 'interval'){
-            $habitInterval = $repeatValue;
+            return [$this->calcInterval($habitRecords,$repeatValue),null];
         }
-        
+        if($repeatType == 'week'){
+            return $this->calcWeek($habitRecords,$repeatValue);
+        }
+    }
 
+    private function calcWeek($habitRecords,$repeatValue){
+        $countDay = 0;
+        $countDayThisWeek = 0;
+        $countWeek = 0;
+        $lastSunday = $this->systemClock->getLastSunday();
+        foreach($habitRecords as $value){
+            // 日曜より新しい場合はカウント
+            $date = new \DateTime($value['completed_at']);
+            $interval = $lastSunday->diff($date);
+            if($interval->invert == 0){
+                $countDayThisWeek++;
+
+            // 日曜より古い場合は前の週の日曜をセット
+            }else{
+                // 今週以外の週で、指定回数達成していない場合はループを抜ける
+                if($countDayThisWeek != $repeatValue 
+                        && $lastSunday->diff($this->systemClock->getLastSunday())->days != 0){
+                    break;
+                }
+                $countWeek++;
+                $countDayThisWeek=0;
+                $lastSunday = $lastSunday->sub(new \DateInterval('P7D'));
+            }
+            $countDay++;
+        }
+        return [$countDay,$countWeek];
+    }
+
+    private function calcDayOfWeek($habitRecords,$repeatValue){
+        $countDay = 0;
+        $dowFrag = $repeatValue;
+        $countWeek = 0;
+        $lastSunday = $this->systemClock->getLastSunday();
+        foreach($habitRecords as $value){
+            // 日曜より新しい場合はカウント
+            $date = new \DateTime($value['completed_at']);
+            $interval = $lastSunday->diff($date);
+            if($interval->invert == 0){
+                $dowValue = 0b1 << (6 - (new \DateTime($value['completed_at']))->format('w'));
+                $dowFrag = $dowFrag & ~ $dowValue;
+
+            // 日曜より古い場合は前の週の日曜をセット
+            }else{
+                // 今週以外の週で、指定曜日を達成していない場合はループを抜ける
+                if($dowFrag != 0 
+                        && $lastSunday->diff($this->systemClock->getLastSunday())->days != 0){
+                    break;
+                }
+                $countWeek++;
+                $dowFrag = $repeatValue;
+                $lastSunday = $lastSunday->sub(new \DateInterval('P7D'));
+            }
+            $countDay++;
+
+        }
+        return [$countDay,$countWeek];
+    }
+
+    private function calcInterval($habitRecords,$habitInterval){
+        $count = 0;
         // 今日があるか
         $today = $this->systemClock->now();
         $prev = clone $today;
-        foreach($habitRecords as $key => $value){
+        foreach($habitRecords as $value){
             $next = new \DateTime($value['completed_at']);
             
             // 今日があるか
