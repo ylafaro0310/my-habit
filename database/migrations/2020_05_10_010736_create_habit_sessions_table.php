@@ -17,7 +17,7 @@ class CreateHabitSessionsTable extends Migration
             $table->bigIncrements('id');
             $table->integer('habit_id');
             $table->integer('working_minutes');
-            $table->date('completed_at');
+            $table->dateTime('completed_at');
             $table->timestamps();
         });
     }

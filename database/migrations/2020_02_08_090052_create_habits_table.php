@@ -18,7 +18,7 @@ class CreateHabitsTable extends Migration
             $table->string('habit_name');
             $table->string('repeat_type'); // 「dayOfWeek」「interval」「week」
             $table->integer('repeat_value');
-            $table->datetime('started_at');
+            $table->date('started_at');
             $table->integer('target_time')->nullable();
             $table->string('time_of_day');
             $table->timestamps();
