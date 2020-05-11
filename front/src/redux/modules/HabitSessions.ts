@@ -6,10 +6,16 @@ import HabitSessions from '../../models/HabitSessions';
 // Action Creator
 const actionCreator = actionCreatorFactory('HabitSession');
 export const HabitSessionsActions = {
-  getHabitSessions: actionCreator<object>('getHabitSessions'),
+  getHabitSessions: actionCreator<{ habitId: number; values: object }>(
+    'getHabitSessions',
+  ),
   setHabitSessions: actionCreator<HabitSessions>('setHabitSessions'),
-  addHabitSession: actionCreator<object>('addHabitSession'),
-  updateHabitSession: actionCreator<object>('updateHabitSession'),
+  addHabitSession: actionCreator<{ habitId: number; values: object }>(
+    'addHabitSession',
+  ),
+  updateHabitSession: actionCreator<{ habitSessionId: number; values: object }>(
+    'updateHabitSession',
+  ),
   removeHabitSession: actionCreator<number>('removeHabitSession'),
   formInitialize: actionCreator<number>('habitSessionFormInitialize'),
 };

@@ -8,7 +8,8 @@ function* getHabitSessions(
   action: ReturnType<typeof HabitSessionsActions.getHabitSessions>,
 ) {
   const params = action.payload;
-  const response = yield call(HabitSessionsApi.get, params);
+  const { habitId, values } = params;
+  const response = yield call(HabitSessionsApi.get, habitId, values);
   if (response.isSuccess) {
     yield put(
       HabitSessionsActions.setHabitSessions(
@@ -22,7 +23,8 @@ function* addHabitSession(
   action: ReturnType<typeof HabitSessionsActions.addHabitSession>,
 ) {
   const params = action.payload;
-  const response = yield call(HabitSessionsApi.post, params);
+  const { habitId, values } = params;
+  const response = yield call(HabitSessionsApi.post, habitId, values);
   if (response.isSuccess) {
     yield put(
       HabitSessionsActions.setHabitSessions(
@@ -36,7 +38,8 @@ function* updateHabitSession(
   action: ReturnType<typeof HabitSessionsActions.updateHabitSession>,
 ) {
   const params = action.payload;
-  const response = yield call(HabitSessionsApi.patch, params);
+  const { habitSessionId, values } = params;
+  const response = yield call(HabitSessionsApi.patch, habitSessionId, values);
   if (response.isSuccess) {
     yield put(
       HabitSessionsActions.setHabitSessions(

@@ -90,7 +90,6 @@ export default connect(state => ({
       const { habitId, habitSessionId } = props.match.params;
       if (habitSessionId) {
         const params = {
-          habitId: Number(habitId),
           habitSessionId: Number(habitSessionId),
           values,
         };
