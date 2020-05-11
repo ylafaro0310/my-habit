@@ -48,11 +48,9 @@ class HabitSessionsControllerTest extends TestCase
     {
     
         $expectedData = [
-            'habitSessions' => [
-                [
-                    'habitId' => 1,
-                    'workingMinutes' => 5,
-                ]
+            [
+                'habitId' => 1,
+                'workingMinutes' => 5,
             ]
         ];
         $response = $this->get($this->habitPath.'/1/sessions');
@@ -67,7 +65,6 @@ class HabitSessionsControllerTest extends TestCase
     public function testStore()
     {
         $params = [
-            'habit_id' => 2,
             'workingMinutes' => 90,
             'completedAt' => '2020-05-10',
         ];
@@ -86,7 +83,7 @@ class HabitSessionsControllerTest extends TestCase
             ]
         ];
         $this->assertDatabaseMissing($this->tableName, Util::snakeArray($params));
-        $response = $this->post($this->habitSessionsPath,$params);
+        $response = $this->post($this->habitPath.'/2/sessions',$params);
         $response->assertJson($expectedData);
         $this->assertDatabaseHas($this->tableName, Util::snakeArray($params));
     }

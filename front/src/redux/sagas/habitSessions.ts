@@ -1,4 +1,5 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
+import { initialize } from 'redux-form';
 
 import HabitSessions from '../../models/HabitSessions';
 import { HabitSessionsActions } from '../modules/HabitSessions';
@@ -63,9 +64,25 @@ function* removeHabitSession(
   }
 }
 
+function* formInitialize(
+  action: ReturnType<typeof HabitSessionsActions.formInitialize>,
+) {
+  const { habitId, habitSessionId } = action.payload;
+  const response = yield call(HabitSessionsApi.get, habitId);
+  if (response.isSuccess) {
+    yield put(
+      initialize(
+        'habitSession',
+        response.data.find(elem => elem.id === habitSessionId),
+      ),
+    );
+  }
+}
+
 export function* HabitSessionsSaga() {
   yield takeLatest(HabitSessionsActions.getHabitSessions, getHabitSessions);
   yield takeLatest(HabitSessionsActions.addHabitSession, addHabitSession);
   yield takeLatest(HabitSessionsActions.updateHabitSession, updateHabitSession);
   yield takeLatest(HabitSessionsActions.removeHabitSession, removeHabitSession);
+  yield takeLatest(HabitSessionsActions.formInitialize, formInitialize);
 }

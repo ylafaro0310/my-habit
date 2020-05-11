@@ -27,10 +27,15 @@ const initialValues = {
 
 export class HabitSessionForm extends React.Component<HabitSessionFormProps> {
   componentDidMount() {
-    const { habitSessionId } = this.props.match.params;
+    const { habitId, habitSessionId } = this.props.match.params;
     const { dispatch } = this.props;
-    if (habitSessionId) {
-      dispatch(HabitSessionsActions.formInitialize(Number(habitSessionId)));
+    if (habitId && habitSessionId) {
+      dispatch(
+        HabitSessionsActions.formInitialize({
+          habitId: Number(habitId),
+          habitSessionId: Number(habitSessionId),
+        }),
+      );
     }
   }
 

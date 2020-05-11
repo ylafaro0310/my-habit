@@ -51,9 +51,10 @@ class HabitSessionsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request,$habitId)
     {
         $params = $request->all();
+        $params['habitId'] = $habitId;
         $params = Util::snakeArray($params);
         try{
             $this->pdo->beginTransaction();
@@ -76,10 +77,7 @@ class HabitSessionsController extends Controller
     public function show($id)
     {
         $response = $this->habitSessions->where(['habit_id'=>$id])->select();
-        $response = [
-            'habitSessions' => Util::camelArray($response),
-        ];
-        return json_encode($response);
+        return json_encode(Util::camelArray($response));
     }
 
     /**

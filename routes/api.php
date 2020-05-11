@@ -25,6 +25,7 @@ Route::prefix('habits')->group(function () {
     Route::delete('/{id}', 'HabitsController@destroy')->where('id', '[0-9]+');
     
     Route::get('/{id}/sessions', 'HabitSessionsController@show')->where('id', '[0-9]+');
+    Route::post('/{id}/sessions', 'HabitSessionsController@store')->where('id', '[0-9]+');
 });
 
 Route::prefix('habits/records')->group(function () {
@@ -35,7 +36,6 @@ Route::prefix('habits/records')->group(function () {
 
 Route::prefix('habits/sessions')->group(function () {
     Route::get('/', 'HabitSessionsController@index');
-    Route::post('/', 'HabitSessionsController@store');
     Route::patch('/{id}', 'HabitSessionsController@update')->where('id', '[0-9]+');
     Route::delete('/{id}', 'HabitSessionsController@destroy')->where('id', '[0-9]+');
 });

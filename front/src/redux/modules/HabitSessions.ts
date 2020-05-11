@@ -17,7 +17,9 @@ export const HabitSessionsActions = {
     'updateHabitSession',
   ),
   removeHabitSession: actionCreator<number>('removeHabitSession'),
-  formInitialize: actionCreator<number>('habitSessionFormInitialize'),
+  formInitialize: actionCreator<{ habitId: number; habitSessionId: number }>(
+    'habitSessionFormInitialize',
+  ),
 };
 
 // Reducers
