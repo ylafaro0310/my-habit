@@ -20,6 +20,7 @@ module.exports = {
       "sort-imports": ["error", { "ignoreDeclarationSort": true }],
       "import/order": ["error", { "newlines-between": "always" }],
       "react/jsx-sort-props": [ 2 ],
+      "react/prop-types": [ 0 ],
       "prettier/prettier": [
         "error",
         {

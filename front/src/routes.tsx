@@ -4,12 +4,12 @@ import styled from 'styled-components';
 
 import Record from './pages/Record';
 import HabitForm from './pages/HabitForm';
+import HabitSessionForm from './pages/HabitSessionForm';
 
 export const Path = {
   root: '/',
   records: '/records',
   habits: '/habits',
-  statics: '/statics',
 };
 
 const Container = styled.div`
@@ -20,10 +20,24 @@ const Container = styled.div`
 const routes = (
   <Container>
     <Switch>
-      <Route exact path={Path.root} render={() => <Redirect to={Path.records} />} />
-      <Route exact path={Path.records} component={Record} />
-      <Route exact path={Path.habits} component={HabitForm} />
-      <Route exact path={Path.habits+"/:id(\\d+)"} component={HabitForm} />
+      <Route
+        exact
+        path={Path.root}
+        render={() => <Redirect to={Path.records} />}
+      />
+      <Route component={Record} exact path={Path.records} />
+      <Route component={HabitForm} exact path={Path.habits} />
+      <Route component={HabitForm} exact path={Path.habits + '/:id(\\d+)'} />
+      <Route
+        component={HabitSessionForm}
+        exact
+        path={Path.habits + '/:habitId(\\d+)/sessions'}
+      />
+      <Route
+        component={HabitSessionForm}
+        exact
+        path={Path.habits + '/:habitId(\\d+)/sessions/:habitSessionId(\\d+)'}
+      />
       <Redirect to={Path.records} />
     </Switch>
   </Container>
