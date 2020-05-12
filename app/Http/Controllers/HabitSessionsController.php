@@ -77,7 +77,10 @@ class HabitSessionsController extends Controller
     public function show($id)
     {
         $response = $this->habitSessions->where(['habit_id'=>$id])->select();
-        return json_encode(Util::camelArray($response));
+        $response = [
+            'habitSessions' => Util::camelArray($response),
+        ];
+        return json_encode($response);
     }
 
     /**

@@ -1,10 +1,10 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
+import { initialize } from 'redux-form';
+import { push } from 'connected-react-router';
 
 import { HabitsActions } from '../modules/Habits';
 import Habits from '../../models/Habits';
 import { HabitsApi } from '../api/HabitsApi';
-import { initialize } from 'redux-form';
-import { push } from 'connected-react-router';
 
 function* getHabits(action: ReturnType<typeof HabitsActions.getHabits>) {
   //const id = action.payload;
@@ -44,12 +44,14 @@ function* removeHabit(action: ReturnType<typeof HabitsActions.removeHabit>) {
   }
 }
 
-function* formInitialize(action: ReturnType<typeof HabitsActions.formInitialize>) {
+function* formInitialize(
+  action: ReturnType<typeof HabitsActions.formInitialize>,
+) {
   const id = action.payload;
   const response = yield call(HabitsApi.get, id);
   if (response.isSuccess) {
     //yield put(HabitsActions.setHabits(Habits.fromResponse(response.data)));
-    yield put(initialize('habit',response.data));
+    yield put(initialize('habit', response.data));
   }
 }
 

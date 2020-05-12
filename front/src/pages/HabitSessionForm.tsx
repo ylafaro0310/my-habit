@@ -41,6 +41,7 @@ export class HabitSessionForm extends React.Component<HabitSessionFormProps> {
 
   onClickRemove(
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    habitId: number,
     habitSessionId: number,
   ): void {
     event.preventDefault();
@@ -49,13 +50,15 @@ export class HabitSessionForm extends React.Component<HabitSessionFormProps> {
       'この習慣に関する全てのデータが削除されます。この習慣を削除しますか？',
     );
     if (isYes) {
-      dispatch(HabitSessionsActions.removeHabitSession(habitSessionId));
+      dispatch(
+        HabitSessionsActions.removeHabitSession({ habitId, habitSessionId }),
+      );
     }
   }
 
   render() {
     const { handleSubmit } = this.props;
-    const { habitSessionId } = this.props.match.params;
+    const { habitId, habitSessionId } = this.props.match.params;
     return (
       <Form onSubmit={handleSubmit}>
         <div>
@@ -74,7 +77,7 @@ export class HabitSessionForm extends React.Component<HabitSessionFormProps> {
         {habitSessionId ? (
           <ButtonDanger
             onClick={e => {
-              this.onClickRemove(e, Number(habitSessionId));
+              this.onClickRemove(e, Number(habitId), Number(habitSessionId));
             }}
             type='button'
           >
@@ -93,17 +96,14 @@ export default connect(state => ({
     form: 'habitSession',
     onSubmit: (values, dispatch, props) => {
       const { habitId, habitSessionId } = props.match.params;
+      const params = {
+        habitId: Number(habitId),
+        habitSessionId: Number(habitSessionId),
+        values,
+      };
       if (habitSessionId) {
-        const params = {
-          habitSessionId: Number(habitSessionId),
-          values,
-        };
         dispatch(HabitSessionsActions.updateHabitSession(params));
       } else {
-        const params = {
-          habitId: Number(habitId),
-          values,
-        };
         dispatch(HabitSessionsActions.addHabitSession(params));
       }
     },

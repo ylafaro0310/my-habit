@@ -48,7 +48,7 @@ class HabitSessionsControllerTest extends TestCase
     {
     
         $expectedData = [
-            [
+            'habitSessions' => [
                 'habitId' => 1,
                 'workingMinutes' => 5,
             ]

@@ -1,5 +1,6 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { initialize } from 'redux-form';
+import { push } from 'connected-react-router';
 
 import HabitSessions from '../../models/HabitSessions';
 import { HabitSessionsActions } from '../modules/HabitSessions';
@@ -32,6 +33,7 @@ function* addHabitSession(
         HabitSessions.fromResponse(response.data),
       ),
     );
+    yield put(push('/habits/' + habitId + '/sessions/list'));
   }
 }
 
@@ -39,7 +41,7 @@ function* updateHabitSession(
   action: ReturnType<typeof HabitSessionsActions.updateHabitSession>,
 ) {
   const params = action.payload;
-  const { habitSessionId, values } = params;
+  const { habitId, habitSessionId, values } = params;
   const response = yield call(HabitSessionsApi.patch, habitSessionId, values);
   if (response.isSuccess) {
     yield put(
@@ -47,6 +49,7 @@ function* updateHabitSession(
         HabitSessions.fromResponse(response.data),
       ),
     );
+    yield put(push('/habits/' + habitId + '/sessions/list'));
   }
 }
 
@@ -54,13 +57,15 @@ function* removeHabitSession(
   action: ReturnType<typeof HabitSessionsActions.removeHabitSession>,
 ) {
   const params = action.payload;
-  const response = yield call(HabitSessionsApi.delete, params);
+  const { habitId, habitSessionId } = params;
+  const response = yield call(HabitSessionsApi.delete, habitSessionId);
   if (response.isSuccess) {
     yield put(
       HabitSessionsActions.setHabitSessions(
         HabitSessions.fromResponse(response.data),
       ),
     );
+    yield put(push('/habits/' + habitId + '/sessions/list'));
   }
 }
 
@@ -71,9 +76,16 @@ function* formInitialize(
   const response = yield call(HabitSessionsApi.get, habitId);
   if (response.isSuccess) {
     yield put(
+      HabitSessionsActions.setHabitSessions(
+        HabitSessions.fromResponse(response.data),
+      ),
+    );
+    yield put(
       initialize(
         'habitSession',
-        response.data.find(elem => elem.id === habitSessionId),
+        response.data.habitSessions.find(
+          (elem: any) => elem.id === habitSessionId,
+        ),
       ),
     );
   }

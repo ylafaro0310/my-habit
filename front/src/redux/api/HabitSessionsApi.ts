@@ -18,6 +18,6 @@ export class HabitSessionsApi {
     return apiClient.patch(HABIT_SESSION_PATH + '/' + habitSessionId, params);
   }
   static delete(habitSessionId: number): Promise<{}> {
-    return apiClient.delete(HABIT_SESSION_PATH + '/' + habitSessionId, params);
+    return apiClient.delete(HABIT_SESSION_PATH + '/' + habitSessionId);
   }
 }
