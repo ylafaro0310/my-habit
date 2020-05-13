@@ -5,10 +5,12 @@ import { JSObject } from '../types/Common';
 import dayjs from '../lib/dayjs-ja';
 
 export class HabitSession extends Record<{
+  id: number;
   habitId: number;
   completedAt: Dayjs;
   workingMinutes: number; // 単位は「分」
 }>({
+  id: 0,
   habitId: 0,
   completedAt: dayjs(),
   workingMinutes: 0,

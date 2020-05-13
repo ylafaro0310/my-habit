@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import { RouteComponentProps } from 'react-router-dom';
+import { Link, RouteComponentProps } from 'react-router-dom';
 import styled from 'styled-components';
 
 import dayjs from '../lib/dayjs-ja';
@@ -45,10 +45,14 @@ export class Session extends React.Component<SessionProps> {
               dayjs(a.completedAt).isAfter(dayjs(b.completedAt)) ? 1 : -1,
             )
             .map((elem, key) => (
-              <ListItem key={key}>
-                <div>{elem.workingMinutes + '分'}</div>
-                <div>{dayjs(elem.completedAt).format('HH:mm')}</div>
-              </ListItem>
+              <CustomLink key={key}>
+                <Link to={'/habits/' + elem.habitId + '/sessions/' + elem.id}>
+                  <ListItem>
+                    <div>{elem.workingMinutes + '分'}</div>
+                    <div>{dayjs(elem.completedAt).format('HH:mm')}</div>
+                  </ListItem>
+                </Link>
+              </CustomLink>
             ))}
         </List>
       ));
@@ -56,6 +60,16 @@ export class Session extends React.Component<SessionProps> {
     return sessions ? sessions : null;
   }
 }
+
+const CustomLink = styled.div`
+  & a {
+    text-decoration: none;
+    color: black;
+  }
+  & a:visited {
+    color: black;
+  }
+`;
 
 export default connect((state: State) => ({
   habitSessions: state.habitSessions,
@@ -73,4 +87,5 @@ const ListItem = styled.div`
   padding: 0.2rem 0.5rem 0.2rem 0.5rem;
   display: flex;
   justify-content: space-between;
+  border-bottom: 1px solid #999;
 `;
