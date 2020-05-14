@@ -12,6 +12,7 @@ import {
   CustomText,
   Form,
 } from '../components/Form';
+import SessionHeader from '../components/SessionHeader';
 
 type HabitSessionFormProps = {
   habitSession: object;
@@ -60,31 +61,37 @@ export class HabitSessionForm extends React.Component<HabitSessionFormProps> {
     const { handleSubmit } = this.props;
     const { habitId, habitSessionId } = this.props.match.params;
     return (
-      <Form onSubmit={handleSubmit}>
-        <div>
-          <Field
-            component={CustomText}
-            label='作業時間'
-            name='workingMinutes'
-          />
-        </div>
-        <div>
-          <Field component={CustomText} label='完了日時' name='completedAt' />
-        </div>
-        <ButtonPrimary type='submit'>
-          {habitSessionId ? '更新する' : '追加する'}
-        </ButtonPrimary>
-        {habitSessionId ? (
-          <ButtonDanger
-            onClick={e => {
-              this.onClickRemove(e, Number(habitId), Number(habitSessionId));
-            }}
-            type='button'
-          >
-            セッションを削除する
-          </ButtonDanger>
-        ) : null}
-      </Form>
+      <>
+        <SessionHeader
+          backTo={'/habits/' + habitId + '/sessions/list'}
+          habitName='hoge'
+        />
+        <Form onSubmit={handleSubmit}>
+          <div>
+            <Field
+              component={CustomText}
+              label='作業時間'
+              name='workingMinutes'
+            />
+          </div>
+          <div>
+            <Field component={CustomText} label='完了日時' name='completedAt' />
+          </div>
+          <ButtonPrimary type='submit'>
+            {habitSessionId ? '更新する' : '追加する'}
+          </ButtonPrimary>
+          {habitSessionId ? (
+            <ButtonDanger
+              onClick={e => {
+                this.onClickRemove(e, Number(habitId), Number(habitSessionId));
+              }}
+              type='button'
+            >
+              セッションを削除する
+            </ButtonDanger>
+          ) : null}
+        </Form>
+      </>
     );
   }
 }
