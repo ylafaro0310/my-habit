@@ -133,7 +133,8 @@ class HabitSessionsControllerTest extends TestCase
             ],
             'habitSessions' => [
                 [
-                    'id' => 1,
+                    'workingMinutes' => 10,
+                ],[
                     'workingMinutes' => 10,
                 ]
             ]
