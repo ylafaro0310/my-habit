@@ -69,9 +69,9 @@ export class HabitSessionForm extends React.Component<HabitSessionFormProps> {
           backTo={'/habits/' + habitId + '/sessions/list'}
           habitName={
             habits
-            ? habits.getList().find(elem => elem.id === Number(habitId))
-              ?.habitName || ''
-            : ''
+              ? habits.getList().find(elem => elem.id === Number(habitId))
+                  ?.habitName || ''
+              : ''
           }
         />
         <Form onSubmit={handleSubmit}>

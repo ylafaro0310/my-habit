@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Page: HabitForm Snapshot test 1`] = `
-<styled.form
+<Form
   onSubmit={[MockFunction]}
 >
   <div>
@@ -114,16 +114,16 @@ exports[`Page: HabitForm Snapshot test 1`] = `
       }
     />
   </div>
-  <styled.button
+  <ButtonPrimary
     type="submit"
   >
     追加する
-  </styled.button>
-</styled.form>
+  </ButtonPrimary>
+</Form>
 `;
 
 exports[`Page: HabitForm Snapshot test 2`] = `
-<styled.form
+<Form
   onSubmit={[MockFunction]}
 >
   <div>
@@ -234,16 +234,16 @@ exports[`Page: HabitForm Snapshot test 2`] = `
       }
     />
   </div>
-  <styled.button
+  <ButtonPrimary
     type="submit"
   >
     追加する
-  </styled.button>
-</styled.form>
+  </ButtonPrimary>
+</Form>
 `;
 
 exports[`Page: HabitForm Snapshot test 3`] = `
-<styled.form
+<Form
   onSubmit={[MockFunction]}
 >
   <div>
@@ -350,10 +350,10 @@ exports[`Page: HabitForm Snapshot test 3`] = `
       }
     />
   </div>
-  <styled.button
+  <ButtonPrimary
     type="submit"
   >
     追加する
-  </styled.button>
-</styled.form>
+  </ButtonPrimary>
+</Form>
 `;

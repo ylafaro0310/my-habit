@@ -24,13 +24,24 @@ exports[`Component: HabitList Snapshot test 1`] = `
         </div>
       </label>
       <styled.div>
-        <Link
-          to="habits/1"
-        >
-          <span
-            className="fas fa-edit"
-          />
-        </Link>
+        <styled.div>
+          <Link
+            to="/habits/1"
+          >
+            <span
+              className="fas fa-edit"
+            />
+          </Link>
+        </styled.div>
+        <styled.div>
+          <Link
+            to="/habits/1/sessions/list"
+          >
+            <span
+              className="fas fa-angle-right"
+            />
+          </Link>
+        </styled.div>
       </styled.div>
     </styled.div>
     <styled.div
@@ -54,13 +65,24 @@ exports[`Component: HabitList Snapshot test 1`] = `
         </div>
       </label>
       <styled.div>
-        <Link
-          to="habits/2"
-        >
-          <span
-            className="fas fa-edit"
-          />
-        </Link>
+        <styled.div>
+          <Link
+            to="/habits/2"
+          >
+            <span
+              className="fas fa-edit"
+            />
+          </Link>
+        </styled.div>
+        <styled.div>
+          <Link
+            to="/habits/2/sessions/list"
+          >
+            <span
+              className="fas fa-angle-right"
+            />
+          </Link>
+        </styled.div>
       </styled.div>
     </styled.div>
     <styled.div
@@ -84,13 +106,24 @@ exports[`Component: HabitList Snapshot test 1`] = `
         </div>
       </label>
       <styled.div>
-        <Link
-          to="habits/4"
-        >
-          <span
-            className="fas fa-edit"
-          />
-        </Link>
+        <styled.div>
+          <Link
+            to="/habits/4"
+          >
+            <span
+              className="fas fa-edit"
+            />
+          </Link>
+        </styled.div>
+        <styled.div>
+          <Link
+            to="/habits/4/sessions/list"
+          >
+            <span
+              className="fas fa-angle-right"
+            />
+          </Link>
+        </styled.div>
       </styled.div>
     </styled.div>
   </form>

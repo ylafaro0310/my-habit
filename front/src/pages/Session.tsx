@@ -66,10 +66,10 @@ export class Session extends React.Component<SessionProps> {
         <SessionHeader
           backTo={'/records'}
           habitName={
-            habits 
-            ? habits.getList().find(elem => elem.id === Number(habitId))
-              ?.habitName || ''
-            :''
+            habits
+              ? habits.getList().find(elem => elem.id === Number(habitId))
+                  ?.habitName || ''
+              : ''
           }
           nextTo={'/habits/' + habitId + '/sessions'}
         />
