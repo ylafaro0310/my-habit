@@ -158,7 +158,7 @@ const FAButton = styled.div`
 
   &:before {
     position: relative;
-    top: 17%;
+    top: 12%;
     color: #ffffff;
     content: '+';
   }

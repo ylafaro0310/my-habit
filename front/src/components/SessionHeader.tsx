@@ -13,9 +13,13 @@ const SessionHeader: React.FC<SessionHeaderProps> = ({
   nextTo,
 }) => (
   <Header>
-    <Link to={backTo}>戻る</Link>
+    <HeaderLeft>
+      <Link to={backTo}><span className='fas fa-angle-left' /></Link>
+    </HeaderLeft>
     <Title>{habitName}</Title>
-    <div>{nextTo ? <Link to={nextTo}>新規追加</Link> : null}</div>
+    <HeaderRight>
+      {nextTo ? <Link to={nextTo}><span className='fas fa-edit' /></Link> : null}
+    </HeaderRight>
   </Header>
 );
 export default SessionHeader;
@@ -34,7 +38,18 @@ const Header = styled.div`
   }
 `;
 
+const HeaderLeft = styled.div`
+  width: 3rem;
+  padding-left: 1rem;
+  padding-top: 0.2rem;
+`;
+
 const Title = styled.div`
   font-size: large;
   font-weight: bold;
+`;
+
+const HeaderRight = styled.div`
+  width: 2.5rem;
+  padding-top: 0.2rem;
 `;

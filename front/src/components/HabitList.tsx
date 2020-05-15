@@ -136,11 +136,18 @@ export const HabitList: React.FC<HabitListProps> = ({
               <div>{habit.habitName}</div>
               <div>{habit.consecutiveDays}日連続</div>
             </label>
-            <EditButton>
-              <Link to={'habits/' + habit.id}>
-                <span className='fas fa-edit' />
-              </Link>
-            </EditButton>
+            <EditLink>
+              <EditButton>
+                <Link to={'/habits/' + habit.id}>
+                  <span className='fas fa-edit' />
+                </Link>
+              </EditButton>
+              <EditButton>
+                <Link to={'/habits/' + habit.id + '/sessions/list'}>
+                  <span className='fas fa-angle-right' />
+                </Link>
+              </EditButton>
+            </EditLink>
           </ListItem>
         ))}
       </form>
@@ -175,7 +182,13 @@ const LinkButton = styled.div`
   position: relative;
 `;
 
+const EditLink = styled.div`
+  width: 7rem;
+`;
+
 const EditButton = styled.div`
+  display: inline-block;
+  margin-left: 20px;
   & a {
     position: relative;
     top: 0.8rem;
