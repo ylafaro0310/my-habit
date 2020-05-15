@@ -5,6 +5,8 @@ import { push } from 'connected-react-router';
 import HabitSessions from '../../models/HabitSessions';
 import { HabitSessionsActions } from '../modules/HabitSessions';
 import { HabitSessionsApi } from '../api/HabitSessionsApi';
+import { HabitsActions } from '../modules/Habits';
+import Habits from '../../models/Habits';
 
 function* getHabitSessions(
   action: ReturnType<typeof HabitSessionsActions.getHabitSessions>,
@@ -18,6 +20,7 @@ function* getHabitSessions(
         HabitSessions.fromResponse(response.data),
       ),
     );
+    yield put(HabitsActions.setHabits(Habits.fromResponse(response.data)));
   }
 }
 

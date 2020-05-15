@@ -6,19 +6,27 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
+use App\Models\Habits;
 use App\Models\HabitSessions;
 use App\Utils\Util;
 
 class HabitSessionsController extends Controller
 {
-    function __construct(HabitSessions $habitSessions){
+    function __construct(Habits $habits,HabitSessions $habitSessions){
+        $this->habits = $habits;
         $this->habitSessions = $habitSessions;
         $this->pdo = DB::connection()->getPdo();
     }
 
-    private function createResponse(){
-        $habitSessions = $this->habitSessions->select();
+    private function createResponse($habitId = null){
+        $habits = $this->habits->select();
+        if(empty($habitId)){
+            $habitSessions = $this->habitSessions->select();
+        }else{
+            $habitSessions = $this->habitSessions->where(['habit_id'=>$habitId])->select();
+        }
         $response = [
+            'habits' => $habits,
             'habitSessions' => $habitSessions,
         ];
         return Util::camelArray($response);
@@ -76,10 +84,7 @@ class HabitSessionsController extends Controller
      */
     public function show($id)
     {
-        $response = $this->habitSessions->where(['habit_id'=>$id])->select();
-        $response = [
-            'habitSessions' => Util::camelArray($response),
-        ];
+        $response = $this->createResponse($id);
         return json_encode($response);
     }
 

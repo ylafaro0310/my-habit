@@ -4,6 +4,7 @@ import { Field, InjectedFormProps, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router-dom';
 
+import { State } from '../redux/store';
 import dayjs from '../lib/dayjs-ja';
 import { HabitSessionsActions } from '../redux/modules/HabitSessions';
 import {
@@ -13,8 +14,10 @@ import {
   Form,
 } from '../components/Form';
 import SessionHeader from '../components/SessionHeader';
+import Habits from '../models/Habits';
 
 type HabitSessionFormProps = {
+  habits: Habits;
   habitSession: object;
   dispatch: Dispatch;
 } & InjectedFormProps<{}, HabitSessionFormProps> &
@@ -58,13 +61,18 @@ export class HabitSessionForm extends React.Component<HabitSessionFormProps> {
   }
 
   render() {
-    const { handleSubmit } = this.props;
+    const { habits, handleSubmit } = this.props;
     const { habitId, habitSessionId } = this.props.match.params;
     return (
       <>
         <SessionHeader
           backTo={'/habits/' + habitId + '/sessions/list'}
-          habitName='hoge'
+          habitName={
+            habits
+            ? habits.getList().find(elem => elem.id === Number(habitId))
+              ?.habitName || ''
+            : ''
+          }
         />
         <Form onSubmit={handleSubmit}>
           <div>
@@ -96,8 +104,9 @@ export class HabitSessionForm extends React.Component<HabitSessionFormProps> {
   }
 }
 
-export default connect(state => ({
+export default connect((state: State) => ({
   initialValues: initialValues,
+  habits: state.habits,
 }))(
   reduxForm<{}, HabitSessionFormProps>({
     form: 'habitSession',

@@ -9,8 +9,10 @@ import { State } from '../redux/store';
 import HabitSessions from '../models/HabitSessions';
 import { HabitSessionsActions } from '../redux/modules/HabitSessions';
 import SessionHeader from '../components/SessionHeader';
+import Habits from '../models/Habits';
 
 type SessionProps = {
+  habits: Habits;
   habitSessions: HabitSessions;
   dispatch: Dispatch;
 } & RouteComponentProps<{ habitId: string }>;
@@ -27,7 +29,7 @@ export class Session extends React.Component<SessionProps> {
 
   render() {
     const { habitId } = this.props.match.params;
-    const { habitSessions } = this.props;
+    const { habits, habitSessions } = this.props;
     let sessions;
     if (habitSessions) {
       let keys = habitSessions
@@ -63,7 +65,12 @@ export class Session extends React.Component<SessionProps> {
       <>
         <SessionHeader
           backTo={'/records'}
-          habitName='hoge'
+          habitName={
+            habits 
+            ? habits.getList().find(elem => elem.id === Number(habitId))
+              ?.habitName || ''
+            :''
+          }
           nextTo={'/habits/' + habitId + '/sessions'}
         />
         {sessions ? sessions : null}
@@ -83,6 +90,7 @@ const CustomLink = styled.div`
 `;
 
 export default connect((state: State) => ({
+  habits: state.habits,
   habitSessions: state.habitSessions,
 }))(Session);
 

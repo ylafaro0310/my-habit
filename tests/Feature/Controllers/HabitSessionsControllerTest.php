@@ -48,9 +48,20 @@ class HabitSessionsControllerTest extends TestCase
     {
     
         $expectedData = [
+            'habits' => [
+                [
+                    'habitName' => '本を読む',
+                    'repeatType' => 'dayOfWeek',
+                    'repeatValue' => 127,
+                    'targetTime' => 5,
+                    'timeOfDay' => 'always',
+                ]
+            ],
             'habitSessions' => [
-                'habitId' => 1,
-                'workingMinutes' => 5,
+                [
+                    'habitId' => 1,
+                    'workingMinutes' => 5,
+                ]
             ]
         ];
         $response = $this->get($this->habitPath.'/1/sessions');
@@ -69,6 +80,15 @@ class HabitSessionsControllerTest extends TestCase
             'completedAt' => '2020-05-10',
         ];
         $expectedData = [
+            'habits' => [
+                [
+                    'habitName' => '本を読む',
+                    'repeatType' => 'dayOfWeek',
+                    'repeatValue' => 127,
+                    'targetTime' => 5,
+                    'timeOfDay' => 'always',
+                ]
+            ],
             'habitSessions' => [
                 [
                     'habitId' => 1,
@@ -102,6 +122,15 @@ class HabitSessionsControllerTest extends TestCase
         ];
         $expectedData = $params;
         $expectedResponse = [
+            'habits' => [
+                [
+                    'habitName' => '本を読む',
+                    'repeatType' => 'dayOfWeek',
+                    'repeatValue' => 127,
+                    'targetTime' => 5,
+                    'timeOfDay' => 'always',
+                ]
+            ],
             'habitSessions' => [
                 [
                     'id' => 1,
@@ -123,6 +152,15 @@ class HabitSessionsControllerTest extends TestCase
     public function testDelete()
     {
         $expectedData = [
+            'habits' => [
+                [
+                    'habitName' => '本を読む',
+                    'repeatType' => 'dayOfWeek',
+                    'repeatValue' => 127,
+                    'targetTime' => 5,
+                    'timeOfDay' => 'always',
+                ]
+            ],
             'habitSessions' => [
                 [
                     'id' => 1,
