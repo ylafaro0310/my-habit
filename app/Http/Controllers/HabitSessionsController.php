@@ -63,6 +63,7 @@ class HabitSessionsController extends Controller
     {
         $params = $request->all();
         $params['habitId'] = $habitId;
+        unset($params['id']);
         $params = Util::snakeArray($params);
         try{
             $this->pdo->beginTransaction();
