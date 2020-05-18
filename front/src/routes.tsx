@@ -3,6 +3,7 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import styled from 'styled-components';
 
 import Record from './pages/Record';
+import Analytics from './pages/Analytics';
 import HabitForm from './pages/HabitForm';
 import HabitSessionForm from './pages/HabitSessionForm';
 import Session from './pages/Session';
@@ -27,6 +28,7 @@ const routes = (
         render={() => <Redirect to={Path.records} />}
       />
       <Route component={Record} exact path={Path.records} />
+      <Route component={Analytics} exact path={Path.records + '/:id(\\d+)'} />
       <Route component={HabitForm} exact path={Path.habits} />
       <Route component={HabitForm} exact path={Path.habits + '/:id(\\d+)'} />
       <Route
