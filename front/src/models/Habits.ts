@@ -48,9 +48,16 @@ export default class Habits extends Record<{
 }) {
   static fromResponse(response: JSObject): Habits {
     const params = { ...response };
-    params.items = List(params.habits.map((item: JSObject) => Habit.fromResponse(item)));
+    params.items = List(
+      params.habits.map((item: JSObject) => Habit.fromResponse(item)),
+    );
     return new Habits(params);
   }
+
+  getById(id: number): Habit | undefined {
+    return this.get('items').find(value => value.id === id);
+  }
+
   getList(): List<Habit> {
     return this.get('items');
   }

@@ -1,19 +1,34 @@
 import React from 'react';
 import styled from 'styled-components';
+import { connect } from 'react-redux';
+import { RouteComponentProps } from 'react-router-dom';
 
+import { State } from '../redux/store';
 import dayjs from '../lib/dayjs-ja';
 import StyledCard from '../components/Card';
+import Habits from '../models/Habits';
+import HabitRecords from '../models/HabitRecords';
+import { HabitRecordsActions } from '../redux/modules/HabitRecords';
+
+type AnalyticsProps = {
+  habits: Habits;
+  habitRecords: HabitRecords;
+  getHabitRecords: () => void;
+  addHabitRecord: (params: object) => void;
+  removeHabitRecord: (params: object) => void;
+} & RouteComponentProps<{ habitId: string }>;
 
 type AnalyticsState = {
   month: number;
 };
-class Analytics extends React.Component<{}, AnalyticsState> {
-  constructor(props: {}) {
+class Analytics extends React.Component<AnalyticsProps, AnalyticsState> {
+  constructor(props: AnalyticsProps) {
     super(props);
     this.state = {
       month: Number(dayjs().format('M')),
     };
     this.onChangeMongh = this.onChangeMongh.bind(this);
+    this.onChangeHabitRecord = this.onChangeHabitRecord.bind(this);
   }
 
   onChangeMongh(add = true): void {
@@ -25,7 +40,32 @@ class Analytics extends React.Component<{}, AnalyticsState> {
     }
   }
 
+  onChangeHabitRecord = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    habitId: number,
+    selectedDate: string,
+  ): void => {
+    const { addHabitRecord, removeHabitRecord } = this.props;
+    if (event.target.checked) {
+      const params = {
+        habitId,
+        completedAt: selectedDate,
+        isSkipped: false,
+      };
+      addHabitRecord(params);
+    } else {
+      const params = {
+        habitId,
+        completedAt: selectedDate,
+      };
+      removeHabitRecord(params);
+    }
+  };
+
   calendar(month: number) {
+    const { habitId } = this.props.match.params;
+    const { habits, habitRecords } = this.props;
+    const habit = habits.getById(Number(habitId));
     const dateMonth = dayjs().set('month', month);
     const startOfDay = dateMonth.startOf('month');
     const endOfDay = dateMonth.endOf('month');
@@ -39,9 +79,18 @@ class Analytics extends React.Component<{}, AnalyticsState> {
           tr.push(<td align='center' key={j}></td>);
           continue;
         }
+        const dateFormat = date.format('YYYY-MM-DD');
         tr.push(
           <td align='center' key={j}>
-            {date.format('D')}
+            <input
+              checked={habit ? habit.isCompleted(date, habitRecords) : false}
+              id={dateFormat}
+              onChange={e => {
+                this.onChangeHabitRecord(e, Number(habitId), dateFormat);
+              }}
+              type='checkbox'
+            />
+            <label htmlFor={dateFormat}>{date.format('D')}</label>
           </td>,
         );
         date = date.add(1, 'd');
@@ -88,12 +137,34 @@ class Analytics extends React.Component<{}, AnalyticsState> {
       </>
     );
   }
+
+  componentDidMount() {
+    const { getHabitRecords } = this.props;
+    getHabitRecords();
+  }
+
   render() {
     return <StyledCard>{this.calendar(this.state.month - 1)}</StyledCard>;
   }
 }
 
-export default Analytics;
+export default connect(
+  (state: State) => ({
+    habits: state.habits,
+    habitRecords: state.habitRecords,
+  }),
+  dispatch => ({
+    getHabitRecords: (): void => {
+      dispatch(HabitRecordsActions.getHabitRecords({}));
+    },
+    addHabitRecord: (params: object): void => {
+      dispatch(HabitRecordsActions.addHabitRecord(params));
+    },
+    removeHabitRecord: (params: object): void => {
+      dispatch(HabitRecordsActions.removeHabitRecord(params));
+    },
+  }),
+)(Analytics);
 
 const Header = styled.div`
   display: flex;
@@ -106,13 +177,21 @@ const Header = styled.div`
 `;
 
 const Table = styled.table`
-  width: 70%;
+  width: 50%;
   margin: 0 auto;
+  border-spacing: 0;
+  & input {
+    display: none;
+  }
   & td {
-    width: 2rem;
-    height: 2rem;
+  }
+  & td > label {
+    display: block;
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+  & td > input:checked ~ label {
     background: #55f;
-    border-radius: 0%;
-    content: '';
+    border-radius: 50%;
   }
 `;

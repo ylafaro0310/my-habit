@@ -28,7 +28,11 @@ const routes = (
         render={() => <Redirect to={Path.records} />}
       />
       <Route component={Record} exact path={Path.records} />
-      <Route component={Analytics} exact path={Path.records + '/:id(\\d+)'} />
+      <Route
+        component={Analytics}
+        exact
+        path={Path.records + '/:habitId(\\d+)'}
+      />
       <Route component={HabitForm} exact path={Path.habits} />
       <Route component={HabitForm} exact path={Path.habits + '/:id(\\d+)'} />
       <Route
