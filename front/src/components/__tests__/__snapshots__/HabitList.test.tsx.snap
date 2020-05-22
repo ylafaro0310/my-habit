@@ -38,6 +38,15 @@ exports[`Component: HabitList Snapshot test 1`] = `
             to="/habits/1/sessions/list"
           >
             <span
+              className="fas fa-clock"
+            />
+          </Link>
+        </styled.div>
+        <styled.div>
+          <Link
+            to="/records/1"
+          >
+            <span
               className="fas fa-angle-right"
             />
           </Link>
@@ -79,6 +88,15 @@ exports[`Component: HabitList Snapshot test 1`] = `
             to="/habits/2/sessions/list"
           >
             <span
+              className="fas fa-clock"
+            />
+          </Link>
+        </styled.div>
+        <styled.div>
+          <Link
+            to="/records/2"
+          >
+            <span
               className="fas fa-angle-right"
             />
           </Link>
@@ -118,6 +136,15 @@ exports[`Component: HabitList Snapshot test 1`] = `
         <styled.div>
           <Link
             to="/habits/4/sessions/list"
+          >
+            <span
+              className="fas fa-clock"
+            />
+          </Link>
+        </styled.div>
+        <styled.div>
+          <Link
+            to="/records/4"
           >
             <span
               className="fas fa-angle-right"

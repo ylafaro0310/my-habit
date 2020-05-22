@@ -3,7 +3,7 @@ import { initialize } from 'redux-form';
 import { push } from 'connected-react-router';
 
 import { HabitsActions } from '../modules/Habits';
-import Habits from '../../models/Habits';
+import Habits, { Habit } from '../../models/Habits';
 import { HabitsApi } from '../api/HabitsApi';
 
 function* getHabits(action: ReturnType<typeof HabitsActions.getHabits>) {
@@ -48,10 +48,12 @@ function* formInitialize(
   action: ReturnType<typeof HabitsActions.formInitialize>,
 ) {
   const id = action.payload;
-  const response = yield call(HabitsApi.get, id);
+  const response = yield call(HabitsApi.getAll);
   if (response.isSuccess) {
-    //yield put(HabitsActions.setHabits(Habits.fromResponse(response.data)));
-    yield put(initialize('habit', response.data));
+    const habits = response.data.habits;
+    const habit = habits.find((elem: Habit) => elem.id === id);
+    yield put(HabitsActions.setHabits(Habits.fromResponse(response.data)));
+    yield put(initialize('habit', habit));
   }
 }
 

@@ -2,32 +2,41 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-type SessionHeaderProps = {
+type HabitHeaderProps = {
   habitName: string;
   backTo: string;
   nextTo?: string;
 };
-const SessionHeader: React.FC<SessionHeaderProps> = ({
+const HabitHeader: React.FC<HabitHeaderProps> = ({
   habitName,
   backTo,
   nextTo,
 }) => (
   <Header>
     <HeaderLeft>
-      <Link to={backTo}><span className='fas fa-angle-left' /></Link>
+      <Link to={backTo}>
+        <span className='fas fa-angle-left' />
+      </Link>
     </HeaderLeft>
     <Title>{habitName}</Title>
     <HeaderRight>
-      {nextTo ? <Link to={nextTo}><span className='fas fa-edit' /></Link> : null}
+      {nextTo ? (
+        <Link to={nextTo}>
+          <span className='fas fa-edit' />
+        </Link>
+      ) : null}
     </HeaderRight>
   </Header>
 );
-export default SessionHeader;
+export default HabitHeader;
 
 const Header = styled.div`
   display: flex;
   justify-content: space-between;
   height: 2rem;
+  background: #fff;
+  margin-bottom: 5px;
+  border-bottom: 1px solid #ddd;
 
   & a {
     text-decoration: none;

@@ -109,12 +109,12 @@ const Text = styled.div`
   margin: 5px 5px 30px 5px;
   & input {
     background: rgba(0, 0, 0, 0);
-    width: 50vw;
+    width: 100%;
     margin-top: 2vh;
     border: none;
     border-bottom: 1px solid #aaa;
     @media screen and (max-width: 768px) {
-      width: 100vw;
+      width: 100%;
     }
   }
   & input:focus {
@@ -216,28 +216,28 @@ const SelectButton = styled.div`
   margin: 5px 5px 30px 5px;
   & div:first-child:nth-last-child(2),
   div:first-child:nth-last-child(2) ~ div {
-    width: calc(50% / 2);
+    width: calc(90% / 2);
     @media screen and (max-width: 768px) {
       width: calc(90% / 2);
     }
   }
   & div:first-child:nth-last-child(3),
   div:first-child:nth-last-child(3) ~ div {
-    width: calc(50% / 3);
+    width: calc(90% / 3);
     @media screen and (max-width: 768px) {
       width: calc(90% / 3);
     }
   }
   & div:first-child:nth-last-child(4),
   div:first-child:nth-last-child(4) ~ div {
-    width: calc(50% / 4);
+    width: calc(90% / 4);
     @media screen and (max-width: 768px) {
       width: calc(90% / 4);
     }
   }
   & div:first-child:nth-last-child(5),
   div:first-child:nth-last-child(5) ~ div {
-    width: calc(50% / 5);
+    width: calc(90% / 5);
     @media screen and (max-width: 768px) {
       width: calc(90% / 5);
     }
@@ -252,7 +252,11 @@ export const Form: React.FC<FormProps> = ({ children, onSubmit }) => (
 );
 
 const StyledForm = styled.form`
-  padding: 10px;
+  margin: 0 auto;
+  width: 50%;
+  @media screen and (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 export const ButtonPrimary: React.FC<React.ButtonHTMLAttributes<
@@ -283,11 +287,13 @@ const StyledButton = styled.button`
 `;
 
 const StyledButtonPrimary = styled(StyledButton)`
+  border-color: #2196f3;
   background-color: #2196f3;
   color: #fff;
 `;
 
 const StyledButtonDanger = styled(StyledButton)`
+  border-color: #f32121;
   background-color: #f32121;
   color: #fff;
 `;

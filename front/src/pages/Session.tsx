@@ -8,7 +8,7 @@ import dayjs from '../lib/dayjs-ja';
 import { State } from '../redux/store';
 import HabitSessions from '../models/HabitSessions';
 import { HabitSessionsActions } from '../redux/modules/HabitSessions';
-import SessionHeader from '../components/SessionHeader';
+import HabitHeader from '../components/HabitHeader';
 import Habits from '../models/Habits';
 
 type SessionProps = {
@@ -63,7 +63,7 @@ export class Session extends React.Component<SessionProps> {
     }
     return (
       <>
-        <SessionHeader
+        <HabitHeader
           backTo={'/records'}
           habitName={
             habits

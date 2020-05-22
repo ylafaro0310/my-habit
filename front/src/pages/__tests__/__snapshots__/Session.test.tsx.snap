@@ -2,7 +2,7 @@
 
 exports[`Page: Session Snapshot test 1`] = `
 <Fragment>
-  <SessionHeader
+  <HabitHeader
     backTo="/records"
     habitName=""
     nextTo="/habits/undefined/sessions"

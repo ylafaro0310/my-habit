@@ -9,6 +9,7 @@ import StyledCard from '../components/Card';
 import Habits from '../models/Habits';
 import HabitRecords from '../models/HabitRecords';
 import { HabitRecordsActions } from '../redux/modules/HabitRecords';
+import HabitHeader from '../components/HabitHeader';
 
 type AnalyticsProps = {
   habits: Habits;
@@ -21,7 +22,7 @@ type AnalyticsProps = {
 type AnalyticsState = {
   month: number;
 };
-class Analytics extends React.Component<AnalyticsProps, AnalyticsState> {
+export class Analytics extends React.Component<AnalyticsProps, AnalyticsState> {
   constructor(props: AnalyticsProps) {
     super(props);
     this.state = {
@@ -99,7 +100,7 @@ class Analytics extends React.Component<AnalyticsProps, AnalyticsState> {
     }
     return (
       <>
-        <Header>
+        <CalHeader>
           <div
             onClick={() => {
               this.onChangeMongh(false);
@@ -119,7 +120,7 @@ class Analytics extends React.Component<AnalyticsProps, AnalyticsState> {
           >
             <span className='fas fa-angle-right' />
           </div>
-        </Header>
+        </CalHeader>
         <Table>
           <thead>
             <tr>
@@ -144,7 +145,18 @@ class Analytics extends React.Component<AnalyticsProps, AnalyticsState> {
   }
 
   render() {
-    return <StyledCard>{this.calendar(this.state.month - 1)}</StyledCard>;
+    const { habits } = this.props;
+    const { habitId } = this.props.match.params;
+    const habit = habits.getById(Number(habitId));
+    return (
+      <>
+        <HabitHeader
+          backTo='/records'
+          habitName={habit ? habit.habitName : ''}
+        />
+        <StyledCard>{this.calendar(this.state.month - 1)}</StyledCard>
+      </>
+    );
   }
 }
 
@@ -166,7 +178,7 @@ export default connect(
   }),
 )(Analytics);
 
-const Header = styled.div`
+const CalHeader = styled.div`
   display: flex;
   justify-content: space-between;
 
@@ -177,7 +189,7 @@ const Header = styled.div`
 `;
 
 const Table = styled.table`
-  width: 50%;
+  width: 100%;
   margin: 0 auto;
   border-spacing: 0;
   & input {
@@ -191,7 +203,7 @@ const Table = styled.table`
     height: 1.5rem;
   }
   & td > input:checked ~ label {
-    background: #55f;
+    background: #2196f3;
     border-radius: 50%;
   }
 `;

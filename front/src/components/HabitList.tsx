@@ -144,6 +144,11 @@ export const HabitList: React.FC<HabitListProps> = ({
               </EditButton>
               <EditButton>
                 <Link to={'/habits/' + habit.id + '/sessions/list'}>
+                  <span className='fas fa-clock' />
+                </Link>
+              </EditButton>
+              <EditButton>
+                <Link to={'/records/' + habit.id}>
                   <span className='fas fa-angle-right' />
                 </Link>
               </EditButton>
@@ -183,7 +188,7 @@ const LinkButton = styled.div`
 `;
 
 const EditLink = styled.div`
-  width: 7rem;
+  width: 12rem;
 `;
 
 const EditButton = styled.div`

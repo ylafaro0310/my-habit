@@ -13,7 +13,7 @@ import {
   CustomText,
   Form,
 } from '../components/Form';
-import SessionHeader from '../components/SessionHeader';
+import HabitHeader from '../components/HabitHeader';
 import Habits from '../models/Habits';
 
 type HabitSessionFormProps = {
@@ -65,7 +65,7 @@ export class HabitSessionForm extends React.Component<HabitSessionFormProps> {
     const { habitId, habitSessionId } = this.props.match.params;
     return (
       <>
-        <SessionHeader
+        <HabitHeader
           backTo={'/habits/' + habitId + '/sessions/list'}
           habitName={
             habits

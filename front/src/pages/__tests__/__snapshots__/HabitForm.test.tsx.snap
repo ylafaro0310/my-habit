@@ -1,359 +1,383 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Page: HabitForm Snapshot test 1`] = `
-<Form
-  onSubmit={[MockFunction]}
->
-  <div>
-    <Field
-      component={[Function]}
-      label="習慣名"
-      name="habitName"
-    />
-  </div>
-  <div>
-    <Field
-      component={[Function]}
-      label="繰り返し"
-      name="repeatType"
-      onChange={[Function]}
-      options={
-        Array [
-          Object {
-            "displayName": "日単位",
-            "value": "dayOfWeek",
-          },
-          Object {
-            "displayName": "週単位",
-            "value": "week",
-          },
-          Object {
-            "displayName": "インターバル",
-            "value": "interval",
-          },
-        ]
-      }
-    />
-  </div>
-  <div>
-    <Field
-      component={[Function]}
-      name="repeatValue"
-      options={
-        Array [
-          Object {
-            "displayName": "日曜日",
-            "value": 64,
-          },
-          Object {
-            "displayName": "月曜日",
-            "value": 32,
-          },
-          Object {
-            "displayName": "火曜日",
-            "value": 16,
-          },
-          Object {
-            "displayName": "水曜日",
-            "value": 8,
-          },
-          Object {
-            "displayName": "木曜日",
-            "value": 4,
-          },
-          Object {
-            "displayName": "金曜日",
-            "value": 2,
-          },
-          Object {
-            "displayName": "土曜日",
-            "value": 1,
-          },
-        ]
-      }
-    />
-  </div>
-  <div>
-    <Field
-      component={[Function]}
-      label="開始日"
-      name="startedAt"
-    />
-  </div>
-  <div>
-    <Field
-      component={[Function]}
-      label="目標時間(単位:分)"
-      name="targetTime"
-    />
-  </div>
-  <div>
-    <Field
-      component={[Function]}
-      label="時間帯"
-      name="timeOfDay"
-      options={
-        Array [
-          Object {
-            "displayName": "午前",
-            "value": "am",
-          },
-          Object {
-            "displayName": "午後",
-            "value": "pm",
-          },
-          Object {
-            "displayName": "夜",
-            "value": "night",
-          },
-          Object {
-            "displayName": "いつでも",
-            "value": "always",
-          },
-        ]
-      }
-    />
-  </div>
-  <ButtonPrimary
-    type="submit"
-  >
-    追加する
-  </ButtonPrimary>
-</Form>
+<Fragment>
+  <HabitHeader
+    backTo="/records"
+    habitName=""
+  />
+  <StyledCard>
+    <Form
+      onSubmit={[MockFunction]}
+    >
+      <div>
+        <Field
+          component={[Function]}
+          label="習慣名"
+          name="habitName"
+        />
+      </div>
+      <div>
+        <Field
+          component={[Function]}
+          label="繰り返し"
+          name="repeatType"
+          onChange={[Function]}
+          options={
+            Array [
+              Object {
+                "displayName": "日単位",
+                "value": "dayOfWeek",
+              },
+              Object {
+                "displayName": "週単位",
+                "value": "week",
+              },
+              Object {
+                "displayName": "インターバル",
+                "value": "interval",
+              },
+            ]
+          }
+        />
+      </div>
+      <div>
+        <Field
+          component={[Function]}
+          name="repeatValue"
+          options={
+            Array [
+              Object {
+                "displayName": "日曜日",
+                "value": 64,
+              },
+              Object {
+                "displayName": "月曜日",
+                "value": 32,
+              },
+              Object {
+                "displayName": "火曜日",
+                "value": 16,
+              },
+              Object {
+                "displayName": "水曜日",
+                "value": 8,
+              },
+              Object {
+                "displayName": "木曜日",
+                "value": 4,
+              },
+              Object {
+                "displayName": "金曜日",
+                "value": 2,
+              },
+              Object {
+                "displayName": "土曜日",
+                "value": 1,
+              },
+            ]
+          }
+        />
+      </div>
+      <div>
+        <Field
+          component={[Function]}
+          label="開始日"
+          name="startedAt"
+        />
+      </div>
+      <div>
+        <Field
+          component={[Function]}
+          label="目標時間(単位:分)"
+          name="targetTime"
+        />
+      </div>
+      <div>
+        <Field
+          component={[Function]}
+          label="時間帯"
+          name="timeOfDay"
+          options={
+            Array [
+              Object {
+                "displayName": "午前",
+                "value": "am",
+              },
+              Object {
+                "displayName": "午後",
+                "value": "pm",
+              },
+              Object {
+                "displayName": "夜",
+                "value": "night",
+              },
+              Object {
+                "displayName": "いつでも",
+                "value": "always",
+              },
+            ]
+          }
+        />
+      </div>
+      <ButtonPrimary
+        type="submit"
+      >
+        追加する
+      </ButtonPrimary>
+    </Form>
+  </StyledCard>
+</Fragment>
 `;
 
 exports[`Page: HabitForm Snapshot test 2`] = `
-<Form
-  onSubmit={[MockFunction]}
->
-  <div>
-    <Field
-      component={[Function]}
-      label="習慣名"
-      name="habitName"
-    />
-  </div>
-  <div>
-    <Field
-      component={[Function]}
-      label="繰り返し"
-      name="repeatType"
-      onChange={[Function]}
-      options={
-        Array [
-          Object {
-            "displayName": "日単位",
-            "value": "dayOfWeek",
-          },
-          Object {
-            "displayName": "週単位",
-            "value": "week",
-          },
-          Object {
-            "displayName": "インターバル",
-            "value": "interval",
-          },
-        ]
-      }
-    />
-  </div>
-  <div>
-    <label>
-      <Field
-        component={[Function]}
-        name="repeatValue"
-        options={
-          Array [
-            Object {
-              "displayName": "週に1回",
-              "value": "1",
-            },
-            Object {
-              "displayName": "週に2回",
-              "value": "2",
-            },
-            Object {
-              "displayName": "週に3回",
-              "value": "3",
-            },
-            Object {
-              "displayName": "週に4回",
-              "value": "4",
-            },
-            Object {
-              "displayName": "週に5回",
-              "value": "5",
-            },
-            Object {
-              "displayName": "週に6回",
-              "value": "6",
-            },
-          ]
-        }
-      />
-    </label>
-  </div>
-  <div>
-    <Field
-      component={[Function]}
-      label="開始日"
-      name="startedAt"
-    />
-  </div>
-  <div>
-    <Field
-      component={[Function]}
-      label="目標時間(単位:分)"
-      name="targetTime"
-    />
-  </div>
-  <div>
-    <Field
-      component={[Function]}
-      label="時間帯"
-      name="timeOfDay"
-      options={
-        Array [
-          Object {
-            "displayName": "午前",
-            "value": "am",
-          },
-          Object {
-            "displayName": "午後",
-            "value": "pm",
-          },
-          Object {
-            "displayName": "夜",
-            "value": "night",
-          },
-          Object {
-            "displayName": "いつでも",
-            "value": "always",
-          },
-        ]
-      }
-    />
-  </div>
-  <ButtonPrimary
-    type="submit"
-  >
-    追加する
-  </ButtonPrimary>
-</Form>
+<Fragment>
+  <HabitHeader
+    backTo="/records"
+    habitName=""
+  />
+  <StyledCard>
+    <Form
+      onSubmit={[MockFunction]}
+    >
+      <div>
+        <Field
+          component={[Function]}
+          label="習慣名"
+          name="habitName"
+        />
+      </div>
+      <div>
+        <Field
+          component={[Function]}
+          label="繰り返し"
+          name="repeatType"
+          onChange={[Function]}
+          options={
+            Array [
+              Object {
+                "displayName": "日単位",
+                "value": "dayOfWeek",
+              },
+              Object {
+                "displayName": "週単位",
+                "value": "week",
+              },
+              Object {
+                "displayName": "インターバル",
+                "value": "interval",
+              },
+            ]
+          }
+        />
+      </div>
+      <div>
+        <label>
+          <Field
+            component={[Function]}
+            name="repeatValue"
+            options={
+              Array [
+                Object {
+                  "displayName": "週に1回",
+                  "value": "1",
+                },
+                Object {
+                  "displayName": "週に2回",
+                  "value": "2",
+                },
+                Object {
+                  "displayName": "週に3回",
+                  "value": "3",
+                },
+                Object {
+                  "displayName": "週に4回",
+                  "value": "4",
+                },
+                Object {
+                  "displayName": "週に5回",
+                  "value": "5",
+                },
+                Object {
+                  "displayName": "週に6回",
+                  "value": "6",
+                },
+              ]
+            }
+          />
+        </label>
+      </div>
+      <div>
+        <Field
+          component={[Function]}
+          label="開始日"
+          name="startedAt"
+        />
+      </div>
+      <div>
+        <Field
+          component={[Function]}
+          label="目標時間(単位:分)"
+          name="targetTime"
+        />
+      </div>
+      <div>
+        <Field
+          component={[Function]}
+          label="時間帯"
+          name="timeOfDay"
+          options={
+            Array [
+              Object {
+                "displayName": "午前",
+                "value": "am",
+              },
+              Object {
+                "displayName": "午後",
+                "value": "pm",
+              },
+              Object {
+                "displayName": "夜",
+                "value": "night",
+              },
+              Object {
+                "displayName": "いつでも",
+                "value": "always",
+              },
+            ]
+          }
+        />
+      </div>
+      <ButtonPrimary
+        type="submit"
+      >
+        追加する
+      </ButtonPrimary>
+    </Form>
+  </StyledCard>
+</Fragment>
 `;
 
 exports[`Page: HabitForm Snapshot test 3`] = `
-<Form
-  onSubmit={[MockFunction]}
->
-  <div>
-    <Field
-      component={[Function]}
-      label="習慣名"
-      name="habitName"
-    />
-  </div>
-  <div>
-    <Field
-      component={[Function]}
-      label="繰り返し"
-      name="repeatType"
-      onChange={[Function]}
-      options={
-        Array [
-          Object {
-            "displayName": "日単位",
-            "value": "dayOfWeek",
-          },
-          Object {
-            "displayName": "週単位",
-            "value": "week",
-          },
-          Object {
-            "displayName": "インターバル",
-            "value": "interval",
-          },
-        ]
-      }
-    />
-  </div>
-  <div>
-    <label>
-      <Field
-        component={[Function]}
-        name="repeatValue"
-        options={
-          Array [
-            Object {
-              "displayName": "2日ごと",
-              "value": "2",
-            },
-            Object {
-              "displayName": "3日ごと",
-              "value": "3",
-            },
-            Object {
-              "displayName": "4日ごと",
-              "value": "4",
-            },
-            Object {
-              "displayName": "5日ごと",
-              "value": "5",
-            },
-            Object {
-              "displayName": "6日ごと",
-              "value": "6",
-            },
-          ]
-        }
-      />
-    </label>
-  </div>
-  <div>
-    <Field
-      component={[Function]}
-      label="開始日"
-      name="startedAt"
-    />
-  </div>
-  <div>
-    <Field
-      component={[Function]}
-      label="目標時間(単位:分)"
-      name="targetTime"
-    />
-  </div>
-  <div>
-    <Field
-      component={[Function]}
-      label="時間帯"
-      name="timeOfDay"
-      options={
-        Array [
-          Object {
-            "displayName": "午前",
-            "value": "am",
-          },
-          Object {
-            "displayName": "午後",
-            "value": "pm",
-          },
-          Object {
-            "displayName": "夜",
-            "value": "night",
-          },
-          Object {
-            "displayName": "いつでも",
-            "value": "always",
-          },
-        ]
-      }
-    />
-  </div>
-  <ButtonPrimary
-    type="submit"
-  >
-    追加する
-  </ButtonPrimary>
-</Form>
+<Fragment>
+  <HabitHeader
+    backTo="/records"
+    habitName=""
+  />
+  <StyledCard>
+    <Form
+      onSubmit={[MockFunction]}
+    >
+      <div>
+        <Field
+          component={[Function]}
+          label="習慣名"
+          name="habitName"
+        />
+      </div>
+      <div>
+        <Field
+          component={[Function]}
+          label="繰り返し"
+          name="repeatType"
+          onChange={[Function]}
+          options={
+            Array [
+              Object {
+                "displayName": "日単位",
+                "value": "dayOfWeek",
+              },
+              Object {
+                "displayName": "週単位",
+                "value": "week",
+              },
+              Object {
+                "displayName": "インターバル",
+                "value": "interval",
+              },
+            ]
+          }
+        />
+      </div>
+      <div>
+        <label>
+          <Field
+            component={[Function]}
+            name="repeatValue"
+            options={
+              Array [
+                Object {
+                  "displayName": "2日ごと",
+                  "value": "2",
+                },
+                Object {
+                  "displayName": "3日ごと",
+                  "value": "3",
+                },
+                Object {
+                  "displayName": "4日ごと",
+                  "value": "4",
+                },
+                Object {
+                  "displayName": "5日ごと",
+                  "value": "5",
+                },
+                Object {
+                  "displayName": "6日ごと",
+                  "value": "6",
+                },
+              ]
+            }
+          />
+        </label>
+      </div>
+      <div>
+        <Field
+          component={[Function]}
+          label="開始日"
+          name="startedAt"
+        />
+      </div>
+      <div>
+        <Field
+          component={[Function]}
+          label="目標時間(単位:分)"
+          name="targetTime"
+        />
+      </div>
+      <div>
+        <Field
+          component={[Function]}
+          label="時間帯"
+          name="timeOfDay"
+          options={
+            Array [
+              Object {
+                "displayName": "午前",
+                "value": "am",
+              },
+              Object {
+                "displayName": "午後",
+                "value": "pm",
+              },
+              Object {
+                "displayName": "夜",
+                "value": "night",
+              },
+              Object {
+                "displayName": "いつでも",
+                "value": "always",
+              },
+            ]
+          }
+        />
+      </div>
+      <ButtonPrimary
+        type="submit"
+      >
+        追加する
+      </ButtonPrimary>
+    </Form>
+  </StyledCard>
+</Fragment>
 `;
