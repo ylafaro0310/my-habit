@@ -3,5 +3,6 @@
     "scripts": {
         "heroku-postbuild": "cd front && yarn install && yarn run build:production"
     },
-    "devDependencies": {}
+    "devDependencies": {},
+    "dependencies": {}
 }

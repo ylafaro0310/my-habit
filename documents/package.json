@@ -1,0 +1,18 @@
+{
+  "name": "documents",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "gitbook build",
+    "start": "gitbook serve",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {},
+  "dependencies": {
+    "gitbook-cli": "^2.3.2",
+    "gitbook-plugin-uml": "^1.0.3"
+  }
+}
