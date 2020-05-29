@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Page: HabitSessionForm Snapshot test 1`] = `
+<Fragment>
+  <HabitHeader
+    backTo="/habits/undefined/sessions/list"
+    habitName=""
+  />
+  <Form>
+    <div>
+      <Field
+        component={[Function]}
+        label="作業時間"
+        name="workingMinutes"
+      />
+    </div>
+    <div>
+      <Field
+        component={[Function]}
+        label="完了日時"
+        name="completedAt"
+      />
+    </div>
+    <ButtonPrimary
+      type="submit"
+    >
+      追加する
+    </ButtonPrimary>
+  </Form>
+</Fragment>
+`;

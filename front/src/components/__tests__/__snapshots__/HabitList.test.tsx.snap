@@ -1,0 +1,166 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Component: HabitList Snapshot test 1`] = `
+<StyledCard>
+  <form>
+    <styled.div
+      key="0"
+    >
+      <input
+        checked={true}
+        id="habit_1"
+        onChange={[Function]}
+        type="checkbox"
+      />
+      <label
+        htmlFor="habit_1"
+      >
+        <div>
+          読書する
+        </div>
+        <div>
+          0
+          日連続
+        </div>
+      </label>
+      <styled.div>
+        <styled.div>
+          <Link
+            to="/habits/1"
+          >
+            <span
+              className="fas fa-edit"
+            />
+          </Link>
+        </styled.div>
+        <styled.div>
+          <Link
+            to="/habits/1/sessions/list"
+          >
+            <span
+              className="fas fa-clock"
+            />
+          </Link>
+        </styled.div>
+        <styled.div>
+          <Link
+            to="/records/1"
+          >
+            <span
+              className="fas fa-angle-right"
+            />
+          </Link>
+        </styled.div>
+      </styled.div>
+    </styled.div>
+    <styled.div
+      key="1"
+    >
+      <input
+        checked={false}
+        id="habit_2"
+        onChange={[Function]}
+        type="checkbox"
+      />
+      <label
+        htmlFor="habit_2"
+      >
+        <div>
+          筋トレ
+        </div>
+        <div>
+          0
+          日連続
+        </div>
+      </label>
+      <styled.div>
+        <styled.div>
+          <Link
+            to="/habits/2"
+          >
+            <span
+              className="fas fa-edit"
+            />
+          </Link>
+        </styled.div>
+        <styled.div>
+          <Link
+            to="/habits/2/sessions/list"
+          >
+            <span
+              className="fas fa-clock"
+            />
+          </Link>
+        </styled.div>
+        <styled.div>
+          <Link
+            to="/records/2"
+          >
+            <span
+              className="fas fa-angle-right"
+            />
+          </Link>
+        </styled.div>
+      </styled.div>
+    </styled.div>
+    <styled.div
+      key="2"
+    >
+      <input
+        checked={false}
+        id="habit_4"
+        onChange={[Function]}
+        type="checkbox"
+      />
+      <label
+        htmlFor="habit_4"
+      >
+        <div>
+          ゲーム
+        </div>
+        <div>
+          0
+          日連続
+        </div>
+      </label>
+      <styled.div>
+        <styled.div>
+          <Link
+            to="/habits/4"
+          >
+            <span
+              className="fas fa-edit"
+            />
+          </Link>
+        </styled.div>
+        <styled.div>
+          <Link
+            to="/habits/4/sessions/list"
+          >
+            <span
+              className="fas fa-clock"
+            />
+          </Link>
+        </styled.div>
+        <styled.div>
+          <Link
+            to="/records/4"
+          >
+            <span
+              className="fas fa-angle-right"
+            />
+          </Link>
+        </styled.div>
+      </styled.div>
+    </styled.div>
+  </form>
+  <styled.div
+    id="toggleDisplayCompletedHabit"
+    onClick={[MockFunction]}
+  >
+    <styled.span>
+      達成済みを非表示にする
+    </styled.span>
+  </styled.div>
+</StyledCard>
+`;

@@ -1,0 +1,57 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Page: Session Snapshot test 1`] = `
+<Fragment>
+  <HabitHeader
+    backTo="/records"
+    habitName=""
+    nextTo="/habits/undefined/sessions"
+  />
+  <styled.div
+    key="0"
+  >
+    <styled.div>
+      2020-02-08
+    </styled.div>
+    <styled.div
+      key="0"
+    >
+      <Link
+        to="/habits/2/sessions/0"
+      >
+        <styled.div>
+          <div>
+            5分
+          </div>
+          <div>
+            09:00
+          </div>
+        </styled.div>
+      </Link>
+    </styled.div>
+  </styled.div>
+  <styled.div
+    key="1"
+  >
+    <styled.div>
+      2020-01-08
+    </styled.div>
+    <styled.div
+      key="0"
+    >
+      <Link
+        to="/habits/1/sessions/0"
+      >
+        <styled.div>
+          <div>
+            10分
+          </div>
+          <div>
+            00:00
+          </div>
+        </styled.div>
+      </Link>
+    </styled.div>
+  </styled.div>
+</Fragment>
+`;
