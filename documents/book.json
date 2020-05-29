@@ -1,9 +1,0 @@
-{
-    "plugins": ["uml"],
-    "pluginsConfig": {
-        "uml": {
-            "format": "png",
-            "nailgun": false
-        }
-    }
-}
