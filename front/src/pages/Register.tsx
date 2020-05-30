@@ -1,26 +1,27 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Field, InjectedFormProps, reduxForm } from 'redux-form';
-import { Redirect, Link } from 'react-router-dom';
 
 import { CustomText, ButtonPrimary } from '../components/Form';
 import { AuthActions } from '../redux/modules/Auth';
-import { Path } from '../routes';
 
-type LoginProps = {
-  isLoggedIn: boolean;
+type RegisterProps = {
   errors?: Array<string>;
 } 
-type Props = LoginProps & InjectedFormProps<{}, LoginProps>;
+type Props = RegisterProps & InjectedFormProps<{}, RegisterProps>;
 
-const Login: React.FC<Props> = ({ isLoggedIn, errors, handleSubmit }) =>
-  isLoggedIn ? (
-    <Redirect to={Path.records} />
-  ) : (
+const Register: React.FC<Props> = ({ errors, handleSubmit }) =>
     <Container>
-      <h2 style={{'marginTop': 0}}>ログイン画面</h2>
+      <h2 style={{'marginTop': 0}}>ユーザー登録画面</h2>
 
       <form onSubmit={handleSubmit}>
+        <div>
+          <Field
+            component={CustomText}
+            label='名前'
+            name='name'
+          />
+        </div>
         <div>
           <Field
             component={CustomText}
@@ -39,14 +40,13 @@ const Login: React.FC<Props> = ({ isLoggedIn, errors, handleSubmit }) =>
         </div>
         <div>
           <Field
-            component='input'
-            id='remember'
-            name='remember'
-            type='checkbox'
+            component={CustomText}
+            label='パスワード(確認用)'
+            name='password_confirmation'
+            type='password'
           />
-          <label htmlFor='remember'>ログイン状態を記憶する</label>
         </div>
-        <ButtonPrimary type='submit'>ログイン</ButtonPrimary>
+        <ButtonPrimary type='submit'>登録</ButtonPrimary>
       </form>
       {errors && <div className='alert alert-danger'>
         <ul>
@@ -56,16 +56,14 @@ const Login: React.FC<Props> = ({ isLoggedIn, errors, handleSubmit }) =>
         </ul>
       </div>
       }
-      <Link to='/register'>新規登録はこちら</Link>
     </Container>
-  );
 
-export default reduxForm<{}, LoginProps>({
-  form: 'login',
+export default reduxForm<{}, RegisterProps>({
+  form: 'register',
   onSubmit: (values, dispatch) => {
-    dispatch(AuthActions.login(values));
+    dispatch(AuthActions.register(values));
   },
-})(Login)
+})(Register)
 
 const Container = styled.div`
   width: 50%;

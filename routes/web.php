@@ -13,14 +13,8 @@
 
 use Illuminate\Support\Facades\Auth;
 
-/*
-Route::get('/login', function () {
-    return view('login');
-})->name('login');
-*/
-
 Route::fallback(function () {
     return file_get_contents(public_path("index.html"));
-})->middleware('auth');
+});
 
 Auth::routes();

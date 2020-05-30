@@ -13,11 +13,11 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
+Route::middleware('auth')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::prefix('habits')->group(function () {
+Route::middleware('auth')->prefix('habits')->group(function () {
     Route::get('/', 'HabitsController@index');
     Route::get('/{id}', 'HabitsController@show')->where('id', '[0-9]+');
     Route::post('/', 'HabitsController@store');
@@ -28,13 +28,13 @@ Route::prefix('habits')->group(function () {
     Route::post('/{id}/sessions', 'HabitSessionsController@store')->where('id', '[0-9]+');
 });
 
-Route::prefix('habits/records')->group(function () {
+Route::middleware('auth')->prefix('habits/records')->group(function () {
     Route::get('/', 'HabitRecordsController@index');
     Route::post('/', 'HabitRecordsController@store');
     Route::delete('/', 'HabitRecordsController@destroy');
 });
 
-Route::prefix('habits/sessions')->group(function () {
+Route::middleware('auth')->prefix('habits/sessions')->group(function () {
     Route::get('/', 'HabitSessionsController@index');
     Route::patch('/{id}', 'HabitSessionsController@update')->where('id', '[0-9]+');
     Route::delete('/{id}', 'HabitSessionsController@destroy')->where('id', '[0-9]+');

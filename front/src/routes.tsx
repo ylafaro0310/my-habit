@@ -1,7 +1,6 @@
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import styled from 'styled-components';
-import { connect } from 'react-redux';
 
 import Record from './pages/Record';
 import Analytics from './pages/Analytics';
@@ -10,11 +9,15 @@ import HabitSessionForm from './pages/HabitSessionForm';
 import Session from './pages/Session';
 import Auth from './components/Auth';
 import Login from './pages/Login';
+import { connect } from 'react-redux';
+import { AuthActions } from './redux/modules/Auth';
 import { State } from './redux/store';
+import Register from './pages/Register';
 
 export const Path = {
   root: '/',
   login: '/login',
+  register: '/register',
   records: '/records',
   habits: '/habits',
 };
@@ -25,14 +28,25 @@ const Container = styled.div`
 `;
 
 type Props = {
-  isLoggedIn: boolean | undefined;
+  isLoggedIn: boolean | undefined
+  errors: [],
+  authCheck: Function;
 };
-const routes: React.FC<Props> = ({ isLoggedIn }) =>
-  isLoggedIn !== undefined ? (
-    <Container>
+
+class Routes extends React.Component<Props> {
+  componentDidMount(){
+    const {authCheck} = this.props;
+    authCheck();
+  }
+  render(){
+    const { isLoggedIn, errors } = this.props;
+    return (
+      isLoggedIn !== undefined 
+      ? <Container>
       <Switch>
-        <Route component={Login} exact path={Path.login} />
-        <Auth isLoggedIn={false}>
+        <Route render={()=><Login isLoggedIn={isLoggedIn} errors={errors}/>} exact path={Path.login} />
+        <Route render={()=><Register errors={errors}/>} exact path={Path.register} />
+        <Auth isLoggedIn={isLoggedIn}>
           <Route
             exact
             path={Path.root}
@@ -71,10 +85,15 @@ const routes: React.FC<Props> = ({ isLoggedIn }) =>
         </Auth>
       </Switch>
     </Container>
-  ) : (
-    <div>Loading...</div>
-  );
+    : <div style={{'display': 'flex','justifyContent': 'center'}}>Loading...</div>
+    )
+  }
+}
 
-export default connect((state: State) => ({
+
+export default connect((state:State)=>({
   isLoggedIn: state.auth.isLoggedIn,
-}))(routes);
+  errors: state.auth.errors,
+}),dispatch=>({
+  authCheck: ()=>{dispatch(AuthActions.authCheck())}
+}))(Routes)

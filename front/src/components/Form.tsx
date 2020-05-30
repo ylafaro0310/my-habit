@@ -15,7 +15,7 @@ export const CustomCheckbox: React.FC<CustomCheckRadioProps> = ({
   label,
   input,
   options,
-}: CustomCheckRadioProps) => (
+}) => (
   <Checkbox>
     {options.map((elem, key) => (
       <label key={key}>
@@ -59,7 +59,7 @@ export const CustomRadio: React.FC<CustomCheckRadioProps> = ({
   label,
   input,
   options,
-}: CustomCheckRadioProps) => (
+}) => (
   <Radio>
     {options.map((elem, key) => (
       <label key={key}>
@@ -92,7 +92,7 @@ export const CustomText: React.FC<CustomTextProps> = ({
   label,
   input,
   type,
-}: CustomCommonProps) => (
+}) => (
   <Text>
     <input
       {...input}

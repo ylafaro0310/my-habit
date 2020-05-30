@@ -8,13 +8,14 @@ import '@fortawesome/fontawesome-free/css/all.css';
 import './index.css';
 
 import { configureStore, history } from './redux/store';
-import routes from './routes';
+import Routes from './routes';
 import * as serviceWorker from './serviceWorker';
 
 const store = configureStore();
+
 ReactDOM.render(
   <Provider store={store}>
-    <ConnectedRouter history={history}>{routes}</ConnectedRouter>
+    <ConnectedRouter history={history}><Routes/></ConnectedRouter>
   </Provider>,
   document.getElementsByClassName('root')[0],
 );

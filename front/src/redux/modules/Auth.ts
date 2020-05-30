@@ -10,6 +10,8 @@ export const AuthActions = {
   loggedIn: actionCreator<{ isLoggedIn: boolean }>('loggedIn'),
   authCheck: actionCreator<void>('authCheck'),
   logout: actionCreator<void>('logout'),
+  register: actionCreator<object>('register'),
+  setErrors: actionCreator<{errors: []}>('setErrors'),
 };
 
 // Reducers
@@ -17,5 +19,10 @@ export const AuthReducer = reducerWithInitialState(new Auth()).case(
   AuthActions.loggedIn,
   (state, payload) => {
     return state.set('isLoggedIn', payload.isLoggedIn);
-  },
+  }
+).case(
+  AuthActions.setErrors,
+  (state, payload) => {
+    return state.set('errors', payload.errors);
+  }
 );
