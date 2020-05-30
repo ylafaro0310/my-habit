@@ -15,6 +15,18 @@ export class ApiClient {
         return Promise.reject(err);
       },
     );
+
+    this.axiosInstance.interceptors.response.use(
+      response => response,
+      error => {
+        if(error.response.status === 401){
+          //alert("認証に失敗しました。ログイン画面に戻ります");
+          //window.location.href = "/login";
+          return;
+        }
+        return Promise.reject(error);
+      }
+    )
   }
   async get<T = object>(path: string, params: object = {}): Promise<AxiosResponse<T>> {
     try {

@@ -11,11 +11,13 @@ import createSagaMiddleware from 'redux-saga';
 import Habits from '../models/Habits';
 import HabitRecords from '../models/HabitRecords';
 import HabitSessions from '../models/HabitSessions';
+import { Auth } from '../models/Auth';
 
 import { habitsReducer } from './modules/Habits';
 import { habitRecordsReducer } from './modules/HabitRecords';
 import { rootSaga } from './sagas';
 import { HabitSessionsReducer } from './modules/HabitSessions';
+import { AuthReducer } from './modules/Auth';
 
 export interface State {
   router: RouterState;
@@ -23,6 +25,7 @@ export interface State {
   habits: Habits;
   habitRecords: HabitRecords;
   habitSessions: HabitSessions;
+  auth: Auth;
 }
 
 export const rootReducer = (history: History) =>
@@ -32,6 +35,7 @@ export const rootReducer = (history: History) =>
     habits: habitsReducer,
     habitRecords: habitRecordsReducer,
     habitSessions: HabitSessionsReducer,
+    auth: AuthReducer,
   });
 
 export const sagaMiddleware = createSagaMiddleware();

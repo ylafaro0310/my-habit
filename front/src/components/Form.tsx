@@ -85,9 +85,13 @@ const Radio = styled.div`
   margin: 5px 5px 30px 5px;
 `;
 
-export const CustomText: React.FC<CustomCommonProps> = ({
+type CustomTextProps = {
+  type: string;
+} & CustomCommonProps;
+export const CustomText: React.FC<CustomTextProps> = ({
   label,
   input,
+  type,
 }: CustomCommonProps) => (
   <Text>
     <input
@@ -96,7 +100,7 @@ export const CustomText: React.FC<CustomCommonProps> = ({
         e.preventDefault();
       }}
       placeholder=' '
-      type='text'
+      type={type ? type : 'text'}
       value={input.value}
     />
     <label htmlFor={input.name}>{label}</label>

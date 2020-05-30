@@ -13,9 +13,8 @@ export const HabitRecordsActions = {
 };
 
 // Reducers
-export const habitRecordsReducer = reducerWithInitialState(new HabitRecords()).case(
-  HabitRecordsActions.setHabitRecords,
-  (state, payload) => {
-    return state.set('items', payload.getList());
-  },
-);
+export const habitRecordsReducer = reducerWithInitialState(
+  new HabitRecords(),
+).case(HabitRecordsActions.setHabitRecords, (state, payload) => {
+  return state.set('items', payload.getList());
+});
