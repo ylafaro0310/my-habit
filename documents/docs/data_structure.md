@@ -36,6 +36,18 @@ entity "作業記録(habit_sessions)" as e3 {
 	更新日時(updated_at): datetime
 }
 
+entity "ユーザ(users)" as e5 {
+	id: int
+	--
+	name: string
+	email: string
+	email_verified_at: datetime
+	password: string
+	remember_token: string
+	created_at: datetime
+	updated_at: datetime
+}
+
 e1 ||--o{ e2
 e1 ||--o{ e3
 

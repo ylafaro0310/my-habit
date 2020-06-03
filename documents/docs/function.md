@@ -11,6 +11,7 @@ package システム {
     usecase 作業時間を記録する as uc2
     usecase 習慣の連続記録が見られる as uc3
     usecase カレンダーで達成日を見られる as uc5
+    usecase ログインできる as uc13
 
     package 未実装 {
         usecase 今週の成果が見られる as uc4
