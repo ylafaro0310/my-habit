@@ -5,6 +5,8 @@ namespace Tests\Feature\Controllers;
 use Tests\TestCase;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\HabitRecordsController;
+
+use App\User;
 use App\Models\HabitRecords;
 use App\Utils\Util;
 
@@ -15,6 +17,7 @@ class HabitRecordsControllerTest extends TestCase
         $habitRecords = new HabitRecords;
         $this->habitRecordsPath = '/api/habits/records';
         $this->tableName = $habitRecords->tableName;
+        $this->user = factory(User::class)->create();
 
         Artisan::call('migrate:refresh --seed --env=testing');
 
@@ -69,7 +72,7 @@ class HabitRecordsControllerTest extends TestCase
                 ]
             ],
         ];
-        $response = $this->get($this->habitRecordsPath);
+        $response = $this->actingAs($this->user)->get($this->habitRecordsPath);
         $response->assertJson($expectedData);
     }
 
@@ -101,7 +104,7 @@ class HabitRecordsControllerTest extends TestCase
             ],
         ];
 
-        $response = $this->post($this->habitRecordsPath,$params);
+        $response = $this->actingAs($this->user)->post($this->habitRecordsPath,$params);
         $this->assertDatabaseHas($this->tableName, Util::snakeArray($params));
         $response->assertJson($expectedData);
     }
@@ -134,16 +137,16 @@ class HabitRecordsControllerTest extends TestCase
         ];
         
         $this->assertDatabaseHas($this->tableName, ['id'=>1]);
-        $response = $this->delete($this->habitRecordsPath,$params);
+        $response = $this->actingAs($this->user)->delete($this->habitRecordsPath,$params);
         $response->assertStatus(200);
         $response->assertJson($expectedData);
         $this->assertDatabaseMissing($this->tableName, ['id'=>1]);
 
         // 不正なパラメータのテスト
-        $response = $this->delete($this->habitRecordsPath,['habitId'=>1]);
+        $response = $this->actingAs($this->user)->delete($this->habitRecordsPath,['habitId'=>1]);
         $response->assertStatus(400);
 
-        $response = $this->delete($this->habitRecordsPath,['completedAt'=>'2020-02-08']);
+        $response = $this->actingAs($this->user)->delete($this->habitRecordsPath,['completedAt'=>'2020-02-08']);
         $response->assertStatus(400);
     }
 }

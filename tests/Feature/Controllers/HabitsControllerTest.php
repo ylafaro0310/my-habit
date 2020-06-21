@@ -5,6 +5,8 @@ namespace Tests\Feature\Controllers;
 use Tests\TestCase;
 use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\HabitsController;
+
+use App\User;
 use App\Models\Habits;
 use App\Utils\Util;
 
@@ -15,6 +17,7 @@ class HabitsControllerTest extends TestCase
         $habits = new Habits;
         $this->habitsPath = '/api/habits';
         $this->tableName = $habits->tableName;
+        $this->user = factory(User::class)->create();
 
         Artisan::call('migrate:refresh --seed --env=testing');
     }
@@ -37,7 +40,7 @@ class HabitsControllerTest extends TestCase
                 ]
             ]
         ];
-        $response = $this->get($this->habitsPath);
+        $response = $this->actingAs($this->user)->get($this->habitsPath);
         $response->assertJson($expectedData);
     }
 
@@ -55,7 +58,7 @@ class HabitsControllerTest extends TestCase
             'targetTime' => 5,
             'timeOfDay' => 'always',
         ];
-        $response = $this->get($this->habitsPath.'/1');
+        $response = $this->actingAs($this->user)->get($this->habitsPath.'/1');
         $response->assertJson($expectedData);
     }
 
@@ -86,7 +89,7 @@ class HabitsControllerTest extends TestCase
             ]
         ];
         $this->assertDatabaseMissing($this->tableName, Util::snakeArray($params));
-        $response = $this->post($this->habitsPath,$params);
+        $response = $this->actingAs($this->user)->post($this->habitsPath,$params);
         $response->assertJson($expectedData);
         $this->assertDatabaseHas($this->tableName, Util::snakeArray($params));
     }
@@ -119,7 +122,7 @@ class HabitsControllerTest extends TestCase
             ]
         ];
         $this->assertDatabaseMissing($this->tableName, Util::snakeArray($expectedData));
-        $response = $this->patch($this->habitsPath.'/2',$params);
+        $response = $this->actingAs($this->user)->patch($this->habitsPath.'/2',$params);
         $response->assertJson($expectedResponse);
         $this->assertDatabaseHas($this->tableName, Util::snakeArray($expectedData));
     }
@@ -143,14 +146,14 @@ class HabitsControllerTest extends TestCase
             ]
         ];
         $this->assertDatabaseHas($this->tableName, ['id'=>2]);
-        $response = $this->delete($this->habitsPath.'/2');
+        $response = $this->actingAs($this->user)->delete($this->habitsPath.'/2');
         $response->assertJson($expectedData);
         $this->assertDatabaseMissing($this->tableName, ['id'=>2]);
         $this->assertDatabaseMissing('habit_records', ['habit_id'=>2]);
 
         // 存在しないhabit_idのテスト
         $this->assertDatabaseMissing($this->tableName, ['id'=>999]);
-        $response = $this->delete($this->habitsPath.'/999');
+        $response = $this->actingAs($this->user)->delete($this->habitsPath.'/999');
         $response->assertStatus(400);
     }
 }
