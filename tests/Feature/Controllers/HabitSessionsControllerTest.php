@@ -34,7 +34,7 @@ class HabitSessionsControllerTest extends TestCase
             'habitSessions' => [
                 [
                     'habitId' => 2,
-                    'workingMinutes' => 5,
+                    'workingMinutes' => 10,
                 ]
             ]
         ];
@@ -64,11 +64,11 @@ class HabitSessionsControllerTest extends TestCase
             'habitSessions' => [
                 [
                     'habitId' => 2,
-                    'workingMinutes' => 5,
+                    'workingMinutes' => 10,
                 ]
             ]
         ];
-        $response = $this->actingAs($this->user)->get($this->habitPath.'/1/sessions');
+        $response = $this->actingAs($this->user)->get($this->habitPath.'/2/sessions');
         $response->assertJson($expectedData);
         $response->assertJsonMissing(['habits'=>['user_id'=>2]]);
     }
@@ -165,16 +165,16 @@ class HabitSessionsControllerTest extends TestCase
             ],
             'habitSessions' => [
                 [
-                    'id' => 1,
-                    'workingMinutes' => 5,
+                    'id' => 2,
+                    'workingMinutes' => 10,
                 ]
             ]
         ];
-        $this->assertDatabaseHas($this->tableName, ['id'=>2]);
-        $response = $this->actingAs($this->user)->delete($this->habitSessionsPath.'/2');
+        $this->assertDatabaseHas($this->tableName, ['id'=>1]);
+        $response = $this->actingAs($this->user)->delete($this->habitSessionsPath.'/1');
         $response->assertJson($expectedData);
         $response->assertJsonMissing(['habits'=>['user_id'=>2]]);
-        $this->assertDatabaseMissing($this->tableName, ['id'=>2]);
+        $this->assertDatabaseMissing($this->tableName, ['id'=>1]);
 
         // 存在しないhabit_idのテスト
         $this->assertDatabaseMissing($this->tableName, ['id'=>999]);

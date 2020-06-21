@@ -23,9 +23,9 @@ class HabitSessionsController extends Controller
         $userId = Auth::id();
         $habits = $this->habits->where(['user_id'=>$userId])->select();
         if(empty($habitId)){
-            $habitSessions = $this->habitSessions->select();
+            $habitSessions = $this->habitSessions->where(['user_id'=>$userId])->join('habits','habits.id','=','habit_sessions.habit_id')->select();
         }else{
-            $habitSessions = $this->habitSessions->where(['habit_id'=>$habitId])->select();
+            $habitSessions = $this->habitSessions->where(['habit_sessions.habit_id'=>$habitId,'user_id'=>$userId])->join('habits','habits.id','=','habit_sessions.habit_id')->select();
         }
         $response = [
             'habits' => $habits,

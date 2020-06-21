@@ -138,12 +138,12 @@ class HabitRecordsControllerTest extends TestCase
             ],
         ];
         
-        $this->assertDatabaseHas($this->tableName, ['id'=>1]);
+        $this->assertDatabaseHas($this->tableName, ['id'=>2]);
         $response = $this->actingAs($this->user)->delete($this->habitRecordsPath,$params);
         $response->assertStatus(200);
         $response->assertJson($expectedData);
         $response->assertJsonMissing(['habits'=>['user_id'=>2]]);
-        $this->assertDatabaseMissing($this->tableName, ['id'=>1]);
+        $this->assertDatabaseMissing($this->tableName, ['id'=>2]);
 
         // 不正なパラメータのテスト
         $response = $this->actingAs($this->user)->delete($this->habitRecordsPath,['habitId'=>1]);

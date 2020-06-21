@@ -24,7 +24,7 @@ class HabitRecordsController extends Controller
     private function createResponse(){
         $userId = Auth::id();
         $habits = $this->habits->where(['user_id'=>$userId])->select();
-        $habitRecords = $this->habitRecords->select();
+        $habitRecords = $this->habitRecords->where(['user_id'=>$userId])->join('habits','habits.id','=','habit_records.habit_id')->select();
 
         foreach($habits as &$habit){
             $filteredRecords = array_filter($habitRecords,function($v)use($habit){return $v['habit_id'] === $habit['id'];});
