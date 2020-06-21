@@ -14,7 +14,7 @@ class AddUserIdToHabitsTable extends Migration
     public function up()
     {
         Schema::table('habits', function (Blueprint $table) {
-            $table->integer('user_id');
+            $table->integer('user_id')->default(1);
         });
     }
 
