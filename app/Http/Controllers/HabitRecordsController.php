@@ -78,20 +78,21 @@ class HabitRecordsController extends Controller
             // 日曜より新しい場合はカウント
             $date = new \DateTime($value['completed_at']);
             $interval = $lastSunday->diff($date);
-            if($interval->invert == 0){
-                $countDayThisWeek++;
-
             // 日曜より古い場合は前の週の日曜をセット
-            }else{
-                // 今週以外の週で、指定回数達成していない場合はループを抜ける
-                if($countDayThisWeek != $repeatValue 
-                        && $lastSunday->diff($this->systemClock->getLastSunday())->days != 0){
-                    break;
+            if($interval->invert != 0){
+                if($countDayThisWeek == $repeatValue){
+                    $countWeek++;
                 }
-                $countWeek++;
+                if($countDayThisWeek < $repeatValue){
+                    // 今週以外の週で、指定回数達成していない場合はループを抜ける
+                    if($lastSunday->diff($this->systemClock->getLastSunday())->days != 0){
+                        break;
+                    }
+                }
                 $countDayThisWeek=0;
                 $lastSunday = $lastSunday->sub(new \DateInterval('P7D'));
             }
+            $countDayThisWeek++;
             $countDay++;
         }
         return [$countDay,$countWeek];
@@ -106,22 +107,26 @@ class HabitRecordsController extends Controller
             // 日曜より新しい場合はカウント
             $date = new \DateTime($value['completed_at']);
             $interval = $lastSunday->diff($date);
-            if($interval->invert == 0){
-                $dowValue = 0b1 << (6 - (new \DateTime($value['completed_at']))->format('w'));
-                $dowFrag = $dowFrag & ~ $dowValue;
-
             // 日曜より古い場合は前の週の日曜をセット
-            }else{
-                // 今週以外の週で、指定曜日を達成していない場合はループを抜ける
-                if($dowFrag != 0 
-                        && $lastSunday->diff($this->systemClock->getLastSunday())->days != 0){
-                    break;
-                }
-                $countWeek++;
+            if($interval->invert != 0){
+                if($dowFrag == 0){
+                    $countWeek++;
+                }else{
+                    // 今週以外の週で、指定曜日を達成していない場合はループを抜ける
+                    if($lastSunday->diff($this->systemClock->getLastSunday())->days != 0){
+                        break;
+                    }
+            }
                 $dowFrag = $repeatValue;
                 $lastSunday = $lastSunday->sub(new \DateInterval('P7D'));
             }
-            $countDay++;
+            $dowValue = 0b1 << (6 - (new \DateTime($value['completed_at']))->format('w'));
+            $dowFrag = $dowFrag & ~ $dowValue;
+            // 今週または、現在の曜日より新しい曜日を全て達成している場合のみカウント
+            if($lastSunday->diff($this->systemClock->getLastSunday())->days == 0
+                || (($dowFrag & ($dowValue - 1)) == 0)){
+                $countDay++;
+            }
 
         }
         return [$countDay,$countWeek];

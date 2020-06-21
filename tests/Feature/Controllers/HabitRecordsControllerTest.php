@@ -67,8 +67,8 @@ class HabitRecordsControllerTest extends TestCase
                     'repeatValue' => 3,
                     'targetTime' => null,
                     'timeOfDay' => 'always',
-                    'consecutiveDays' => 4,
-                    'consecutiveWeeks' => 1,
+                    'consecutiveDays' => 8,
+                    'consecutiveWeeks' => 2,
                 ]
             ],
         ];

@@ -72,6 +72,21 @@ class HabitRecordsSeeder extends Seeder
 
         DB::table('habit_records')->insert([
             'habit_id' => 5,
+            'completed_at' => Date('2020-01-24'),
+            'is_skipped' => false,
+        ]);
+        DB::table('habit_records')->insert([
+            'habit_id' => 5,
+            'completed_at' => Date('2020-01-28'),
+            'is_skipped' => false,
+        ]);
+        DB::table('habit_records')->insert([
+            'habit_id' => 5,
+            'completed_at' => Date('2020-01-29'),
+            'is_skipped' => false,
+        ]);
+        DB::table('habit_records')->insert([
+            'habit_id' => 5,
             'completed_at' => Date('2020-01-31'),
             'is_skipped' => false,
         ]);
