@@ -35,7 +35,7 @@ class HabitRecordsControllerTest extends TestCase
     public function testIndex()
     {
         $expectedData = [
-            'habitRecords' => [['habitId'=>1]],
+            'habitRecords' => [['habitId'=>2]],
             'habits' => [
                 [
                     'habitName' => '本を読む',
@@ -74,6 +74,7 @@ class HabitRecordsControllerTest extends TestCase
         ];
         $response = $this->actingAs($this->user)->get($this->habitRecordsPath);
         $response->assertJson($expectedData);
+        $response->assertJsonMissing(['habits'=>['user_id'=>2]]);
     }
 
     /**
@@ -84,13 +85,13 @@ class HabitRecordsControllerTest extends TestCase
     public function testStore()
     {
         $params = [
-            'habitId' => 1,
+            'habitId' => 2,
             'completedAt' => '2020-02-11',
             'isSkipped' => 0,
         ];
 
         $expectedData = [
-            'habitRecords' => [['habitId'=>1]],
+            'habitRecords' => [['habitId'=>2]],
             'habits' => [
                 [
                     'habitName' => '本を読む',
@@ -107,6 +108,7 @@ class HabitRecordsControllerTest extends TestCase
         $response = $this->actingAs($this->user)->post($this->habitRecordsPath,$params);
         $this->assertDatabaseHas($this->tableName, Util::snakeArray($params));
         $response->assertJson($expectedData);
+        $response->assertJsonMissing(['habits'=>['user_id'=>2]]);
     }
 
     /**
@@ -117,12 +119,12 @@ class HabitRecordsControllerTest extends TestCase
     public function testDelete()
     {
         $params = [
-            'habitId' => 1,
+            'habitId' => 2,
             'completedAt' => '2020-02-08',
         ];
 
         $expectedData = [
-            'habitRecords' => [['habitId'=>1]],
+            'habitRecords' => [['habitId'=>2]],
             'habits' => [
                 [
                     'habitName' => '本を読む',
@@ -140,6 +142,7 @@ class HabitRecordsControllerTest extends TestCase
         $response = $this->actingAs($this->user)->delete($this->habitRecordsPath,$params);
         $response->assertStatus(200);
         $response->assertJson($expectedData);
+        $response->assertJsonMissing(['habits'=>['user_id'=>2]]);
         $this->assertDatabaseMissing($this->tableName, ['id'=>1]);
 
         // 不正なパラメータのテスト

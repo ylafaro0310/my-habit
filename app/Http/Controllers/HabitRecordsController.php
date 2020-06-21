@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 use App\Models\Habits;
 use App\Models\HabitRecords;
@@ -21,7 +22,8 @@ class HabitRecordsController extends Controller
     }
 
     private function createResponse(){
-        $habits = $this->habits->select();
+        $userId = Auth::id();
+        $habits = $this->habits->where(['user_id'=>$userId])->select();
         $habitRecords = $this->habitRecords->select();
 
         foreach($habits as &$habit){

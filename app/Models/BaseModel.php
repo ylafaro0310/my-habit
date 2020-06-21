@@ -76,7 +76,7 @@ class BaseModel {
         $sth->execute();
         $result = $sth->fetchAll(\PDO::FETCH_ASSOC);
         $this->resetConditions();
-        return $result[0];
+        return count($result) > 0 ? $result[0] : [];
     }
 
     public function store($params){

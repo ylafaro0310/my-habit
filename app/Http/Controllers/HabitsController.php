@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 use App\Models\Habits;
 use App\Models\HabitRecords;
@@ -19,7 +20,8 @@ class HabitsController extends Controller
     }
 
     private function createResponse(){
-        $habits = $this->habits->select();
+        $userId = Auth::id();
+        $habits = $this->habits->where(['user_id'=>$userId])->select();
         $response = [
             'habits' => $habits,
         ];
@@ -55,7 +57,9 @@ class HabitsController extends Controller
      */
     public function store(Request $request)
     {
+        $userId = Auth::id();
         $params = $request->all();
+        $params['userId'] = $userId;
         $params = Util::snakeArray($params);
         try{
             $this->pdo->beginTransaction();
@@ -77,7 +81,8 @@ class HabitsController extends Controller
      */
     public function show($id)
     {
-        $response = $this->habits->where(['id'=>$id])->first();
+        $userId = Auth::id();
+        $response = $this->habits->where(['id'=>$id,'user_id'=>$userId])->first();
         $response = Util::camelArray($response);
         return json_encode($response);
     }
@@ -102,11 +107,12 @@ class HabitsController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $userId = Auth::id();
         $params = $request->all();
         $params = Util::snakeArray($params);
         try{
             $this->pdo->beginTransaction();
-            $this->habits->where(['id'=>$id])->update($params);
+            $this->habits->where(['id'=>$id,'user_id'=>$userId])->update($params);
             $this->pdo->commit();
             $response = $this->createResponse();
             return json_encode($response);

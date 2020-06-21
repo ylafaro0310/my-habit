@@ -33,13 +33,14 @@ class HabitSessionsControllerTest extends TestCase
         $expectedData = [
             'habitSessions' => [
                 [
-                    'id' => 1,
+                    'habitId' => 2,
                     'workingMinutes' => 5,
                 ]
             ]
         ];
         $response = $this->actingAs($this->user)->get($this->habitSessionsPath);
         $response->assertJson($expectedData);
+        $response->assertJsonMissing(['habits'=>['user_id'=>2]]);
     }
 
     /**
@@ -62,13 +63,14 @@ class HabitSessionsControllerTest extends TestCase
             ],
             'habitSessions' => [
                 [
-                    'habitId' => 1,
+                    'habitId' => 2,
                     'workingMinutes' => 5,
                 ]
             ]
         ];
         $response = $this->actingAs($this->user)->get($this->habitPath.'/1/sessions');
         $response->assertJson($expectedData);
+        $response->assertJsonMissing(['habits'=>['user_id'=>2]]);
     }
 
     /**
@@ -94,9 +96,6 @@ class HabitSessionsControllerTest extends TestCase
             ],
             'habitSessions' => [
                 [
-                    'habitId' => 1,
-                    'workingMinutes' => 5,
-                ],[
                     'habitId' => 2,
                     'workingMinutes' => 10,
                 ],[
@@ -108,6 +107,7 @@ class HabitSessionsControllerTest extends TestCase
         $this->assertDatabaseMissing($this->tableName, Util::snakeArray($params));
         $response = $this->actingAs($this->user)->post($this->habitPath.'/2/sessions',$params);
         $response->assertJson($expectedData);
+        $response->assertJsonMissing(['habits'=>['user_id'=>2]]);
         $this->assertDatabaseHas($this->tableName, Util::snakeArray($params));
     }
 
@@ -119,8 +119,7 @@ class HabitSessionsControllerTest extends TestCase
     public function testUpdate()
     {
         $params = [
-            'id' => 1,
-            'workingMinutes' => 10,
+            'workingMinutes' => 30,
             'completedAt' => '2020-05-10',
         ];
         $expectedData = $params;
@@ -136,15 +135,14 @@ class HabitSessionsControllerTest extends TestCase
             ],
             'habitSessions' => [
                 [
-                    'workingMinutes' => 10,
-                ],[
-                    'workingMinutes' => 10,
-                ]
+                    'workingMinutes' => 30,
+                ],
             ]
         ];
         $this->assertDatabaseMissing($this->tableName, Util::snakeArray($expectedData));
-        $response = $this->actingAs($this->user)->patch($this->habitSessionsPath.'/1',$params);
+        $response = $this->actingAs($this->user)->patch($this->habitSessionsPath.'/2',$params);
         $response->assertJson($expectedResponse);
+        $response->assertJsonMissing(['habits'=>['user_id'=>2]]);
         $this->assertDatabaseHas($this->tableName, Util::snakeArray($expectedData));
     }
 
@@ -175,6 +173,7 @@ class HabitSessionsControllerTest extends TestCase
         $this->assertDatabaseHas($this->tableName, ['id'=>2]);
         $response = $this->actingAs($this->user)->delete($this->habitSessionsPath.'/2');
         $response->assertJson($expectedData);
+        $response->assertJsonMissing(['habits'=>['user_id'=>2]]);
         $this->assertDatabaseMissing($this->tableName, ['id'=>2]);
 
         // 存在しないhabit_idのテスト

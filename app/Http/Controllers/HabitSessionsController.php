@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 use App\Models\Habits;
 use App\Models\HabitSessions;
@@ -19,7 +20,8 @@ class HabitSessionsController extends Controller
     }
 
     private function createResponse($habitId = null){
-        $habits = $this->habits->select();
+        $userId = Auth::id();
+        $habits = $this->habits->where(['user_id'=>$userId])->select();
         if(empty($habitId)){
             $habitSessions = $this->habitSessions->select();
         }else{
