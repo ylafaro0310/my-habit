@@ -6,15 +6,19 @@ import { RouteComponentProps } from 'react-router-dom';
 import { State } from '../redux/store';
 import dayjs from '../lib/dayjs-ja';
 import StyledCard from '../components/Card';
-import Habits from '../models/Habits';
+import Habits, { Habit } from '../models/Habits';
 import HabitRecords from '../models/HabitRecords';
 import { HabitRecordsActions } from '../redux/modules/HabitRecords';
+import { HabitSessionsActions } from '../redux/modules/HabitSessions';
 import HabitHeader from '../components/HabitHeader';
+import HabitSessions from '../models/HabitSessions';
 
 type AnalyticsProps = {
   habits: Habits;
   habitRecords: HabitRecords;
+  habitSessions: HabitSessions;
   getHabitRecords: () => void;
+  getHabitSessions: (habitId: number) => void;
   addHabitRecord: (params: object) => void;
   removeHabitRecord: (params: object) => void;
 } & RouteComponentProps<{ habitId: string }>;
@@ -139,23 +143,45 @@ export class Analytics extends React.Component<AnalyticsProps, AnalyticsState> {
     );
   }
 
+  achievement(habit: Habit, habitSessions: HabitSessions){
+    const { getHabitSessions } = this.props;
+    let goalAchievement = 0;
+    if(!habitSessions){
+      getHabitSessions(habit.id);
+    }else{
+      goalAchievement = habitSessions.getList().filter((elem)=>(dayjs().isSame(elem.completedAt,'month'))).count();
+    }
+    return (
+      <div>
+        {
+        habitSessions
+        ? goalAchievement + '/' + habit.numericalGoal + ' ' + habit.numericalGoalUnit
+        : '読み込み中'
+        }
+      </div>
+    )
+  }
+
   componentDidMount() {
     const { getHabitRecords } = this.props;
     getHabitRecords();
   }
 
   render() {
-    const { habits } = this.props;
+    const { habits, habitSessions } = this.props;
     const { habitId } = this.props.match.params;
     const habit = habits.getById(Number(habitId));
     return (
-      <>
+      habit
+      ? <>
         <HabitHeader
           backTo='/records'
           habitName={habit ? habit.habitName : ''}
         />
+        <StyledCard>{this.achievement(habit, habitSessions)}</StyledCard>
         <StyledCard>{this.calendar(this.state.month - 1)}</StyledCard>
       </>
+      : '読み込み中'
     );
   }
 }
@@ -164,10 +190,14 @@ export default connect(
   (state: State) => ({
     habits: state.habits,
     habitRecords: state.habitRecords,
+    habitSessions: state.habitSessions,
   }),
   dispatch => ({
     getHabitRecords: (): void => {
       dispatch(HabitRecordsActions.getHabitRecords({}));
+    },
+    getHabitSessions: (habitId: number): void => {
+      dispatch(HabitSessionsActions.getHabitSessions({habitId}));
     },
     addHabitRecord: (params: object): void => {
       dispatch(HabitRecordsActions.addHabitRecord(params));

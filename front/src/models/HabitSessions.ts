@@ -9,11 +9,13 @@ export class HabitSession extends Record<{
   habitId: number;
   completedAt: Dayjs;
   workingMinutes: number; // 単位は「分」
+  numericalGoal: number;
 }>({
   id: 0,
   habitId: 0,
   completedAt: dayjs(),
   workingMinutes: 0,
+  numericalGoal: 0,
 }) {
   static fromResponse(response: JSObject): HabitSession {
     const params = { ...response };

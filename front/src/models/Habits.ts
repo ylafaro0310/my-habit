@@ -13,6 +13,9 @@ export class Habit extends Record<{
   repeatValue: number;
   startedAt: Dayjs;
   targetTime: number; // 単位は「分」
+  numericalGoal: number;
+  numericalGoalUnit: string;
+  perWhat: string;
   timeOfDay: string;
   consecutiveDays: number;
   //consecutiveWeeks: number | null;
@@ -23,6 +26,9 @@ export class Habit extends Record<{
   repeatValue: 127,
   startedAt: dayjs(),
   targetTime: 0,
+  numericalGoal: 0,
+  numericalGoalUnit: '',
+  perWhat: '',
   timeOfDay: '',
   consecutiveDays: 0,
   //consecutiveWeeks: null,

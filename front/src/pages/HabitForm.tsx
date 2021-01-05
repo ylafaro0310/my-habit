@@ -165,6 +165,28 @@ export class HabitForm extends React.Component<HabitFormProps> {
             </div>
             <div>
               <Field
+                component={CustomText}
+                label='数値目標'
+                name='numericalGoal'
+              />
+              <Field
+                component={CustomText}
+                label='数値目標の単位'
+                name='numericalGoalUnit'
+              />
+              <Field
+                component={CustomSelect}
+                label='数値目標の期間'
+                name='perWhat'
+                options={[
+                  { value: 'perDay', displayName: '1日あたり' },
+                  { value: 'perWeek', displayName: '1週間あたり' },
+                  { value: 'perMonth', displayName: '1ヶ月あたり' },
+                ]}
+              />
+            </div>
+            <div>
+              <Field
                 component={CustomSelect}
                 label='時間帯'
                 name='timeOfDay'
