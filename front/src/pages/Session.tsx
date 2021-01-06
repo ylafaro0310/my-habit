@@ -52,7 +52,8 @@ export class Session extends React.Component<SessionProps> {
               <CustomLink key={key}>
                 <Link to={'/habits/' + elem.habitId + '/sessions/' + elem.id}>
                   <ListItem>
-                    <div>{elem.workingMinutes + '分'}</div>
+                    <div>{'【作業時間】' + elem.workingMinutes + '分'}</div>
+                    {elem.numericalGoal && <div>{'【数値目標】' + elem.numericalGoal + (habits.getList().find((elem)=>(elem.id === Number(habitId))) || {}).numericalGoalUnit}</div>}
                     <div>{dayjs(elem.completedAt).format('HH:mm')}</div>
                   </ListItem>
                 </Link>

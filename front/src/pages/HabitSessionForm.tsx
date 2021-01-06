@@ -26,6 +26,7 @@ type HabitSessionFormProps = {
 const initialValues = {
   id: 0,
   workingMinutes: 0,
+  numericalGoal: 0,
   completedAt: dayjs().format('YYYY-MM-DD HH:mm:ss'),
 };
 
@@ -80,6 +81,13 @@ export class HabitSessionForm extends React.Component<HabitSessionFormProps> {
               component={CustomText}
               label='作業時間'
               name='workingMinutes'
+            />
+          </div>
+          <div>
+            <Field
+              component={CustomText}
+              label='数値目標'
+              name='numericalGoal'
             />
           </div>
           <div>

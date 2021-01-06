@@ -23,9 +23,31 @@ class HabitSessionsController extends Controller
         $userId = Auth::id();
         $habits = $this->habits->where(['user_id'=>$userId])->select();
         if(empty($habitId)){
-            $habitSessions = $this->habitSessions->where(['user_id'=>$userId])->join('habits','habits.id','=','habit_sessions.habit_id')->select();
+            $habitSessions = $this->habitSessions
+                                    ->where(['user_id'=>$userId])
+                                    ->join('habits','habits.id','=','habit_sessions.habit_id')
+                                    ->select([
+                                        'habit_sessions.id',
+                                        'habit_sessions.habit_id',
+                                        'habit_sessions.working_minutes',
+                                        'habit_sessions.completed_at',
+                                        'habit_sessions.created_at',
+                                        'habit_sessions.updated_at',
+                                        'habit_sessions.numerical_goal',
+                                        ]);
         }else{
-            $habitSessions = $this->habitSessions->where(['habit_sessions.habit_id'=>$habitId,'user_id'=>$userId])->join('habits','habits.id','=','habit_sessions.habit_id')->select();
+            $habitSessions = $this->habitSessions
+                                    ->where(['habit_sessions.habit_id'=>$habitId,'user_id'=>$userId])
+                                    ->join('habits','habits.id','=','habit_sessions.habit_id')
+                                    ->select([
+                                        'habit_sessions.id',
+                                        'habit_sessions.habit_id',
+                                        'habit_sessions.working_minutes',
+                                        'habit_sessions.completed_at',
+                                        'habit_sessions.created_at',
+                                        'habit_sessions.updated_at',
+                                        'habit_sessions.numerical_goal',
+                                        ]);
         }
         $response = [
             'habits' => $habits,

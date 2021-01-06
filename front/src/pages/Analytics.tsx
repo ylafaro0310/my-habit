@@ -25,12 +25,14 @@ type AnalyticsProps = {
 
 type AnalyticsState = {
   month: number;
+  isLoadedSessions: boolean;
 };
 export class Analytics extends React.Component<AnalyticsProps, AnalyticsState> {
   constructor(props: AnalyticsProps) {
     super(props);
     this.state = {
       month: Number(dayjs().format('M')),
+      isLoadedSessions: false,
     };
     this.onChangeMongh = this.onChangeMongh.bind(this);
     this.onChangeHabitRecord = this.onChangeHabitRecord.bind(this);
@@ -145,20 +147,50 @@ export class Analytics extends React.Component<AnalyticsProps, AnalyticsState> {
 
   achievement(habit: Habit, habitSessions: HabitSessions){
     const { getHabitSessions } = this.props;
+    const { isLoadedSessions } = this.state;
     let goalAchievement = 0;
-    if(!habitSessions){
+    if(!isLoadedSessions){
       getHabitSessions(habit.id);
+      this.setState({isLoadedSessions: true});
     }else{
-      goalAchievement = habitSessions.getList().filter((elem)=>(dayjs().isSame(elem.completedAt,'month'))).count();
+      goalAchievement = habitSessions.getList().filter((elem)=>(dayjs().isSame(elem.completedAt,'month'))).reduce((sum,elem)=>(sum+elem.numericalGoal),0);
     }
     return (
-      <div>
-        {
-        habitSessions
-        ? goalAchievement + '/' + habit.numericalGoal + ' ' + habit.numericalGoalUnit
-        : '読み込み中'
-        }
-      </div>
+      habit.numericalGoal && habit.numericalGoal !== 0 ?
+        <StyledCard>
+          <div>
+          {
+            habitSessions
+            ? <h3>
+                <div>
+                  {
+                    habit.perWhat === 'perWeek'
+                    ? '1週間の目標'
+                    : habit.perWhat === 'perMonth'
+                    ? '1か月の目標'
+                    : habit.perWhat === 'perDay'
+                    ? '1日の目標'
+                    : '目標'
+                  }
+                </div>
+                <div>
+                  <div style={{textAlign: 'right'}}>
+                    {goalAchievement + '/' + habit.numericalGoal + ' ' + habit.numericalGoalUnit + '達成'}
+                  </div>
+                </div>
+              </h3>
+            : '読み込み中'
+          }
+          {
+            habit.numericalGoal === goalAchievement
+            ? <p style={{textAlign: 'right'}}>
+                {'目標達成です！よく頑張りました！'}
+              </p>
+            : ''
+          }
+          </div>
+        </StyledCard>
+      : ''
     )
   }
 
@@ -178,7 +210,7 @@ export class Analytics extends React.Component<AnalyticsProps, AnalyticsState> {
           backTo='/records'
           habitName={habit ? habit.habitName : ''}
         />
-        <StyledCard>{this.achievement(habit, habitSessions)}</StyledCard>
+        {this.achievement(habit, habitSessions)}
         <StyledCard>{this.calendar(this.state.month - 1)}</StyledCard>
       </>
       : '読み込み中'

@@ -31,7 +31,7 @@ function* updateHabit(action: ReturnType<typeof HabitsActions.updateHabit>) {
   const response = yield call(HabitsApi.patch, habitId, params);
   if (response.isSuccess) {
     yield put(HabitsActions.setHabits(Habits.fromResponse(response.data)));
-    yield put(push('records'));
+    yield put(push('/records'));
   }
 }
 
