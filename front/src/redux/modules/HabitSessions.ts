@@ -10,6 +10,7 @@ export const HabitSessionsActions = {
     'getHabitSessions',
   ),
   setHabitSessions: actionCreator<HabitSessions>('setHabitSessions'),
+  resetHabitSessions: actionCreator('resetHabitSessions'),
   addHabitSession: actionCreator<{ habitId: number; values: object }>(
     'addHabitSession',
   ),
@@ -31,5 +32,7 @@ export const HabitSessionsActions = {
 export const HabitSessionsReducer = reducerWithInitialState(
   new HabitSessions(),
 ).case(HabitSessionsActions.setHabitSessions, (state, payload) => {
-  return state.set('items', payload.getList());
+  return state.set('items', state.getList().concat(payload.getList()));
+}).case(HabitSessionsActions.resetHabitSessions, (state, payload) => {
+  return new HabitSessions();
 });

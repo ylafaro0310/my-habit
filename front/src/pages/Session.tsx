@@ -14,17 +14,46 @@ import Habits from '../models/Habits';
 type SessionProps = {
   habits: Habits;
   habitSessions: HabitSessions;
-  dispatch: Dispatch;
+  getHabitSessions: (habitId: number, values?: object) => void;
+  resetHabitSessions: ()=>void;
 } & RouteComponentProps<{ habitId: string }>;
-export class Session extends React.Component<SessionProps> {
+
+type SessionState = {
+  offset: number;
+  limit: number;
+}
+
+export class Session extends React.Component<SessionProps,SessionState> {
+  constructor(props: SessionProps){
+    super(props)
+    this.state = {
+      offset: 0,
+      limit: 100,
+    }
+    this.onClick = this.onClick.bind(this);
+  }
+
   componentDidMount() {
     const { habitId } = this.props.match.params;
-    const { dispatch } = this.props;
-    dispatch(
-      HabitSessionsActions.getHabitSessions({
-        habitId: Number(habitId),
-      }),
-    );
+    const { resetHabitSessions, getHabitSessions } = this.props;
+    const { offset, limit } = this.state;
+    
+    resetHabitSessions();
+    getHabitSessions(Number(habitId),{offset, limit}); 
+  }
+
+  componentWillUnmount(){
+    const { resetHabitSessions } = this.props;
+    resetHabitSessions();
+  }
+
+  onClick(){
+    const { habitId } = this.props.match.params;
+    const { getHabitSessions } = this.props;
+    const { offset, limit } = this.state;
+
+    getHabitSessions(Number(habitId),{offset: offset + limit, limit})
+    this.setState({offset: offset + limit})
   }
 
   render() {
@@ -75,6 +104,7 @@ export class Session extends React.Component<SessionProps> {
           nextTo={'/habits/' + habitId + '/sessions'}
         />
         {sessions ? sessions : null}
+        <button onClick={this.onClick}>さらに読み込む</button>
       </>
     );
   }
@@ -93,6 +123,16 @@ const CustomLink = styled.div`
 export default connect((state: State) => ({
   habits: state.habits,
   habitSessions: state.habitSessions,
+}),(dispatch: Dispatch)=>({
+  getHabitSessions: (habitId: number, values?: object) => {
+    dispatch(
+      HabitSessionsActions.getHabitSessions({
+        habitId: habitId,
+        values: values,
+      })
+    );
+  },
+  resetHabitSessions: ()=>{ dispatch(HabitSessionsActions.resetHabitSessions()) }
 }))(Session);
 
 const List = styled.div`

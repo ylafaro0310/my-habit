@@ -51,6 +51,21 @@ class BaseModel {
 
     public function order($by,$order='asc'){
         $this->bindings['order'] = " order by " . $by . " " . $order;
+
+        return $this;
+    }
+
+    public function limit($limit){
+        $this->bindings['limit'] = " limit " . $limit;
+        
+        return $this;
+    }
+
+    public function offset($offset){
+        if($offset != 0){
+            $this->bindings['offset'] = " offset " . $offset;
+        }
+
         return $this;
     }
 
@@ -69,6 +84,14 @@ class BaseModel {
             $return = $return . $this->bindings['order'];
         }
 
+        if(array_key_exists('limit',$this->bindings)){
+            $return = $return . $this->bindings['limit'];
+        }
+
+        if(array_key_exists('offset',$this->bindings)){
+            $return = $return . $this->bindings['offset'];
+        }
+        
         return $return;
     }
 
@@ -81,7 +104,6 @@ class BaseModel {
     
     public function select($columns=['*']){
         $query = "select ".implode(', ',$columns)." from ".$this->tableName.$this->mergeBindings();        
-        
         $sth = $this->pdo->prepare($query);
         Log::debug('SQL: '.$sth->queryString);
         $sth->execute();

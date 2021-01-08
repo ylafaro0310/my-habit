@@ -19,36 +19,30 @@ class HabitSessionsController extends Controller
         $this->pdo = DB::connection()->getPdo();
     }
 
-    private function createResponse($habitId = null){
+    private function createResponse($habitId = null, $offset = null, $limit = null){
         $userId = Auth::id();
         $habits = $this->habits->where(['user_id'=>$userId])->select();
         if(empty($habitId)){
-            $habitSessions = $this->habitSessions
-                                    ->where(['user_id'=>$userId])
-                                    ->join('habits','habits.id','=','habit_sessions.habit_id')
-                                    ->select([
-                                        'habit_sessions.id',
-                                        'habit_sessions.habit_id',
-                                        'habit_sessions.working_minutes',
-                                        'habit_sessions.completed_at',
-                                        'habit_sessions.created_at',
-                                        'habit_sessions.updated_at',
-                                        'habit_sessions.numerical_goal',
-                                        ]);
+            $this->habitSessions->where(['user_id'=>$userId]);
         }else{
-            $habitSessions = $this->habitSessions
-                                    ->where(['habit_sessions.habit_id'=>$habitId,'user_id'=>$userId])
-                                    ->join('habits','habits.id','=','habit_sessions.habit_id')
-                                    ->select([
-                                        'habit_sessions.id',
-                                        'habit_sessions.habit_id',
-                                        'habit_sessions.working_minutes',
-                                        'habit_sessions.completed_at',
-                                        'habit_sessions.created_at',
-                                        'habit_sessions.updated_at',
-                                        'habit_sessions.numerical_goal',
-                                        ]);
+            $this->habitSessions->where(['habit_sessions.habit_id'=>$habitId,'user_id'=>$userId]);
         }
+        if(!empty($limit)){
+            $this->habitSessions->limit($limit);
+            if(!empty($offset)){
+                $this->habitSessions->offset($offset);
+            }
+        }
+        $habitSessions = $this->habitSessions->join('habits','habits.id','=','habit_sessions.habit_id')
+                        ->select([
+                            'habit_sessions.id',
+                            'habit_sessions.habit_id',
+                            'habit_sessions.working_minutes',
+                            'habit_sessions.completed_at',
+                            'habit_sessions.created_at',
+                            'habit_sessions.updated_at',
+                            'habit_sessions.numerical_goal',
+                            ]);
         $response = [
             'habits' => $habits,
             'habitSessions' => $habitSessions,
@@ -107,9 +101,9 @@ class HabitSessionsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        $response = $this->createResponse($id);
+        $response = $this->createResponse($id,$request->offset,$request->limit);
         return json_encode($response);
     }
 
